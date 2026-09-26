@@ -1,5 +1,7 @@
 # CLAUDE.md — Werkregels voor dit project
 
+@AGENTS.md
+
 Web-app (PWA) voor een zelfstandige schrijnwerker: uren, materiaal, verplaatsingen,
 offertes, facturen, agenda, zoeken in vorige jobs en analyses.
 
@@ -7,10 +9,19 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 
 ## Stack
 
-- Next.js (App Router) + TypeScript (strict) + Tailwind CSS
-- Supabase: Postgres, Auth, Storage (regio EU)
+- Next.js 16 (App Router) + TypeScript (strict) + Tailwind CSS 4
+- Supabase: Postgres, Auth, Storage (regio EU). Clients in `src/lib/supabase/`.
+- Validatie: zod
 - Hosting: Vercel of Render (nog te beslissen)
-- Tests: Vitest (unit), Playwright (end-to-end)
+- Tests: Vitest (unit). Playwright (end-to-end) komt erbij met de eerste echte schermen.
+
+## Commando's
+
+- `npm run dev`: lokaal draaien (vraagt een `.env.local`, zie `.env.example`)
+- `npm run check`: lint, formattering, typecheck en tests. **Moet slagen vóór elke commit.**
+- `npm run build`: productie-build (draait ook in CI)
+- `npm run format`: code automatisch formatteren
+- `npx supabase migration new <naam>`: nieuwe databasemigratie
 
 ## Taal
 
@@ -60,6 +71,29 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - `main` blijft altijd werkend. Nooit rechtstreeks naar `main` pushen.
 - Één feature per branch en per pull request. Kleine, duidelijke commits.
 - Vóór elke push slagen lint, typecheck en tests lokaal.
+
+## Kwaliteit: robuust en zonder technische schuld
+
+- **TypeScript strict**, inclusief `noUncheckedIndexedAccess`. Geen `any`, geen `@ts-ignore`,
+  geen `!` om de typecheck te omzeilen. Los het type echt op.
+- **Valideer alles wat van buiten komt** (formulieren, URL-parameters, env, API-antwoorden)
+  met zod, op de grens. Daarbinnen mag de code op de types vertrouwen.
+- **De database bewaakt zichzelf ook**: `not null`, foreign keys, `check`-constraints
+  (bv. bedragen zijn integers, einde na begin). De app is niet de enige verdediging.
+- **Fouten nooit stil inslikken.** Toon de gebruiker een duidelijke Nederlandse melding
+  en log de technische fout. Een `catch` zonder afhandeling vraagt een comment waarom.
+- **Geen dode code**, geen uitgecommentarieerde code, geen `TODO` zonder dat het in
+  `docs/PLAN.md` of `docs/VRAGEN.md` staat.
+- **Geen quick fixes die later terugkomen.** Past iets niet in de structuur, pas dan de
+  structuur aan in plaats van eromheen te werken.
+- **Weinig afhankelijkheden.** Een nieuw pakket enkel als het echt iets oplost dat we
+  niet in een paar regels zelf doen. Dependabot houdt ze wekelijks up-to-date.
+- **Geen waarschuwingen negeren** (lint, build, deprecations). Oplossen of bewust uitzetten
+  met een comment waarom.
+- **Belangrijke keuzes** (bv. hosting, offline-aanpak) krijgen een korte uitleg in
+  `docs/beslissingen/`: wat, waarom, welke alternatieven.
+- **Klaar betekent**: werkt, heeft tests, `npm run check` en de build slagen, en de
+  documentatie klopt nog.
 
 ## Werkwijze
 
