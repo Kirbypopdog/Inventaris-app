@@ -13,7 +13,15 @@ const eslintConfig = defineConfig([
       "no-console": ["error", { allow: ["warn", "error"] }],
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "supabase/.temp/**"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "supabase/.temp/**",
+    // gegenereerd door npm run db:types
+    "src/lib/supabase/database.types.ts",
+  ]),
 ]);
 
 export default eslintConfig;

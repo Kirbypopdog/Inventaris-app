@@ -22,6 +22,12 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - `npm run build`: productie-build (draait ook in CI)
 - `npm run format`: code automatisch formatteren
 - `npx supabase migration new <naam>`: nieuwe databasemigratie
+- `npm run db:start` / `npm run db:reset`: lokale Supabase-database (Docker) starten of
+  opnieuw opbouwen uit de migraties
+- `npm run db:test`: database-tests (pgTAP, `supabase/tests/`), vooral voor RLS en constraints
+- `npm run db:lint`: SQL-functies controleren
+- `npm run db:types`: TypeScript-types genereren na een schemawijziging. CI controleert
+  dat `src/lib/supabase/database.types.ts` up-to-date is.
 
 ## Taal
 
@@ -53,9 +59,13 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 
 ## Data en veiligheid
 
-- Row Level Security staat aan op **elke** tabel.
+- Row Level Security staat aan op **elke** tabel. Toegang enkel voor leden in `app_users`
+  (zie `docs/beslissingen/003-gebruikers-en-rollen.md`). Elke nieuwe tabel krijgt RLS,
+  policies, de `updated_at`- en logboektriggers, en database-tests.
 - Schemawijzigingen enkel via migrations in `supabase/migrations/`. Nooit met de
-  hand in het Supabase-dashboard.
+  hand in het Supabase-dashboard. Na merge naar `main` past GitHub Actions ze toe
+  (`deploy-database.yml`). Een migratie die al op `main` staat, wijzig je nooit meer:
+  maak een nieuwe.
 - Geheimen (secret key, databasewachtwoord) enkel in environment variables.
   Nooit in code, commits of chat. `.env*` staat in `.gitignore`.
 - Alle data moet **exporteerbaar** zijn (csv of Excel), zodat de gebruiker nooit vastzit.
