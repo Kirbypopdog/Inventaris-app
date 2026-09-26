@@ -22,6 +22,25 @@ GitHub → repo → **Settings → Secrets and variables → Actions → New rep
 
 Wachtwoord kwijt? Supabase → **Project Settings → Database → Reset database password**.
 
+### 3. Aanmeldmail instellen (Supabase)
+
+De app werkt met een code van 6 cijfers (zie `docs/beslissingen/004-aanmelden-met-code.md`).
+Supabase → **Authentication → Emails → Templates → Magic Link**:
+
+- **Subject:** `Je aanmeldcode voor Schrijnwerk`
+- **Body:** de inhoud van `supabase/templates/magic-link.html` (bevat `{{ .Token }}`)
+
+### 4. Adres van de app (Supabase)
+
+Supabase → **Authentication → URL Configuration** → **Site URL**:
+`https://schrijnwerk.onrender.com`
+
+### 5. Eigen mailserver (Supabase)
+
+De ingebouwde mailservice van Supabase stuurt enkel naar leden van het Supabase-team en
+maar een paar mails per uur. Voor echte gebruikers: **Authentication → Emails → SMTP
+Settings** met een eigen mailprovider (bv. Resend). Zie `docs/VRAGEN.md`.
+
 ## Een gebruiker toevoegen
 
 1. Supabase → **Authentication → Users → Add user → Send invitation** met het e-mailadres.
@@ -33,6 +52,9 @@ Wachtwoord kwijt? Supabase → **Project Settings → Database → Reset databas
 
 Dit wijzigt enkel gegevens, niet het schema. Zonder deze stap kan iemand wel inloggen,
 maar ziet die niets.
+
+3. De gebruiker surft naar de app, geeft zijn e-mailadres in en typt de code uit de mail.
+   De uitnodigingsmail van stap 1 mag hij negeren.
 
 ## Een gebruiker verwijderen
 

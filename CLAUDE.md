@@ -13,7 +13,9 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - Supabase: Postgres, Auth, Storage (regio EU). Clients in `src/lib/supabase/`.
 - Validatie: zod
 - Hosting: Render, regio Frankfurt, via `render.yaml` (zie `docs/beslissingen/002-hosting-render.md`)
-- Tests: Vitest (unit). Playwright (end-to-end) komt erbij met de eerste echte schermen.
+- Tests: Vitest (unit), pgTAP (database), Playwright (end-to-end, mobiel, `e2e/`)
+- Aanmelden: e-mailcode via Supabase Auth (zie `docs/beslissingen/004-aanmelden-met-code.md`).
+  Pagina's halen de sessie op via `requireSession()` uit `src/lib/auth/session.ts`.
 
 ## Commando's
 
@@ -28,6 +30,8 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - `npm run db:lint`: SQL-functies controleren
 - `npm run db:types`: TypeScript-types genereren na een schemawijziging. CI controleert
   dat `src/lib/supabase/database.types.ts` up-to-date is.
+- `npm run test:e2e`: end-to-end-tests tegen een lokale Supabase (zie `e2e/README.md`).
+  Elke nieuwe gebruikersflow krijgt een e2e-test.
 
 ## Taal
 

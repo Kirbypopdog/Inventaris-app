@@ -66,8 +66,8 @@ Belangrijke keuzes:
 ### Fase 1: De basis
 
 - [x] Databaseschema, rollen, instellingen, logboek, RLS en database-tests
-- [ ] Inloggen (met `src/proxy.ts` die de sessie ververst)
-- [ ] Playwright voor end-to-end tests
+- [x] Aanmelden met e-mailcode (proxy, sessie, foutpagina)
+- [x] Playwright voor end-to-end-tests
 - [ ] PWA: manifest en icoon (zodra er een logo is)
 - [ ] Klanten
 - [ ] Jobs
