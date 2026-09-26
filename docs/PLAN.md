@@ -74,7 +74,9 @@ Belangrijke keuzes:
 - [x] Jobs (lijst, statusfilter, zoeken, bewerken, snelle statusknoppen)
 - [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
 - [ ] Tarieven per klant en per job instellen (samen met het instellingenscherm)
-- [ ] **Inklokknop** (eerste echte functie)
+- [x] **Inklokknop**: in- en uitklokken vanop de startpagina, wisselen van job, uren per job
+      bekijken en met de hand toevoegen of aanpassen
+- [x] Uurtarieven beheren (Account → Uurtarieven), één standaardtarief, tarief per job
 - [ ] Materiaalcatalogus en materiaal per job
 - [ ] Verplaatsingen per job
 

@@ -7,11 +7,13 @@ import { secondaryButtonClass } from "@/components/form";
 import { JobStatusBadge } from "@/components/job-list";
 import { PageHeader, cardClass, pageClass } from "@/components/page";
 import { requireMember } from "@/lib/auth/session";
+import { getRateOptions } from "@/lib/rates/queries";
 import { formatPeriod } from "@/lib/dates";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
 import { setJobStatus } from "../actions";
 import { JobForm } from "../job-form";
+import { JobHours } from "./job-hours";
 
 export const metadata: Metadata = { title: "Job · Schrijnwerk" };
 
@@ -20,7 +22,7 @@ function formatAddress(line: string | null, postalCode: string | null, city: str
 }
 
 export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
-  await requireMember();
+  const member = await requireMember();
   const id = z.uuid().safeParse((await params).id);
   if (!id.success) {
     notFound();
@@ -47,6 +49,34 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   if (customersError) {
     throw new Error(`Could not load customers: ${customersError.message}`);
   }
+  const [entriesResult, membersResult, rates] = await Promise.all([
+    supabase
+      .from("time_entries")
+      .select("id, user_id, started_at, ended_at, hourly_rate_cents, note")
+      .eq("job_id", job.id)
+      .order("started_at", { ascending: false }),
+    supabase.from("app_users").select("user_id, display_name"),
+    getRateOptions(supabase, job.hourly_rate_id),
+  ]);
+  if (entriesResult.error || membersResult.error) {
+    throw new Error(
+      `Could not load hours: ${(entriesResult.error ?? membersResult.error)?.message}`,
+    );
+  }
+  const names = new Map(membersResult.data.map((m) => [m.user_id, m.display_name]));
+  const entries = entriesResult.data.map((entry) => ({
+    id: entry.id,
+    userId: entry.user_id,
+    userName: names.get(entry.user_id) ?? "Oud-lid",
+    startedAt: entry.started_at,
+    endedAt: entry.ended_at,
+    hourlyRateCents: entry.hourly_rate_cents,
+    note: entry.note,
+  }));
+  const runningHere = entries.some(
+    (entry) => entry.endedAt === null && entry.userId === member.userId,
+  );
+
   // An archived customer stays selectable for their own jobs.
   const customer = job.customers;
   const customers =
@@ -97,6 +127,15 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         <p className="text-lg whitespace-pre-line md:max-w-3xl">{job.description}</p>
       )}
 
+      <JobHours
+        jobId={job.id}
+        jobIsOpen={job.status === "planned" || job.status === "active"}
+        entries={entries}
+        currentUserId={member.userId}
+        runningHere={runningHere}
+        showNames={new Set(entries.map((entry) => entry.userId)).size > 1}
+      />
+
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">
         <section className="flex flex-col gap-4 lg:order-2">
           <h2 className="text-xl font-semibold">Status wijzigen</h2>
@@ -121,6 +160,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
             <JobForm
               key={job.status}
               customers={customers}
+              rates={rates}
               job={{
                 id: job.id,
                 customerId: job.customer_id,
@@ -132,6 +172,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                 status: job.status,
                 startsOn: job.starts_on ?? "",
                 endsOn: job.ends_on ?? "",
+                hourlyRateId: job.hourly_rate_id ?? "",
               }}
             />
           </div>

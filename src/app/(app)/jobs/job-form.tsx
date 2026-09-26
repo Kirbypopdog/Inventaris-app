@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { FormMessage, inputClass, primaryButtonClass } from "@/components/form";
 import { idleFormState } from "@/lib/forms";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
+import type { RateOption } from "@/lib/rates/schemas";
 import { saveJob } from "./actions";
 
 export type JobFormValues = {
@@ -17,11 +18,20 @@ export type JobFormValues = {
   status: JobStatus;
   startsOn: string;
   endsOn: string;
+  hourlyRateId: string;
 };
 
 export type CustomerOption = { id: string; name: string };
 
-export function JobForm({ job, customers }: { job: JobFormValues; customers: CustomerOption[] }) {
+export function JobForm({
+  job,
+  customers,
+  rates,
+}: {
+  job: JobFormValues;
+  customers: CustomerOption[];
+  rates: RateOption[];
+}) {
   const [state, formAction, pending] = useActionState(saveJob, idleFormState);
   const values = state.status === "error" && state.values ? { ...job, ...state.values } : job;
 
@@ -122,6 +132,21 @@ export function JobForm({ job, customers }: { job: JobFormValues; customers: Cus
           <input type="date" name="endsOn" defaultValue={values.endsOn} className={inputClass} />
         </label>
       </div>
+
+      <label className="flex flex-col gap-2">
+        <span className="text-base font-medium">Uurtarief</span>
+        <select name="hourlyRateId" defaultValue={values.hourlyRateId} className={inputClass}>
+          <option value="">Standaardtarief</option>
+          {rates.map((rate) => (
+            <option key={rate.id} value={rate.id}>
+              {rate.label}
+            </option>
+          ))}
+        </select>
+        <span className="text-sm text-zinc-500">
+          Geldt voor nieuwe uren. Uren die al geregistreerd zijn, houden hun tarief.
+        </span>
+      </label>
 
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>

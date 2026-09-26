@@ -15,7 +15,16 @@ export function saveErrorMessage(error: DatabaseErrorLike): string {
     case "42501":
       return "Je hebt geen toegang om dit te wijzigen.";
     case "PGRST116":
+    case "P0002":
       return "Dit werd niet gevonden. Misschien werd het intussen verwijderd.";
+    case "23505":
+      return "Dit bestaat al.";
+    case "TS001":
+      return "Stel eerst een standaard-uurtarief in (Account → Uurtarieven).";
+    case "TS002":
+      return "Je bent niet ingeklokt.";
+    case "TS003":
+      return "Deze job is afgewerkt of geannuleerd. Zet de status eerst terug op Bezig.";
   }
   return "Er ging iets mis bij het opslaan. Probeer het later opnieuw.";
 }

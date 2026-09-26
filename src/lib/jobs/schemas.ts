@@ -12,6 +12,7 @@ export const JOB_FIELDS = [
   "status",
   "startsOn",
   "endsOn",
+  "hourlyRateId",
 ] as const;
 
 function isRealDate(value: string): boolean {
@@ -52,6 +53,10 @@ export const jobSchema = z
     status: jobStatusSchema,
     startsOn: optionalDate,
     endsOn: optionalDate,
+    // Empty: the default hourly rate.
+    hourlyRateId: z
+      .union([z.literal(""), z.uuid({ error: "Kies een geldig uurtarief." })])
+      .transform((value) => (value === "" ? null : value)),
   })
   .refine((job) => !job.startsOn || !job.endsOn || job.endsOn >= job.startsOn, {
     error: "De einddatum ligt vóór de startdatum.",
@@ -72,5 +77,6 @@ export function jobRow(input: JobInput) {
     status: input.status,
     starts_on: input.startsOn,
     ends_on: input.endsOn,
+    hourly_rate_id: input.hourlyRateId,
   };
 }
