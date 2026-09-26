@@ -12,3 +12,10 @@
 - [x] Hosting kiezen: Render
 - [ ] Van het gratis Render-plan naar `starter` zodra de app echt gebruikt wordt
 - [ ] Controleren dat het Supabase-project in een EU-regio staat
+
+## Onderhoud
+
+- [ ] ESLint 10 en TypeScript 7 opnieuw proberen zodra `eslint-config-next` en
+      `typescript-eslint` ze ondersteunen. Dan de `ignore`-regels voor `eslint` en
+      `typescript` uit `.github/dependabot.yml` halen.
+- [ ] `@types/node` mee verhogen wanneer we naar een nieuwere Node-versie gaan (`.nvmrc`).
