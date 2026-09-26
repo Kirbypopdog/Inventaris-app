@@ -4,12 +4,11 @@ import { useActionState } from "react";
 import { FormMessage, inputClass, primaryButtonClass } from "@/components/form";
 import { APP_ROLES, ROLE_LABELS } from "@/lib/auth/roles";
 import { MIN_PASSWORD_LENGTH } from "@/lib/auth/schemas";
-import { addMember, type FormState } from "./actions";
-
-const initialState: FormState = { status: "idle" };
+import { idleFormState } from "@/lib/forms";
+import { addMember } from "./actions";
 
 export function AddMemberForm() {
-  const [state, formAction, pending] = useActionState(addMember, initialState);
+  const [state, formAction, pending] = useActionState(addMember, idleFormState);
   const values = state.status === "error" ? state.values : undefined;
 
   return (

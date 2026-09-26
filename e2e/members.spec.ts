@@ -5,6 +5,10 @@ test("an admin adds a colleague, resets their password and removes them", async 
   const adminContext = await browser.newContext();
   const admin = await adminContext.newPage();
   await logIn(admin, users.admin.email, users.admin.password);
+  await admin
+    .getByRole("navigation", { name: "Hoofdmenu" })
+    .getByRole("link", { name: "Account" })
+    .click();
   await admin.getByRole("link", { name: "Gebruikers beheren" }).click();
   await expect(admin.getByRole("heading", { name: "Gebruikers", exact: true })).toBeVisible();
 

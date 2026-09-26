@@ -1,0 +1,74 @@
+import { z } from "zod";
+import { isValidVatNumber, normalizeVatNumber } from "@/lib/belgium";
+import { optionalText } from "@/lib/forms";
+import { Constants } from "@/lib/supabase/database.types";
+
+export const CUSTOMER_FIELDS = [
+  "type",
+  "name",
+  "vatNumber",
+  "email",
+  "phone",
+  "addressLine",
+  "postalCode",
+  "city",
+  "notes",
+] as const;
+
+const vatNumberSchema = z
+  .string()
+  .transform(normalizeVatNumber)
+  .refine((value) => value === "" || isValidVatNumber(value), {
+    error: "Dit btw-nummer klopt niet. Controleer de cijfers (bv. BE 0123.456.749).",
+  })
+  .transform((value) => (value === "" ? null : value));
+
+const emailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .refine((value) => value === "" || z.email().safeParse(value).success, {
+    error: "Geef een geldig e-mailadres in, of laat het leeg.",
+  })
+  .transform((value) => (value === "" ? null : value));
+
+const postalCodeSchema = z
+  .string()
+  .trim()
+  .refine((value) => value === "" || /^\d{4}$/.test(value), {
+    error: "Een Belgische postcode heeft 4 cijfers.",
+  })
+  .transform((value) => (value === "" ? null : value));
+
+export const customerSchema = z.object({
+  type: z.enum(Constants.public.Enums.customer_type, { error: "Kies particulier of bedrijf." }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { error: "Geef een naam in." })
+    .max(200, { error: "De naam is te lang." }),
+  vatNumber: vatNumberSchema,
+  email: emailSchema,
+  phone: optionalText(50, "Het telefoonnummer is te lang."),
+  addressLine: optionalText(200, "Het adres is te lang."),
+  postalCode: postalCodeSchema,
+  city: optionalText(100, "De gemeente is te lang."),
+  notes: optionalText(2000, "De notities zijn te lang (maximaal 2000 tekens)."),
+});
+
+export type CustomerInput = z.infer<typeof customerSchema>;
+
+/** Maps validated input to the columns of public.customers. */
+export function customerRow(input: CustomerInput) {
+  return {
+    type: input.type,
+    name: input.name,
+    vat_number: input.vatNumber,
+    email: input.email,
+    phone: input.phone,
+    address_line: input.addressLine,
+    postal_code: input.postalCode,
+    city: input.city,
+    notes: input.notes,
+  };
+}

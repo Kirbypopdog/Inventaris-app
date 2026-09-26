@@ -9,7 +9,8 @@ import {
 } from "@/components/form";
 import { APP_ROLES, ROLE_LABELS, type AppRole } from "@/lib/auth/roles";
 import { MIN_PASSWORD_LENGTH } from "@/lib/auth/schemas";
-import { removeMember, resetPassword, updateMember, type FormState } from "./actions";
+import { idleFormState } from "@/lib/forms";
+import { removeMember, resetPassword, updateMember } from "./actions";
 
 export type MemberView = {
   userId: string;
@@ -20,12 +21,10 @@ export type MemberView = {
   lastSignIn: string;
 };
 
-const initialState: FormState = { status: "idle" };
-
 export function MemberCard({ member, isSelf }: { member: MemberView; isSelf: boolean }) {
-  const [updateState, updateAction, updating] = useActionState(updateMember, initialState);
-  const [resetState, resetAction, resetting] = useActionState(resetPassword, initialState);
-  const [removeState, removeAction, removing] = useActionState(removeMember, initialState);
+  const [updateState, updateAction, updating] = useActionState(updateMember, idleFormState);
+  const [resetState, resetAction, resetting] = useActionState(resetPassword, idleFormState);
+  const [removeState, removeAction, removing] = useActionState(removeMember, idleFormState);
   const state = [removeState, resetState, updateState].find((s) => s.status !== "idle");
 
   return (

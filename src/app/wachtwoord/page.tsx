@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { secondaryButtonClass } from "@/components/form";
+import { signOut } from "@/lib/auth/actions";
 import { requireSession } from "@/lib/auth/session";
 import { PasswordForm } from "./password-form";
 
@@ -35,6 +37,14 @@ export default async function PasswordPage() {
         )}
       </div>
       <PasswordForm />
+      {mustChangePassword && (
+        // Other pages are closed until a password is chosen, so logging out must be possible here.
+        <form action={signOut}>
+          <button type="submit" className={secondaryButtonClass}>
+            Afmelden
+          </button>
+        </form>
+      )}
     </main>
   );
 }

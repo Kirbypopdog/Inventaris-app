@@ -76,6 +76,8 @@ export async function chooseOwnPassword(page: Page, password: string): Promise<v
 }
 
 export async function logOut(page: Page): Promise<void> {
+  // From the account page, or from the password page when a new password is required.
+  await page.goto("/account");
   await page.getByRole("button", { name: "Afmelden" }).click();
   await expect(page).toHaveURL(/\/login$/);
 }
