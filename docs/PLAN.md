@@ -22,6 +22,8 @@ customers           klanten (particulier of bedrijf, btw-nummer, adres)
 materials           catalogus (bv. doos 200 vijzen à €12,00 → €0,06/stuk)
 quotes              offertes + quote_lines
 invoices            facturen + invoice_lines (doorlopende nummering)
+app_users           wie toegang heeft en met welke rol (owner, admin)
+audit_log           logboek: wie wijzigde wat en wanneer
 hourly_rates        benoemde uurtarieven (bv. werkplaats, plaatsing), één is standaard
 settings            bedrijfsgegevens, logo, standaardwaarden (zie hieronder)
 ```
@@ -63,6 +65,7 @@ Belangrijke keuzes:
 
 ### Fase 1: De basis
 
+- [x] Databaseschema, rollen, instellingen, logboek, RLS en database-tests
 - [ ] Inloggen (met `src/proxy.ts` die de sessie ververst)
 - [ ] Playwright voor end-to-end tests
 - [ ] PWA: manifest en icoon (zodra er een logo is)

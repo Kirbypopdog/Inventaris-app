@@ -27,3 +27,22 @@ jobs:
       - run: npm run typecheck
       - run: npm run test
       - run: npm run build
+
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Start een lokale Supabase-database en past alle migraties toe.
+      - run: npm run db:start
+      - run: npm run db:test
+      - run: npm run db:lint
+      # De gegenereerde types moeten overeenkomen met het schema.
+      - run: npm run db:types
+      - name: Controleer of database.types.ts up-to-date is
+        run: git diff --exit-code src/lib/supabase/database.types.ts

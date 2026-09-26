@@ -3,3 +3,5 @@ node_modules
 package-lock.json
 next-env.d.ts
 supabase/.temp
+# gegenereerd door npm run db:types
+src/lib/supabase/database.types.ts
