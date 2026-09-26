@@ -6,10 +6,12 @@ const MAX_QUANTITY = 999_999_999.999;
 
 /**
  * Parses what a user types in a quantity field: "35", "2,5", "2.5" or "0,125".
- * Returns null when the input is not a positive number with at most 3 decimals.
+ * Returns null when the input is not a positive number with at most `decimals` decimals
+ * (3 by default, like the database).
  */
-export function parseQuantity(input: string): number | null {
-  const match = /^(\d+)(?:[,.](\d{1,3}))?$/.exec(input.replace(/\s/g, ""));
+export function parseQuantity(input: string, decimals: 1 | 2 | 3 = 3): number | null {
+  const pattern = new RegExp(`^(\\d+)(?:[,.](\\d{1,${decimals}}))?$`);
+  const match = pattern.exec(input.replace(/\s/g, ""));
   if (!match) {
     return null;
   }

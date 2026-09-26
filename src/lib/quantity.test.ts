@@ -20,6 +20,13 @@ describe("parseQuantity", () => {
   );
 });
 
+describe("parseQuantity with fewer decimals", () => {
+  it("allows only 1 decimal for a distance", () => {
+    expect(parseQuantity("42,5", 1)).toBe(42.5);
+    expect(parseQuantity("42,55", 1)).toBeNull();
+  });
+});
+
 describe("formatQuantity", () => {
   it("uses a decimal comma and no trailing zeros", () => {
     expect(formatQuantity(2.5)).toBe("2,5");

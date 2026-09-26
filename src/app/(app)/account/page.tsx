@@ -38,6 +38,9 @@ export default async function AccountPage() {
             <Link href="/instellingen/uurtarieven" className={secondaryLinkButtonClass}>
               Uurtarieven
             </Link>
+            <Link href="/instellingen/verplaatsingen" className={secondaryLinkButtonClass}>
+              Verplaatsingen
+            </Link>
           </>
         )}
         <form action={signOut}>

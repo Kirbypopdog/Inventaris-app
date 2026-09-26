@@ -25,6 +25,10 @@ export function saveErrorMessage(error: DatabaseErrorLike): string {
       return "Je bent niet ingeklokt.";
     case "TS003":
       return "Deze job is afgewerkt of geannuleerd. Zet de status eerst terug op Bezig.";
+    case "TS004":
+      return "Verplaatsingen zijn inbegrepen voor deze job. Er worden geen ritten aangerekend.";
+    case "TS005":
+      return "Geef de afstand in km in, bv. 42 of 42,5.";
   }
   return "Er ging iets mis bij het opslaan. Probeer het later opnieuw.";
 }

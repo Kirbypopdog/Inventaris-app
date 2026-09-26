@@ -32,6 +32,7 @@ export default defineConfig({
         "customers-jobs.spec.ts",
         "clock.spec.ts",
         "materials.spec.ts",
+        "trips.spec.ts",
       ],
       use: {
         ...devices["Desktop Chrome"],

@@ -81,7 +81,10 @@ Belangrijke keuzes:
 - [x] Materiaalcatalogus (prijs per verpakking, prijs per stuk afgeleid, archiveren) en
       materiaal per job (uit de catalogus per stuk of per verpakking, of iets anders),
       snelknop vanaf de klok op de startpagina
-- [ ] Verplaatsingen per job
+- [x] Verplaatsingen per job (per km of vast bedrag per rit, afstand van de vorige rit
+      voorgesteld) en de algemene instelling (Account → Verplaatsingen). De regels volgen
+      job > klant > algemeen; uitzonderingen per klant of job instellen komt met
+      "Tarieven per klant en per job instellen"
 
 ### Fase 2: Geld
 
