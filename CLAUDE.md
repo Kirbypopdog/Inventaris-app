@@ -12,7 +12,7 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - Next.js 16 (App Router) + TypeScript (strict) + Tailwind CSS 4
 - Supabase: Postgres, Auth, Storage (regio EU). Clients in `src/lib/supabase/`.
 - Validatie: zod
-- Hosting: Vercel of Render (nog te beslissen)
+- Hosting: Render, regio Frankfurt, via `render.yaml` (zie `docs/beslissingen/002-hosting-render.md`)
 - Tests: Vitest (unit). Playwright (end-to-end) komt erbij met de eerste echte schermen.
 
 ## Commando's

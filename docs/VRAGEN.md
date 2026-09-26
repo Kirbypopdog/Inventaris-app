@@ -9,5 +9,6 @@
 
 - [ ] Accounts (Supabase, hosting, GitHub) overzetten naar het mailadres of
       account van de schrijnwerker. Nu nog op het persoonlijke adres van Victor.
-- [ ] Hosting kiezen: Vercel of Render
+- [x] Hosting kiezen: Render
+- [ ] Van het gratis Render-plan naar `starter` zodra de app echt gebruikt wordt
 - [ ] Controleren dat het Supabase-project in een EU-regio staat

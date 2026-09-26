@@ -58,7 +58,8 @@ Belangrijke keuzes:
 - [x] Werkregels en plan (`CLAUDE.md`, `docs/`)
 - [x] Next.js-project, Supabase-clients, tests, CI (GitHub Actions), Dependabot
 - [x] Centrale geldmodule met tests (`src/lib/money.ts`)
-- [ ] Hosting kiezen en eerste lege versie online
+- [x] Hosting kiezen: Render (`render.yaml`)
+- [ ] Eerste lege versie online
 
 ### Fase 1: De basis
 
