@@ -11,21 +11,7 @@ import {
 } from "@/lib/members/schemas";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-
-export type FormState =
-  | { status: "idle" }
-  | { status: "success"; message: string }
-  // values: what was filled in, so the form can show it again after an error.
-  | { status: "error"; message: string; values?: Record<string, string> };
-
-function field(formData: FormData, name: string): string {
-  const value = formData.get(name);
-  return typeof value === "string" ? value : "";
-}
-
-function firstIssue(error: { issues: { message: string }[] }): string {
-  return error.issues[0]?.message ?? "Controleer de ingevulde gegevens.";
-}
+import { field, firstIssue, type FormState } from "@/lib/forms";
 
 export async function addMember(_previous: FormState, formData: FormData): Promise<FormState> {
   await requireManager();

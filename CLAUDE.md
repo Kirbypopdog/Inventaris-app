@@ -83,6 +83,9 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 ## UX
 
 - **Mobile first**: grote knoppen, bruikbaar met één duim en met werkhandschoenen.
+- **Ook op de laptop bruikbaar**: vanaf `md` staat het menu links en gebruiken pagina's de
+  breedte (kolommen, `pageClass` uit `src/components/page.tsx`). Nieuwe pagina's gebruiken
+  `pageClass` en `PageHeader`; e2e-tests over de indeling draaien ook in het `desktop`-project.
 - De belangrijkste acties (inklokken, materiaal toevoegen) zijn binnen 2 tikken bereikbaar.
 - Rekening houden met slecht bereik op de werf (offline-ondersteuning is gepland).
 

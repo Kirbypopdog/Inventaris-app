@@ -24,6 +24,15 @@ export default defineConfig({
         launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined },
       },
     },
+    {
+      // De laptopweergave: enkel de tests die over de indeling gaan.
+      name: "desktop",
+      testMatch: ["navigation.spec.ts", "customers-jobs.spec.ts"],
+      use: {
+        ...devices["Desktop Chrome"],
+        launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined },
+      },
+    },
   ],
   webServer: {
     command: `npm run start -- --port ${port}`,

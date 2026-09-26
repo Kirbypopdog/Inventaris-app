@@ -44,9 +44,10 @@ test("a member with a temporary password must choose their own first", async ({ 
   await logIn(page, users.temporary.email, users.temporary.password);
   await expect(page).toHaveURL(/\/wachtwoord$/);
 
-  // Other pages are not reachable yet.
+  // Other pages are not reachable yet, but logging out is.
   await page.goto("/");
   await expect(page).toHaveURL(/\/wachtwoord$/);
+  await expect(page.getByRole("button", { name: "Afmelden" })).toBeVisible();
 
   await page.getByLabel("Nieuw wachtwoord").fill(own);
   await page.getByLabel("Herhaal het nieuwe wachtwoord").fill("iets-anders-123");

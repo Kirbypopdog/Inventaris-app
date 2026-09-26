@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { PageHeader, pageClass } from "@/components/page";
 import { requireManager } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { AddMemberForm } from "./add-member-form";
@@ -33,33 +33,31 @@ export default async function MembersPage() {
   }));
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-8 p-6">
-      <div className="flex flex-col gap-2">
-        <Link
-          href="/"
-          className="min-h-12 py-3 text-base text-zinc-600 underline dark:text-zinc-400"
-        >
-          ← Terug
-        </Link>
-        <h1 className="text-3xl font-semibold">Gebruikers</h1>
-        <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          Wie hier staat, kan aanmelden met e-mailadres en wachtwoord.
-        </p>
+    <main className={pageClass}>
+      <PageHeader
+        title="Gebruikers"
+        back={{ href: "/account", label: "Account" }}
+        description="Wie hier staat, kan aanmelden met e-mailadres en wachtwoord."
+      />
+      <div className="grid gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
+        <section className="flex flex-col gap-4">
+          <h2 className="text-xl font-semibold">Nieuwe gebruiker</h2>
+          <AddMemberForm />
+        </section>
+
+        <section className="flex flex-col gap-4">
+          <h2 className="text-xl font-semibold">Huidige gebruikers</h2>
+          <ul className="grid gap-4 xl:grid-cols-2">
+            {members.map((member) => (
+              <MemberCard
+                key={member.userId}
+                member={member}
+                isSelf={member.userId === me.userId}
+              />
+            ))}
+          </ul>
+        </section>
       </div>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">Nieuwe gebruiker</h2>
-        <AddMemberForm />
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">Huidige gebruikers</h2>
-        <ul className="flex flex-col gap-4">
-          {members.map((member) => (
-            <MemberCard key={member.userId} member={member} isSelf={member.userId === me.userId} />
-          ))}
-        </ul>
-      </section>
     </main>
   );
 }

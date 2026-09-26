@@ -1,7 +1,9 @@
 import { createAuthUser, sql, users } from "./support";
 
 export default async function globalSetup() {
-  // Elke run begint met verse testaccounts.
+  // Elke run begint met verse testgegevens.
+  sql(`delete from public.jobs where title like 'E2E %'`);
+  sql(`delete from public.customers where name like 'E2E %'`);
   sql(`delete from auth.users where email like 'e2e-%@example.com'`);
 
   await createAuthUser(users.owner.email, users.owner.password);

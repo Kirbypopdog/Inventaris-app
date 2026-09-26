@@ -70,8 +70,10 @@ Belangrijke keuzes:
 - [x] Gebruikersbeheer in de app (eigenaar en admin)
 - [x] Playwright voor end-to-end-tests
 - [ ] PWA: manifest en icoon (zodra er een logo is)
-- [ ] Klanten
-- [ ] Jobs
+- [x] Klanten (lijst, zoeken, bewerken, archiveren, btw-nummercontrole)
+- [x] Jobs (lijst, statusfilter, zoeken, bewerken, snelle statusknoppen)
+- [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
+- [ ] Tarieven per klant en per job instellen (samen met het instellingenscherm)
 - [ ] **Inklokknop** (eerste echte functie)
 - [ ] Materiaalcatalogus en materiaal per job
 - [ ] Verplaatsingen per job

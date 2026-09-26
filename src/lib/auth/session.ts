@@ -84,3 +84,12 @@ export async function requireManager(): Promise<Member> {
   }
   return session.member;
 }
+
+/** For pages with business data: members only. Accounts without a role go to the start page. */
+export async function requireMember(): Promise<Member> {
+  const session = await requireSession();
+  if (session.status !== "member") {
+    redirect("/");
+  }
+  return session.member;
+}
