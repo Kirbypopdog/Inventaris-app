@@ -1,16 +1,10 @@
 "use client";
 
 import { useActionState } from "react";
+import { FormMessage, inputClass, primaryButtonClass } from "@/components/form";
 import { login, type LoginState } from "./actions";
 
 const initialState: LoginState = { step: "email", email: "" };
-
-const inputClass =
-  "w-full rounded-xl border border-zinc-300 bg-white px-4 py-4 text-lg text-zinc-900 " +
-  "focus:border-zinc-900 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50";
-const primaryButtonClass =
-  "min-h-14 w-full rounded-xl bg-zinc-900 px-4 text-lg font-semibold text-white " +
-  "disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-900";
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(login, initialState);
@@ -31,7 +25,7 @@ export function LoginForm() {
             className={inputClass}
           />
         </label>
-        {state.error && <ErrorMessage message={state.error} />}
+        {state.error && <FormMessage status="error" message={state.error} />}
         <button type="submit" disabled={pending} className={primaryButtonClass}>
           {pending ? "Code wordt verstuurd…" : "Stuur mij een code"}
         </button>
@@ -60,7 +54,7 @@ export function LoginForm() {
             className={`${inputClass} tracking-[0.3em]`}
           />
         </label>
-        {state.error && <ErrorMessage message={state.error} />}
+        {state.error && <FormMessage status="error" message={state.error} />}
         <button type="submit" disabled={pending} className={primaryButtonClass}>
           {pending ? "Bezig met aanmelden…" : "Aanmelden"}
         </button>
@@ -77,16 +71,5 @@ export function LoginForm() {
         </button>
       </form>
     </div>
-  );
-}
-
-function ErrorMessage({ message }: { message: string }) {
-  return (
-    <p
-      role="alert"
-      className="rounded-xl bg-red-50 p-4 text-base text-red-800 dark:bg-red-950 dark:text-red-200"
-    >
-      {message}
-    </p>
   );
 }

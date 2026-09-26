@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { expect, type Page } from "@playwright/test";
 
 /** Local Supabase stack started with `npx supabase start` (see CLAUDE.md). */
 export const supabase = {
@@ -10,6 +11,8 @@ export const supabase = {
 
 export const users = {
   owner: { email: "e2e-eigenaar@example.com", displayName: "Testeigenaar" },
+  admin: { email: "e2e-admin@example.com", displayName: "Testadmin" },
+  colleague: { email: "e2e-collega@example.com", displayName: "Testcollega" },
   noAccess: { email: "e2e-zonder-rol@example.com" },
   unknown: { email: "e2e-onbekend@example.com" },
 };
@@ -72,4 +75,19 @@ export async function readLoginCode(email: string): Promise<string> {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   throw new Error(`Geen aanmeldcode ontvangen voor ${email}`);
+}
+
+export async function requestCode(page: Page, email: string): Promise<void> {
+  await page.goto("/login");
+  await page.getByLabel("E-mailadres").fill(email);
+  await page.getByRole("button", { name: "Stuur mij een code" }).click();
+}
+
+export async function logIn(page: Page, email: string): Promise<void> {
+  await requestCode(page, email);
+  await expect(page.getByText(`We stuurden een code naar ${email}`)).toBeVisible();
+  await page.getByLabel("Code").fill(await readLoginCode(email));
+  await page.getByRole("button", { name: "Aanmelden" }).click();
+  // Wait until the session is set and the login page is left.
+  await expect(page).not.toHaveURL(/\/login$/);
 }

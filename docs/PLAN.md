@@ -67,6 +67,7 @@ Belangrijke keuzes:
 
 - [x] Databaseschema, rollen, instellingen, logboek, RLS en database-tests
 - [x] Aanmelden met e-mailcode (proxy, sessie, foutpagina)
+- [x] Gebruikersbeheer in de app (eigenaar en admin)
 - [x] Playwright voor end-to-end-tests
 - [ ] PWA: manifest en icoon (zodra er een logo is)
 - [ ] Klanten

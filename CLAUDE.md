@@ -72,6 +72,10 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
   maak een nieuwe.
 - Geheimen (secret key, databasewachtwoord) enkel in environment variables.
   Nooit in code, commits of chat. `.env*` staat in `.gitignore`.
+- De geheime sleutel (`SUPABASE_SECRET_KEY`, `src/lib/supabase/admin.ts`) omzeilt RLS. Enkel
+  gebruiken voor wat de sessie van de gebruiker niet kan (bv. accounts aanmaken), en pas
+  nadat de rechten gecontroleerd zijn. Gegevens wijzigen gebeurt met de sessie van de
+  gebruiker, zodat RLS en het logboek blijven werken.
 - Alle data moet **exporteerbaar** zijn (csv of Excel), zodat de gebruiker nooit vastzit.
 
 ## UX

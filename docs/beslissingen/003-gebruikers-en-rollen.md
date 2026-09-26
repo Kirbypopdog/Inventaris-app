@@ -9,11 +9,21 @@ een individuele gebruiker. Wie toegang heeft, staat in de tabel `app_users` met 
 
 **Toegang:**
 
-- Zelf registreren staat uit. Gebruikers worden uitgenodigd via het Supabase-dashboard
-  en daarna toegevoegd aan `app_users` (zie `docs/BEHEER.md`).
+- Zelf registreren staat uit. Eigenaar en admin beheren gebruikers in de app
+  (pagina **Gebruikers**). Enkel de allereerste admin wordt één keer via de SQL-editor
+  toegevoegd (zie `docs/BEHEER.md`). Er is bewust geen standaard admin-account met een
+  vast wachtwoord.
+- Niemand kan zijn eigen rol wijzigen of zichzelf verwijderen, zodat je jezelf niet
+  buitensluit.
+- Het account aanmaken gebeurt op de server met de geheime sleutel
+  (`src/lib/supabase/admin.ts`). Het lid maken gebeurt met de sessie van de ingelogde
+  gebruiker via de databasefunctie `add_member`: de database controleert de rechten en het
+  logboek bewaart wie het deed.
 - Row Level Security op elke tabel: enkel wie in `app_users` staat, ziet of wijzigt iets.
   Een account zonder rol ziet niets.
-- Niemand kan zichzelf via de app een rol geven: `app_users` is enkel leesbaar via de API.
+- Niemand kan zichzelf via de app een rol geven: `app_users` is enkel te wijzigen via de
+  functies `add_member`, `update_member` en `remove_member`, die controleren of de
+  gebruiker eigenaar of admin is.
 
 **Logboek:** elke wijziging aan bedrijfsgegevens (toevoegen, wijzigen, verwijderen) komt
 automatisch in `audit_log`, met wie, wanneer, en de oude en nieuwe waarde. Dat gebeurt in

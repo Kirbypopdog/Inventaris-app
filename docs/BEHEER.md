@@ -41,26 +41,28 @@ De ingebouwde mailservice van Supabase stuurt enkel naar leden van het Supabase-
 maar een paar mails per uur. Voor echte gebruikers: **Authentication → Emails → SMTP
 Settings** met een eigen mailprovider (bv. Resend). Zie `docs/VRAGEN.md`.
 
-## Een gebruiker toevoegen
+## De allereerste admin (één keer)
 
-1. Supabase → **Authentication → Users → Add user → Send invitation** met het e-mailadres.
-2. Supabase → **SQL Editor**, en voer uit (rol: `owner` of `admin`):
+1. Supabase → **Authentication → Users → Add user → Create new user** met je e-mailadres
+   (vink **Auto Confirm User** aan; een wachtwoord is niet nodig).
+2. Supabase → **SQL Editor**:
 
    ```sql
-   select private.add_app_user('naam@voorbeeld.be', 'owner', 'Voornaam');
+   select private.add_app_user('naam@voorbeeld.be', 'admin', 'Voornaam');
    ```
 
-Dit wijzigt enkel gegevens, niet het schema. Zonder deze stap kan iemand wel inloggen,
-maar ziet die niets.
+3. Aanmelden in de app met je e-mailadres en de code uit de mail.
 
-3. De gebruiker surft naar de app, geeft zijn e-mailadres in en typt de code uit de mail.
-   De uitnodigingsmail van stap 1 mag hij negeren.
+## Gebruikers beheren
 
-## Een gebruiker verwijderen
+In de app: startpagina → **Gebruikers beheren**. Eigenaar en admin kunnen daar gebruikers
+toevoegen, hun naam of rol wijzigen en hen verwijderen. Een nieuwe gebruiker meldt aan met
+zijn e-mailadres en de code uit de mail. Verwijderen stopt de toegang meteen; het account
+blijft bestaan zodat de geschiedenis (uren, logboek) klopt.
 
-Supabase → **Authentication → Users** → gebruiker verwijderen. Zijn rol verdwijnt mee.
-Heeft de gebruiker al uren of materiaal geregistreerd, dan weigert de database het
-verwijderen, zodat de geschiedenis bewaard blijft. Neem dan contact op met de admin.
+Hiervoor heeft de app de geheime sleutel nodig: Render → service **schrijnwerk** →
+**Environment** → `SUPABASE_SECRET_KEY` = de **secret key** uit Supabase
+(**Project Settings → API Keys**). Nooit elders plakken.
 
 ## Logboek bekijken
 

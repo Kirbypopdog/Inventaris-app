@@ -1,22 +1,9 @@
-import { expect, test, type Page } from "@playwright/test";
-import { clearMailbox, readLoginCode, users } from "./support";
+import { expect, test } from "@playwright/test";
+import { clearMailbox, logIn, readLoginCode, requestCode, users } from "./support";
 
 test.beforeEach(async () => {
   await clearMailbox();
 });
-
-async function requestCode(page: Page, email: string) {
-  await page.goto("/login");
-  await page.getByLabel("E-mailadres").fill(email);
-  await page.getByRole("button", { name: "Stuur mij een code" }).click();
-}
-
-async function logIn(page: Page, email: string) {
-  await requestCode(page, email);
-  await expect(page.getByText(`We stuurden een code naar ${email}`)).toBeVisible();
-  await page.getByLabel("Code").fill(await readLoginCode(email));
-  await page.getByRole("button", { name: "Aanmelden" }).click();
-}
 
 test("visitors who are not logged in are sent to the login page", async ({ page }) => {
   await page.goto("/");
