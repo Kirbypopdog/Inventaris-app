@@ -38,6 +38,10 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
   await clock.getByRole("button", { name: `${jobA} · ${customer}` }).click();
   await expect(clock).toContainText("Ingeklokt sinds");
   await expect(clock.getByRole("link", { name: jobA })).toBeVisible();
+  await expect(clock.getByRole("link", { name: "Materiaal toevoegen" })).toHaveAttribute(
+    "href",
+    /#materiaal$/,
+  );
 
   // Switch to another job in one go.
   await clock.getByText("Wissel van job").click();

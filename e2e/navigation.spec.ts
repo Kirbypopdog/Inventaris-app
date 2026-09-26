@@ -23,6 +23,7 @@ test("the main menu is at the bottom on a phone and on the left on a laptop", as
   for (const [label, heading] of [
     ["Jobs", "Jobs"],
     ["Klanten", "Klanten"],
+    ["Materiaal", "Materiaal"],
     ["Account", "Account"],
   ] as const) {
     await nav.getByRole("link", { name: label }).click();

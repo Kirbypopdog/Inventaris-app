@@ -5,6 +5,12 @@
 - [ ] Met welk boekhoudpakket werkt de boekhouder?
 - [ ] Hoe wil hij de verkoopfacturen ontvangen (Peppol, UBL per mail, upload)?
 
+## Voor de schrijnwerker
+
+- [ ] Marge op materiaal: als een job én een materiaal elk een eigen marge hebben, welke
+      geldt dan? Nu wint de job (job > materiaal > algemeen). De marge wordt vastgelegd
+      bij het toevoegen aan een job, en telt pas mee vanaf de facturen (fase 2).
+
 ## Praktisch
 
 - [ ] Accounts (Supabase, hosting, GitHub) overzetten naar het mailadres of
