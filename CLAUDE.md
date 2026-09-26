@@ -26,6 +26,9 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
   op één centrale plek (`lib/money.ts`).
 - Prijs per stuk wordt afgeleid: prijs verpakking / aantal per verpakking.
   Bewaar beide, niet enkel het afgeleide getal.
+- **Geen bedrijfswaarden hardcoderen** (uurtarief, km-tarief, marge, btw-standaard).
+  Alles komt uit de instellingen in de app, met voorrang regel > job > klant > algemeen.
+  Zie `docs/PLAN.md`.
 - **Elke berekening (btw, marge, uren × tarief, prijs per stuk, totalen) heeft unit tests.**
 
 ## Facturen (juridisch)

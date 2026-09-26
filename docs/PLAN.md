@@ -22,8 +22,25 @@ customers           klanten (particulier of bedrijf, btw-nummer, adres)
 materials           catalogus (bv. doos 200 vijzen à €12,00 → €0,06/stuk)
 quotes              offertes + quote_lines
 invoices            facturen + invoice_lines (doorlopende nummering)
-settings            bedrijfsgegevens, standaard uurtarief, km-tarief, marge, logo
+hourly_rates        benoemde uurtarieven (bv. werkplaats, plaatsing), één is standaard
+settings            bedrijfsgegevens, logo, standaardwaarden (zie hieronder)
 ```
+
+## Instellingen: alles aanpasbaar in de app
+
+Er staan geen bedrijfswaarden vast in de code. Alles komt uit de instellingen en
+kan per klant of per job overschreven worden.
+
+| Instelling | Standaard in de app | Overschrijfbaar per |
+|---|---|---|
+| Uurtarieven | lijst van benoemde tarieven, één is standaard | job, tijdsregistratie |
+| Verplaatsingen | methode: per km, forfait per rit of inbegrepen | klant, job |
+| Km-tarief / forfaitbedrag | bedrag in eurocent | job |
+| Marge op materiaal | percentage | materiaal, job |
+| Klanttype | particulier of bedrijf (bepaalt standaard-btw en Peppol) | klant |
+| Btw-tarief | 21%, of 6% bij renovatie woning > 10 jaar | job, factuurregel |
+
+Volgorde van voorrang: **regel > job > klant > algemene instelling**.
 
 Belangrijke keuzes:
 
