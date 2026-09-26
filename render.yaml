@@ -1,0 +1,20 @@
+# Render Blueprint: de hosting staat als code in de repo, niet enkel in het dashboard.
+# Zie docs/beslissingen/002-hosting-render.md
+services:
+  - type: web
+    name: schrijnwerk
+    runtime: node
+    region: frankfurt
+    plan: free
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      # Publieke Supabase-waarden, nodig tijdens de build. Invullen in het Render-dashboard.
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+        sync: false
