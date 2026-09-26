@@ -59,7 +59,7 @@ Belangrijke keuzes:
 - [x] Next.js-project, Supabase-clients, tests, CI (GitHub Actions), Dependabot
 - [x] Centrale geldmodule met tests (`src/lib/money.ts`)
 - [x] Hosting kiezen: Render (`render.yaml`)
-- [ ] Eerste lege versie online
+- [x] Eerste lege versie online: https://schrijnwerk.onrender.com
 
 ### Fase 1: De basis
 

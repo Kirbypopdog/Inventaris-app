@@ -71,6 +71,8 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - `main` blijft altijd werkend. Nooit rechtstreeks naar `main` pushen.
 - Één feature per branch en per pull request. Kleine, duidelijke commits.
 - Vóór elke push slagen lint, typecheck en tests lokaal.
+- Claude mag een pull request zelf mergen (squash) zodra alle CI-controles groen zijn.
+- Elke merge naar `main` wordt automatisch gedeployed naar https://schrijnwerk.onrender.com.
 
 ## Kwaliteit: robuust en zonder technische schuld
 
