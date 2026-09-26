@@ -31,14 +31,14 @@ settings            bedrijfsgegevens, logo, standaardwaarden (zie hieronder)
 Er staan geen bedrijfswaarden vast in de code. Alles komt uit de instellingen en
 kan per klant of per job overschreven worden.
 
-| Instelling | Standaard in de app | Overschrijfbaar per |
-|---|---|---|
-| Uurtarieven | lijst van benoemde tarieven, één is standaard | job, tijdsregistratie |
-| Verplaatsingen | methode: per km, forfait per rit of inbegrepen | klant, job |
-| Km-tarief / forfaitbedrag | bedrag in eurocent | job |
-| Marge op materiaal | percentage | materiaal, job |
-| Klanttype | particulier of bedrijf (bepaalt standaard-btw en Peppol) | klant |
-| Btw-tarief | 21%, of 6% bij renovatie woning > 10 jaar | job, factuurregel |
+| Instelling                | Standaard in de app                                      | Overschrijfbaar per   |
+| ------------------------- | -------------------------------------------------------- | --------------------- |
+| Uurtarieven               | lijst van benoemde tarieven, één is standaard            | job, tijdsregistratie |
+| Verplaatsingen            | methode: per km, forfait per rit of inbegrepen           | klant, job            |
+| Km-tarief / forfaitbedrag | bedrag in eurocent                                       | job                   |
+| Marge op materiaal        | percentage                                               | materiaal, job        |
+| Klanttype                 | particulier of bedrijf (bepaalt standaard-btw en Peppol) | klant                 |
+| Btw-tarief                | 21%, of 6% bij renovatie woning > 10 jaar                | job, factuurregel     |
 
 Volgorde van voorrang: **regel > job > klant > algemene instelling**.
 
@@ -53,13 +53,18 @@ Belangrijke keuzes:
 ## Fases
 
 ### Fase 0: Opzet
+
 - [x] Supabase-project aangemaakt
-- [ ] Werkregels en plan (`CLAUDE.md`, `docs/`)
-- [ ] Next.js-project, Supabase-koppeling, tests, CI (GitHub Actions)
-- [ ] Eerste lege versie online
+- [x] Werkregels en plan (`CLAUDE.md`, `docs/`)
+- [x] Next.js-project, Supabase-clients, tests, CI (GitHub Actions), Dependabot
+- [x] Centrale geldmodule met tests (`src/lib/money.ts`)
+- [ ] Hosting kiezen en eerste lege versie online
 
 ### Fase 1: De basis
-- [ ] Inloggen
+
+- [ ] Inloggen (met `src/proxy.ts` die de sessie ververst)
+- [ ] Playwright voor end-to-end tests
+- [ ] PWA: manifest en icoon (zodra er een logo is)
 - [ ] Klanten
 - [ ] Jobs
 - [ ] **Inklokknop** (eerste echte functie)
@@ -67,17 +72,20 @@ Belangrijke keuzes:
 - [ ] Verplaatsingen per job
 
 ### Fase 2: Geld
+
 - [ ] Offertes (pdf)
 - [ ] Facturen (pdf + UBL), doorlopende nummering, creditnota's
 - [ ] Btw-logica (6%/21%) en marge op materiaal
 
 ### Fase 3: Overzicht
+
 - [ ] Agenda
 - [ ] Zoeken in vorige jobs
 - [ ] Analyses: winst per job, uren per maand, materiaalkosten
 - [ ] Export naar csv/Excel
 
 ### Fase 4: Afwerking
+
 - [ ] Peppol-verzending (via Billit of een andere access point)
 - [ ] Offline werken en synchroniseren
 - [ ] Foto's op de werf
