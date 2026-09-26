@@ -12,7 +12,7 @@ export function memberErrorMessage(error: DatabaseErrorLike): string {
     case "P0002":
       return "Deze gebruiker werd niet gevonden. Vernieuw de pagina en probeer opnieuw.";
     case "42501":
-      return "Dat mag niet: je kan je eigen rol niet wijzigen of jezelf verwijderen, en enkel de eigenaar of een beheerder kan gebruikers beheren.";
+      return "Dat mag niet: je eigen rol, wachtwoord of account beheer je niet via deze pagina, en enkel de eigenaar of een beheerder kan gebruikers beheren.";
   }
   return "Er ging iets mis bij het opslaan. Probeer het later opnieuw.";
 }

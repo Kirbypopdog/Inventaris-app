@@ -1,5 +1,7 @@
 # 004: Aanmelden met een code per e-mail
 
+> **Vervangen** door [005: Aanmelden met e-mail en wachtwoord](005-aanmelden-met-wachtwoord.md).
+
 **Beslissing:** aanmelden zonder wachtwoord. De gebruiker geeft zijn e-mailadres in en
 krijgt een code van 6 cijfers per mail, die hij in de app intypt (Supabase e-mail-OTP).
 

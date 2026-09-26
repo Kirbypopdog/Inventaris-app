@@ -25,13 +25,13 @@ export type Database = {
           Tables: {
             "app_users": {
                   Row: {
-                    "created_at": string,"display_name": string,"role": Database["public"]['Enums']["app_role"],"user_id": string
+                    "created_at": string,"display_name": string,"must_change_password": boolean,"role": Database["public"]['Enums']["app_role"],"user_id": string
                   }
                   Insert: {
-                    "created_at"?: string,"display_name": string,"role": Database["public"]['Enums']["app_role"],"user_id": string
+                    "created_at"?: string,"display_name": string,"must_change_password"?: boolean,"role": Database["public"]['Enums']["app_role"],"user_id": string
                   }
                   Update: {
-                    "created_at"?: string,"display_name"?: string,"role"?: Database["public"]['Enums']["app_role"],"user_id"?: string
+                    "created_at"?: string,"display_name"?: string,"must_change_password"?: boolean,"role"?: Database["public"]['Enums']["app_role"],"user_id"?: string
                   }
                   Relationships: [
                     
@@ -204,12 +204,21 @@ isOneToOne: false
             "add_member":
 { Args: { "member_display_name": string,"member_email": string,"member_role": Database["public"]['Enums']["app_role"] }; Returns: string
                            },
+"bootstrap_admin":
+{ Args: { "admin_email": string }; Returns: boolean
+                           },
 "list_members":
 { Args: Record<PropertyKey, never>; Returns: {
-              "display_name": string,"email": string,"last_sign_in_at": string,"role": Database["public"]['Enums']["app_role"],"user_id": string
+              "display_name": string,"email": string,"last_sign_in_at": string,"must_change_password": boolean,"role": Database["public"]['Enums']["app_role"],"user_id": string
             }[]
                            },
+"mark_password_changed":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "remove_member":
+{ Args: { "target_user_id": string }; Returns: undefined
+                           },
+"require_password_change":
 { Args: { "target_user_id": string }; Returns: undefined
                            },
 "update_member":

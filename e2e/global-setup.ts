@@ -1,11 +1,21 @@
 import { createAuthUser, sql, users } from "./support";
 
 export default async function globalSetup() {
-  await createAuthUser(users.owner.email);
-  await createAuthUser(users.admin.email);
-  await createAuthUser(users.noAccess.email);
+  // Elke run begint met verse testaccounts.
+  sql(`delete from auth.users where email like 'e2e-%@example.com'`);
+
+  await createAuthUser(users.owner.email, users.owner.password);
+  await createAuthUser(users.admin.email, users.admin.password);
+  await createAuthUser(users.temporary.email, users.temporary.password);
+  await createAuthUser(users.noAccess.email, users.noAccess.password);
+
   sql(`select private.add_app_user('${users.owner.email}', 'owner', '${users.owner.displayName}')`);
   sql(`select private.add_app_user('${users.admin.email}', 'admin', '${users.admin.displayName}')`);
-  // De collega wordt in de test zelf aangemaakt; een vorige run mag geen account achterlaten.
-  sql(`delete from auth.users where email = '${users.colleague.email}'`);
+  sql(
+    `select private.add_app_user('${users.temporary.email}', 'owner', '${users.temporary.displayName}')`,
+  );
+  sql(
+    `update public.app_users set must_change_password = true
+     where user_id = (select id from auth.users where email = '${users.temporary.email}')`,
+  );
 }

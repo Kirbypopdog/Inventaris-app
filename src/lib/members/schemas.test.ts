@@ -1,12 +1,27 @@
 import { describe, expect, it } from "vitest";
 import { memberErrorMessage } from "./errors";
-import { memberIdSchema, memberUpdateSchema, newMemberSchema } from "./schemas";
+import {
+  memberIdSchema,
+  memberUpdateSchema,
+  newMemberSchema,
+  passwordResetSchema,
+} from "./schemas";
 
 describe("newMemberSchema", () => {
   it("normalises the input", () => {
     expect(
-      newMemberSchema.parse({ email: " Piet@Voorbeeld.be ", displayName: " Piet ", role: "owner" }),
-    ).toEqual({ email: "piet@voorbeeld.be", displayName: "Piet", role: "owner" });
+      newMemberSchema.parse({
+        email: " Piet@Voorbeeld.be ",
+        displayName: " Piet ",
+        role: "owner",
+        temporaryPassword: "tijdelijk-123",
+      }),
+    ).toEqual({
+      email: "piet@voorbeeld.be",
+      displayName: "Piet",
+      role: "owner",
+      temporaryPassword: "tijdelijk-123",
+    });
   });
 
   it("rejects an empty name and an unknown role with Dutch messages", () => {
@@ -14,11 +29,13 @@ describe("newMemberSchema", () => {
       email: "piet@voorbeeld.be",
       displayName: "  ",
       role: "baas",
+      temporaryPassword: "kort",
     });
     expect(result.success).toBe(false);
     expect(result.error?.issues.map((issue) => issue.message)).toEqual([
       "Geef een naam in.",
       "Kies een rol.",
+      "Het wachtwoord moet minstens 10 tekens lang zijn.",
     ]);
   });
 });
@@ -45,5 +62,22 @@ describe("memberErrorMessage", () => {
     ["XX000", /iets mis/],
   ])("maps %s", (code, message) => {
     expect(memberErrorMessage({ code })).toMatch(message);
+  });
+});
+
+describe("passwordResetSchema", () => {
+  it("requires a valid user id and a long enough password", () => {
+    expect(
+      passwordResetSchema.safeParse({
+        userId: "11111111-1111-4111-8111-111111111111",
+        temporaryPassword: "tijdelijk-123",
+      }).success,
+    ).toBe(true);
+    expect(
+      passwordResetSchema.safeParse({
+        userId: "11111111-1111-4111-8111-111111111111",
+        temporaryPassword: "kort",
+      }).success,
+    ).toBe(false);
   });
 });

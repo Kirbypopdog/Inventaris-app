@@ -9,7 +9,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-semibold">Schrijnwerk</h1>
         <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          Meld je aan met je e-mailadres. Je krijgt een code per mail, een wachtwoord is niet nodig.
+          Meld je aan met je e-mailadres en wachtwoord.
         </p>
       </div>
       <LoginForm />

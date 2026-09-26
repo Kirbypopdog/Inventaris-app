@@ -26,6 +26,7 @@ export default async function MembersPage() {
     email: row.email,
     role: row.role,
     displayName: row.display_name,
+    mustChangePassword: row.must_change_password,
     lastSignIn: row.last_sign_in_at
       ? `Laatst aangemeld: ${dateTimeFormat.format(new Date(row.last_sign_in_at))}`
       : "Nog nooit aangemeld",
@@ -42,7 +43,7 @@ export default async function MembersPage() {
         </Link>
         <h1 className="text-3xl font-semibold">Gebruikers</h1>
         <p className="text-lg text-zinc-600 dark:text-zinc-400">
-          Wie hier staat, kan aanmelden met een code per e-mail.
+          Wie hier staat, kan aanmelden met e-mailadres en wachtwoord.
         </p>
       </div>
 

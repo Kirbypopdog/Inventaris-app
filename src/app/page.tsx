@@ -34,6 +34,14 @@ export default async function Home() {
           Gebruikers beheren
         </Link>
       )}
+      {session.status === "member" && (
+        <Link
+          href="/wachtwoord"
+          className={`${secondaryButtonClass} flex items-center justify-center`}
+        >
+          Wachtwoord wijzigen
+        </Link>
+      )}
       <form action={signOut}>
         <button type="submit" className={secondaryButtonClass}>
           Afmelden

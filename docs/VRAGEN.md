@@ -12,10 +12,8 @@
 - [x] Hosting kiezen: Render
 - [ ] Van het gratis Render-plan naar `starter` zodra de app echt gebruikt wordt
 - [ ] Controleren dat het Supabase-project in een EU-regio staat
-- [ ] Eigen mailserver (SMTP) instellen in Supabase, bv. via Resend. De ingebouwde
-      mailservice van Supabase stuurt enkel naar leden van het Supabase-team en maar een
-      paar mails per uur. Nodig vóór de schrijnwerker kan aanmelden. Vraagt een eigen
-      domeinnaam (voor het afzenderadres).
+- [ ] Later misschien: eigen mailserver (bv. Resend) voor "wachtwoord vergeten" per mail
+      of facturen versturen. Niet nodig om aan te melden (zie beslissing 005).
 
 ## Onderhoud
 

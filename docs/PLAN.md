@@ -66,7 +66,7 @@ Belangrijke keuzes:
 ### Fase 1: De basis
 
 - [x] Databaseschema, rollen, instellingen, logboek, RLS en database-tests
-- [x] Aanmelden met e-mailcode (proxy, sessie, foutpagina)
+- [x] Aanmelden met e-mail en wachtwoord (proxy, sessie, foutpagina, eerste admin)
 - [x] Gebruikersbeheer in de app (eigenaar en admin)
 - [x] Playwright voor end-to-end-tests
 - [ ] PWA: manifest en icoon (zodra er een logo is)
