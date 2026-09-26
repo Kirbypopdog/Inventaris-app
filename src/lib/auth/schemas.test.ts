@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { codeSchema, emailSchema } from "./schemas";
+import {
+  emailSchema,
+  loginPasswordSchema,
+  newPasswordSchema,
+  passwordChangeSchema,
+} from "./schemas";
 
 describe("emailSchema", () => {
   it("normalises the address", () => {
@@ -13,16 +18,43 @@ describe("emailSchema", () => {
   });
 });
 
-describe("codeSchema", () => {
-  it("accepts a code with spaces", () => {
-    expect(codeSchema.parse("123 456")).toBe("123456");
+describe("loginPasswordSchema", () => {
+  it("only requires something to be filled in", () => {
+    expect(loginPasswordSchema.safeParse("x").success).toBe(true);
+    expect(loginPasswordSchema.safeParse("").success).toBe(false);
+  });
+});
+
+describe("newPasswordSchema", () => {
+  it("requires at least 10 characters", () => {
+    expect(newPasswordSchema.safeParse("123456789").success).toBe(false);
+    expect(newPasswordSchema.safeParse("1234567890").success).toBe(true);
   });
 
-  it("accepts longer codes", () => {
-    expect(codeSchema.parse("12345678")).toBe("12345678");
+  it("rejects passwords longer than 72 bytes", () => {
+    expect(newPasswordSchema.safeParse("a".repeat(72)).success).toBe(true);
+    expect(newPasswordSchema.safeParse("a".repeat(73)).success).toBe(false);
+    // 'é' takes two bytes
+    expect(newPasswordSchema.safeParse("é".repeat(37)).success).toBe(false);
+  });
+});
+
+describe("passwordChangeSchema", () => {
+  it("requires both passwords to match", () => {
+    const result = passwordChangeSchema.safeParse({
+      password: "eenlangwachtwoord",
+      confirmation: "eenanderwachtwoord",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error?.issues[0]?.message).toBe("De twee wachtwoorden zijn niet gelijk.");
   });
 
-  it.each(["12345", "abcdef", "", "12345678901"])("rejects %s", (input) => {
-    expect(codeSchema.safeParse(input).success).toBe(false);
+  it("accepts matching passwords", () => {
+    expect(
+      passwordChangeSchema.safeParse({
+        password: "eenlangwachtwoord",
+        confirmation: "eenlangwachtwoord",
+      }).success,
+    ).toBe(true);
   });
 });

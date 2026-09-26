@@ -59,7 +59,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      # Lokale Supabase met auth, API en Mailpit (voor de aanmeldcodes).
+      # Lokale Supabase met auth en API.
       - run: >-
           npx supabase start
           -x studio,storage-api,imgproxy,realtime,edge-runtime,logflare,vector,supavisor,postgres-meta
@@ -75,7 +75,6 @@ jobs:
             echo "E2E_SUPABASE_URL=$API_URL"
             echo "E2E_SUPABASE_SECRET_KEY=$SECRET_KEY"
             echo "E2E_DB_URL=$DB_URL"
-            echo "E2E_MAILPIT_URL=$MAILPIT_URL"
           } >> "$GITHUB_ENV"
       - run: npm run build
       - run: npx playwright install --with-deps chromium

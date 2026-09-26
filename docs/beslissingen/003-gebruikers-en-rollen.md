@@ -10,9 +10,9 @@ een individuele gebruiker. Wie toegang heeft, staat in de tabel `app_users` met 
 **Toegang:**
 
 - Zelf registreren staat uit. Eigenaar en admin beheren gebruikers in de app
-  (pagina **Gebruikers**). Enkel de allereerste admin wordt één keer via de SQL-editor
-  toegevoegd (zie `docs/BEHEER.md`). Er is bewust geen standaard admin-account met een
-  vast wachtwoord.
+  (pagina **Gebruikers**). De allereerste admin maakt de app zelf aan uit `ADMIN_EMAIL` en
+  `ADMIN_PASSWORD` (zie beslissing 005); die moet bij het eerste aanmelden een eigen
+  wachtwoord kiezen.
 - Niemand kan zijn eigen rol wijzigen of zichzelf verwijderen, zodat je jezelf niet
   buitensluit.
 - Het account aanmaken gebeurt op de server met de geheime sleutel

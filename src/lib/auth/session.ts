@@ -9,6 +9,8 @@ export type Member = {
   email: string;
   role: AppRole;
   displayName: string;
+  /** Has a temporary password and must choose their own before using the app. */
+  mustChangePassword: boolean;
 };
 
 export type Session =
@@ -35,7 +37,7 @@ export const getSession = cache(async (): Promise<Session | null> => {
   const email = claims.email ?? "";
   const { data: row, error: rowError } = await supabase
     .from("app_users")
-    .select("role, display_name")
+    .select("role, display_name, must_change_password")
     .eq("user_id", claims.sub)
     .maybeSingle();
   if (rowError) {
@@ -46,15 +48,30 @@ export const getSession = cache(async (): Promise<Session | null> => {
   }
   return {
     status: "member",
-    member: { userId: claims.sub, email, role: row.role, displayName: row.display_name },
+    member: {
+      userId: claims.sub,
+      email,
+      role: row.role,
+      displayName: row.display_name,
+      mustChangePassword: row.must_change_password,
+    },
   };
 });
 
-/** Like getSession, but sends visitors who are not logged in to the login page. */
-export async function requireSession(): Promise<Session> {
+/**
+ * Like getSession, but sends visitors who are not logged in to the login page, and
+ * members with a temporary password to the page where they choose their own.
+ * Only that page itself passes `allowTemporaryPassword`.
+ */
+export async function requireSession({
+  allowTemporaryPassword = false,
+}: { allowTemporaryPassword?: boolean } = {}): Promise<Session> {
   const session = await getSession();
   if (!session) {
     redirect("/login");
+  }
+  if (session.status === "member" && session.member.mustChangePassword && !allowTemporaryPassword) {
+    redirect("/wachtwoord");
   }
   return session;
 }

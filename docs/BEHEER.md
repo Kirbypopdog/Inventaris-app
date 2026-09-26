@@ -1,68 +1,54 @@
 # Beheer
 
-Handleiding voor de admin. Geen geheimen in dit bestand zetten.
+Handleiding voor de beheerder. Geen geheimen in dit bestand zetten.
 
 ## Eenmalig instellen
 
-### 1. Zelf registreren uitzetten (Supabase)
+### 1. Render
 
-Supabase-dashboard → **Authentication → Sign In / Providers** → zet
-**Allow new users to sign up** uit. Zo kan niemand zelf een account aanmaken.
+Render → service **schrijnwerk** → **Environment**:
 
-### 2. Migraties automatisch laten toepassen (GitHub)
+| Naam                  | Waarde                                                                         |
+| --------------------- | ------------------------------------------------------------------------------ |
+| `SUPABASE_SECRET_KEY` | Supabase → **Project Settings → API Keys** → de **secret key** (`sb_secret_…`) |
+| `ADMIN_EMAIL`         | jouw e-mailadres                                                               |
+| `ADMIN_PASSWORD`      | een startwachtwoord van minstens 10 tekens                                     |
+
+Na het opslaan herstart Render de app. Die maakt dan jouw account aan als beheerder (enkel
+zolang er nog niemand toegang heeft). Meld aan met dat e-mailadres en startwachtwoord; de
+app vraagt meteen een eigen wachtwoord te kiezen. Daarna mag `ADMIN_PASSWORD` blijven
+staan of verwijderd worden: het wordt niet meer gebruikt.
+
+### 2. Zelf registreren uitzetten (Supabase)
+
+Supabase → **Authentication → Sign In / Providers** → **Allow new users to sign up** uit.
+Zo kan niemand buiten de app een account aanmaken.
+
+### 3. Migraties automatisch laten toepassen (GitHub)
 
 De workflow `.github/workflows/deploy-database.yml` past nieuwe migraties toe op de
 productiedatabase zodra ze op `main` staan. Daarvoor zijn twee GitHub-secrets nodig:
-GitHub → repo → **Settings → Secrets and variables → Actions → New repository secret**.
+GitHub → repo → **Settings → Secrets and variables → Actions**.
 
 | Secret                  | Waar te vinden                                                                            |
 | ----------------------- | ----------------------------------------------------------------------------------------- |
 | `SUPABASE_ACCESS_TOKEN` | supabase.com → avatar rechtsboven → **Account preferences → Access Tokens** → nieuw token |
-| `SUPABASE_DB_PASSWORD`  | het databasewachtwoord van bij het aanmaken van het project                               |
-
-Wachtwoord kwijt? Supabase → **Project Settings → Database → Reset database password**.
-
-### 3. Aanmeldmail instellen (Supabase)
-
-De app werkt met een code van 6 cijfers (zie `docs/beslissingen/004-aanmelden-met-code.md`).
-Supabase → **Authentication → Emails → Templates → Magic Link**:
-
-- **Subject:** `Je aanmeldcode voor Schrijnwerk`
-- **Body:** de inhoud van `supabase/templates/magic-link.html` (bevat `{{ .Token }}`)
-
-### 4. Adres van de app (Supabase)
-
-Supabase → **Authentication → URL Configuration** → **Site URL**:
-`https://schrijnwerk.onrender.com`
-
-### 5. Eigen mailserver (Supabase)
-
-De ingebouwde mailservice van Supabase stuurt enkel naar leden van het Supabase-team en
-maar een paar mails per uur. Voor echte gebruikers: **Authentication → Emails → SMTP
-Settings** met een eigen mailprovider (bv. Resend). Zie `docs/VRAGEN.md`.
-
-## De allereerste admin (één keer)
-
-1. Supabase → **Authentication → Users → Add user → Create new user** met je e-mailadres
-   (vink **Auto Confirm User** aan; een wachtwoord is niet nodig).
-2. Supabase → **SQL Editor**:
-
-   ```sql
-   select private.add_app_user('naam@voorbeeld.be', 'admin', 'Voornaam');
-   ```
-
-3. Aanmelden in de app met je e-mailadres en de code uit de mail.
+| `SUPABASE_DB_PASSWORD`  | het databasewachtwoord (te resetten via **Project Settings → Database**)                  |
 
 ## Gebruikers beheren
 
-In de app: startpagina → **Gebruikers beheren**. Eigenaar en admin kunnen daar gebruikers
-toevoegen, hun naam of rol wijzigen en hen verwijderen. Een nieuwe gebruiker meldt aan met
-zijn e-mailadres en de code uit de mail. Verwijderen stopt de toegang meteen; het account
-blijft bestaan zodat de geschiedenis (uren, logboek) klopt.
+In de app: startpagina → **Gebruikers beheren** (eigenaar en beheerder).
 
-Hiervoor heeft de app de geheime sleutel nodig: Render → service **schrijnwerk** →
-**Environment** → `SUPABASE_SECRET_KEY` = de **secret key** uit Supabase
-(**Project Settings → API Keys**). Nooit elders plakken.
+- **Toevoegen:** naam, e-mailadres, rol en een tijdelijk wachtwoord. Geef het tijdelijke
+  wachtwoord persoonlijk door. Bij het eerste aanmelden kiest de gebruiker een eigen
+  wachtwoord.
+- **Wachtwoord vergeten:** vul bij die gebruiker een nieuw tijdelijk wachtwoord in en klik
+  **Wachtwoord resetten**.
+- **Verwijderen:** de toegang stopt meteen. Het account blijft bestaan zodat de
+  geschiedenis (uren, logboek) klopt.
+
+Je eigen rol wijzigen of jezelf verwijderen kan niet, zodat je jezelf niet buitensluit.
+Je eigen wachtwoord wijzig je via **Wachtwoord wijzigen** op de startpagina.
 
 ## Logboek bekijken
 

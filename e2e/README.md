@@ -11,4 +11,4 @@ E2E_SUPABASE_SECRET_KEY=<SECRET_KEY uit supabase status> npm run test:e2e
 
 De app moet gebouwd zijn met de lokale waarden in `.env.local`
 (`NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:54321` en de lokale `PUBLISHABLE_KEY`).
-De aanmeldcodes worden gelezen uit Mailpit (http://127.0.0.1:54324).
+De testaccounts (`e2e-…@example.com`) worden bij elke run opnieuw aangemaakt.

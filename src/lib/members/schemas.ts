@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { emailSchema } from "@/lib/auth/schemas";
+import { emailSchema, newPasswordSchema } from "@/lib/auth/schemas";
 import { APP_ROLES } from "@/lib/auth/roles";
 
 const displayNameSchema = z
@@ -14,6 +14,7 @@ export const newMemberSchema = z.object({
   email: emailSchema,
   displayName: displayNameSchema,
   role: roleSchema,
+  temporaryPassword: newPasswordSchema,
 });
 
 export const memberUpdateSchema = z.object({
@@ -23,3 +24,8 @@ export const memberUpdateSchema = z.object({
 });
 
 export const memberIdSchema = z.uuid({ error: "Onbekend lid." });
+
+export const passwordResetSchema = z.object({
+  userId: z.uuid({ error: "Onbekend lid." }),
+  temporaryPassword: newPasswordSchema,
+});

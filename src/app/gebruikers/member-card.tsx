@@ -8,13 +8,15 @@ import {
   secondaryButtonClass,
 } from "@/components/form";
 import { APP_ROLES, ROLE_LABELS, type AppRole } from "@/lib/auth/roles";
-import { removeMember, updateMember, type FormState } from "./actions";
+import { MIN_PASSWORD_LENGTH } from "@/lib/auth/schemas";
+import { removeMember, resetPassword, updateMember, type FormState } from "./actions";
 
 export type MemberView = {
   userId: string;
   email: string;
   role: AppRole;
   displayName: string;
+  mustChangePassword: boolean;
   lastSignIn: string;
 };
 
@@ -22,8 +24,9 @@ const initialState: FormState = { status: "idle" };
 
 export function MemberCard({ member, isSelf }: { member: MemberView; isSelf: boolean }) {
   const [updateState, updateAction, updating] = useActionState(updateMember, initialState);
+  const [resetState, resetAction, resetting] = useActionState(resetPassword, initialState);
   const [removeState, removeAction, removing] = useActionState(removeMember, initialState);
-  const state = removeState.status !== "idle" ? removeState : updateState;
+  const state = [removeState, resetState, updateState].find((s) => s.status !== "idle");
 
   return (
     <li className="flex flex-col gap-4 rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
@@ -34,6 +37,11 @@ export function MemberCard({ member, isSelf }: { member: MemberView; isSelf: boo
         </p>
         <p className="text-base break-all text-zinc-600 dark:text-zinc-400">{member.email}</p>
         <p className="text-sm text-zinc-500">{member.lastSignIn}</p>
+        {member.mustChangePassword && (
+          <p className="text-sm text-amber-700 dark:text-amber-400">
+            Moet nog een eigen wachtwoord kiezen
+          </p>
+        )}
       </div>
 
       <form action={updateAction} className="flex flex-col gap-3">
@@ -72,6 +80,27 @@ export function MemberCard({ member, isSelf }: { member: MemberView; isSelf: boo
       </form>
 
       {!isSelf && (
+        <form action={resetAction} className="flex flex-col gap-3">
+          <input type="hidden" name="userId" value={member.userId} />
+          <label className="flex flex-col gap-2">
+            <span className="text-base font-medium">Nieuw tijdelijk wachtwoord</span>
+            <input
+              name="temporaryPassword"
+              type="text"
+              required
+              minLength={MIN_PASSWORD_LENGTH}
+              autoComplete="off"
+              spellCheck={false}
+              className={inputClass}
+            />
+          </label>
+          <button type="submit" disabled={resetting} className={secondaryButtonClass}>
+            {resetting ? "Bezig…" : "Wachtwoord resetten"}
+          </button>
+        </form>
+      )}
+
+      {!isSelf && (
         <form
           action={removeAction}
           onSubmit={(event) => {
@@ -87,7 +116,7 @@ export function MemberCard({ member, isSelf }: { member: MemberView; isSelf: boo
         </form>
       )}
 
-      {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
+      {state && <FormMessage status={state.status} message={state.message} />}
     </li>
   );
 }

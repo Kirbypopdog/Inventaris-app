@@ -6,8 +6,25 @@ export const emailSchema = z
   .toLowerCase()
   .pipe(z.email({ error: "Geef een geldig e-mailadres in." }));
 
-// Supabase stuurt standaard 6 cijfers, maar het aantal is instelbaar (6 tot 10).
-export const codeSchema = z
+/** Password typed at login: only check that something was filled in. */
+export const loginPasswordSchema = z.string().min(1, { error: "Geef je wachtwoord in." });
+
+export const MIN_PASSWORD_LENGTH = 10;
+
+/** A new password, chosen by the user or given as a temporary password by a manager. */
+export const newPasswordSchema = z
   .string()
-  .transform((value) => value.replace(/\s/g, ""))
-  .pipe(z.string().regex(/^\d{6,10}$/, { error: "De code bestaat uit cijfers, bv. 123456." }));
+  .min(MIN_PASSWORD_LENGTH, {
+    error: `Het wachtwoord moet minstens ${MIN_PASSWORD_LENGTH} tekens lang zijn.`,
+  })
+  // Supabase (bcrypt) gebruikt maximaal 72 bytes.
+  .refine((value) => new TextEncoder().encode(value).length <= 72, {
+    error: "Het wachtwoord is te lang.",
+  });
+
+export const passwordChangeSchema = z
+  .object({ password: newPasswordSchema, confirmation: z.string() })
+  .refine((value) => value.password === value.confirmation, {
+    error: "De twee wachtwoorden zijn niet gelijk.",
+    path: ["confirmation"],
+  });

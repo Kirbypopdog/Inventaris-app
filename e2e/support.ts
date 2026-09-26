@@ -1,20 +1,32 @@
 import { execFileSync } from "node:child_process";
 import { expect, type Page } from "@playwright/test";
 
-/** Local Supabase stack started with `npx supabase start` (see CLAUDE.md). */
+/** Local Supabase stack started with `npx supabase start` (see e2e/README.md). */
 export const supabase = {
   apiUrl: process.env.E2E_SUPABASE_URL ?? "http://127.0.0.1:54321",
   secretKey: requireEnv("E2E_SUPABASE_SECRET_KEY"),
   dbUrl: process.env.E2E_DB_URL ?? "postgresql://postgres:postgres@127.0.0.1:54322/postgres",
-  mailpitUrl: process.env.E2E_MAILPIT_URL ?? "http://127.0.0.1:54324",
 };
 
 export const users = {
-  owner: { email: "e2e-eigenaar@example.com", displayName: "Testeigenaar" },
-  admin: { email: "e2e-admin@example.com", displayName: "Testadmin" },
-  colleague: { email: "e2e-collega@example.com", displayName: "Testcollega" },
-  noAccess: { email: "e2e-zonder-rol@example.com" },
-  unknown: { email: "e2e-onbekend@example.com" },
+  owner: {
+    email: "e2e-eigenaar@example.com",
+    password: "eigenaar-wachtwoord",
+    displayName: "Testeigenaar",
+  },
+  admin: { email: "e2e-admin@example.com", password: "admin-wachtwoord", displayName: "Testadmin" },
+  temporary: {
+    email: "e2e-tijdelijk@example.com",
+    password: "tijdelijk-wachtwoord",
+    displayName: "Testnieuwkomer",
+  },
+  colleague: {
+    email: "e2e-collega@example.com",
+    password: "collega-tijdelijk",
+    displayName: "Testcollega",
+  },
+  noAccess: { email: "e2e-zonder-rol@example.com", password: "zonder-rol-wachtwoord" },
+  unknown: { email: "e2e-onbekend@example.com", password: "onbekend-wachtwoord" },
 };
 
 function requireEnv(name: string): string {
@@ -25,7 +37,7 @@ function requireEnv(name: string): string {
   return value;
 }
 
-export async function createAuthUser(email: string): Promise<void> {
+export async function createAuthUser(email: string, password: string): Promise<void> {
   const response = await fetch(`${supabase.apiUrl}/auth/v1/admin/users`, {
     method: "POST",
     headers: {
@@ -33,10 +45,9 @@ export async function createAuthUser(email: string): Promise<void> {
       Authorization: `Bearer ${supabase.secretKey}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, email_confirm: true }),
+    body: JSON.stringify({ email, password, email_confirm: true }),
   });
-  // 422: user already exists from an earlier run.
-  if (!response.ok && response.status !== 422) {
+  if (!response.ok) {
     throw new Error(`Creating ${email} failed: ${response.status} ${await response.text()}`);
   }
 }
@@ -47,47 +58,24 @@ export function sql(statement: string): void {
   });
 }
 
-export async function clearMailbox(): Promise<void> {
-  await fetch(`${supabase.mailpitUrl}/api/v1/messages`, { method: "DELETE" });
-}
-
-/** Waits for the login e-mail to arrive and returns the code in it. */
-export async function readLoginCode(email: string): Promise<string> {
-  const deadline = Date.now() + 15_000;
-  while (Date.now() < deadline) {
-    const search = await fetch(
-      `${supabase.mailpitUrl}/api/v1/search?query=${encodeURIComponent(`to:"${email}"`)}`,
-    );
-    const result = (await search.json()) as { messages?: { ID: string }[] };
-    const id = result.messages?.[0]?.ID;
-    if (id) {
-      const message = (await (
-        await fetch(`${supabase.mailpitUrl}/api/v1/message/${id}`)
-      ).json()) as {
-        Text: string;
-        HTML: string;
-      };
-      const code = /\b(\d{6,10})\b/.exec(message.Text || message.HTML)?.[1];
-      if (code) {
-        return code;
-      }
-    }
-    await new Promise((resolve) => setTimeout(resolve, 250));
-  }
-  throw new Error(`Geen aanmeldcode ontvangen voor ${email}`);
-}
-
-export async function requestCode(page: Page, email: string): Promise<void> {
+export async function logIn(page: Page, email: string, password: string): Promise<void> {
   await page.goto("/login");
   await page.getByLabel("E-mailadres").fill(email);
-  await page.getByRole("button", { name: "Stuur mij een code" }).click();
-}
-
-export async function logIn(page: Page, email: string): Promise<void> {
-  await requestCode(page, email);
-  await expect(page.getByText(`We stuurden een code naar ${email}`)).toBeVisible();
-  await page.getByLabel("Code").fill(await readLoginCode(email));
+  await page.getByLabel("Wachtwoord").fill(password);
   await page.getByRole("button", { name: "Aanmelden" }).click();
   // Wait until the session is set and the login page is left.
   await expect(page).not.toHaveURL(/\/login$/);
+}
+
+export async function chooseOwnPassword(page: Page, password: string): Promise<void> {
+  await expect(page).toHaveURL(/\/wachtwoord$/);
+  await page.getByLabel("Nieuw wachtwoord").fill(password);
+  await page.getByLabel("Herhaal het nieuwe wachtwoord").fill(password);
+  await page.getByRole("button", { name: "Wachtwoord opslaan" }).click();
+  await expect(page).toHaveURL(/\/$/);
+}
+
+export async function logOut(page: Page): Promise<void> {
+  await page.getByRole("button", { name: "Afmelden" }).click();
+  await expect(page).toHaveURL(/\/login$/);
 }

@@ -2,16 +2,19 @@ import { describe, expect, it } from "vitest";
 import { authErrorMessage } from "./errors";
 
 describe("authErrorMessage", () => {
-  it("explains that an unknown address has no access", () => {
-    expect(authErrorMessage({ code: "otp_disabled", status: 422 })).toMatch(/geen toegang/);
+  it("explains wrong credentials without saying which part is wrong", () => {
+    expect(authErrorMessage({ code: "invalid_credentials", status: 400 })).toBe(
+      "E-mailadres of wachtwoord klopt niet.",
+    );
   });
 
-  it("explains an expired or wrong code", () => {
-    expect(authErrorMessage({ code: "otp_expired", status: 403 })).toMatch(/verlopen/);
+  it("explains password problems", () => {
+    expect(authErrorMessage({ code: "weak_password" })).toMatch(/te zwak/);
+    expect(authErrorMessage({ code: "same_password" })).toMatch(/ander wachtwoord/);
   });
 
   it("explains rate limits, also without a code", () => {
-    expect(authErrorMessage({ code: "over_email_send_rate_limit" })).toMatch(/te veel/);
+    expect(authErrorMessage({ code: "over_request_rate_limit" })).toMatch(/te veel/);
     expect(authErrorMessage({ status: 429 })).toMatch(/te veel/);
   });
 
