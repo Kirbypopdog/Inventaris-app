@@ -2,7 +2,7 @@ import Link from "next/link";
 import { clockIn, clockOut } from "@/app/(app)/uren/actions";
 import { ActionButton } from "@/components/action-button";
 import { ElapsedTime } from "@/components/clock";
-import { EmptyState, cardClass } from "@/components/page";
+import { EmptyState, cardClass, secondaryLinkButtonClass } from "@/components/page";
 import type { RunningEntry } from "@/lib/hours/queries";
 import { toBrusselsTime } from "@/lib/time";
 
@@ -55,6 +55,9 @@ export function ClockPanel({
           pendingLabel="Bezig met uitklokken…"
           className={stopButtonClass}
         />
+        <Link href={`/jobs/${running.jobId}#materiaal`} className={secondaryLinkButtonClass}>
+          Materiaal toevoegen
+        </Link>
         {otherJobs.length > 0 && (
           <details className="group">
             <summary className="flex min-h-14 cursor-pointer items-center text-lg font-medium underline">

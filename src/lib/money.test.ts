@@ -4,6 +4,8 @@ import {
   cents,
   forMinutes,
   formatEuro,
+  formatEuroInput,
+  formatUnitPrice,
   multiply,
   parseEuro,
   partOfPackage,
@@ -171,5 +173,34 @@ describe("formatEuro", () => {
     // Intl uses a non-breaking space between the symbol and the amount
     expect(formatEuro(cents(123456)).replace(/\s/g, " ")).toBe("€ 1.234,56");
     expect(formatEuro(cents(-350)).replace(/\s/g, " ")).toBe("€ -3,50");
+  });
+});
+
+describe("formatUnitPrice", () => {
+  const format = (price: number, units: number) =>
+    formatUnitPrice(cents(price), units).replace(/\s/g, " ");
+
+  it("shows the price of one piece with up to 4 decimals", () => {
+    expect(format(1250, 200)).toBe("€ 0,0625");
+    expect(format(1200, 200)).toBe("€ 0,06");
+    expect(format(900, 1)).toBe("€ 9,00");
+    expect(format(1000, 3)).toBe("€ 3,3333");
+  });
+
+  it("refuses an empty package", () => {
+    expect(() => formatUnitPrice(cents(100), 0)).toThrow(RangeError);
+  });
+});
+
+describe("formatEuroInput", () => {
+  it.each([
+    [1250, "12,50"],
+    [5, "0,05"],
+    [123456, "1234,56"],
+    [-350, "-3,50"],
+    [0, "0,00"],
+  ])("formats %i cent as %j, and parseEuro reads it back", (amount, text) => {
+    expect(formatEuroInput(cents(amount))).toBe(text);
+    expect(parseEuro(text)).toBe(amount);
   });
 });

@@ -9,11 +9,14 @@ import { PageHeader, cardClass, pageClass } from "@/components/page";
 import { requireMember } from "@/lib/auth/session";
 import { getRateOptions } from "@/lib/rates/queries";
 import { formatPeriod } from "@/lib/dates";
+import { describePrice } from "@/lib/materials/format";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
+import { toBrusselsDate } from "@/lib/time";
 import { setJobStatus } from "../actions";
 import { JobForm } from "../job-form";
 import { JobHours } from "./job-hours";
+import { JobMaterials } from "./job-materials";
 
 export const metadata: Metadata = { title: "Job · Schrijnwerk" };
 
@@ -49,7 +52,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   if (customersError) {
     throw new Error(`Could not load customers: ${customersError.message}`);
   }
-  const [entriesResult, membersResult, rates] = await Promise.all([
+  const [entriesResult, membersResult, rates, usagesResult, materialsResult] = await Promise.all([
     supabase
       .from("time_entries")
       .select("id, user_id, started_at, ended_at, hourly_rate_cents, note")
@@ -57,12 +60,43 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
       .order("started_at", { ascending: false }),
     supabase.from("app_users").select("user_id, display_name"),
     getRateOptions(supabase, job.hourly_rate_id),
+    supabase
+      .from("material_usages")
+      .select("id, description, unit, package_price_cents, units_per_package, quantity, used_on")
+      .eq("job_id", job.id)
+      .order("used_on", { ascending: false })
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("materials")
+      .select("id, name, unit, package_price_cents, units_per_package")
+      .is("archived_at", null)
+      .order("name"),
   ]);
-  if (entriesResult.error || membersResult.error) {
-    throw new Error(
-      `Could not load hours: ${(entriesResult.error ?? membersResult.error)?.message}`,
-    );
+  if (entriesResult.error || membersResult.error || usagesResult.error || materialsResult.error) {
+    const loadError =
+      entriesResult.error ?? membersResult.error ?? usagesResult.error ?? materialsResult.error;
+    throw new Error(`Could not load job details: ${loadError?.message}`);
   }
+  const usages = usagesResult.data.map((usage) => ({
+    id: usage.id,
+    description: usage.description,
+    unit: usage.unit,
+    packagePriceCents: usage.package_price_cents,
+    unitsPerPackage: usage.units_per_package,
+    quantity: usage.quantity,
+    usedOn: usage.used_on,
+  }));
+  const materials = materialsResult.data.map((material) => ({
+    id: material.id,
+    name: material.name,
+    unit: material.unit,
+    unitsPerPackage: material.units_per_package,
+    priceLabel: describePrice({
+      packagePriceCents: material.package_price_cents,
+      unitsPerPackage: material.units_per_package,
+      unit: material.unit,
+    }),
+  }));
   const names = new Map(membersResult.data.map((m) => [m.user_id, m.display_name]));
   const entries = entriesResult.data.map((entry) => ({
     id: entry.id,
@@ -134,6 +168,13 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         currentUserId={member.userId}
         runningHere={runningHere}
         showNames={new Set(entries.map((entry) => entry.userId)).size > 1}
+      />
+
+      <JobMaterials
+        jobId={job.id}
+        usages={usages}
+        materials={materials}
+        today={toBrusselsDate(new Date().toISOString())}
       />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">

@@ -27,7 +27,12 @@ export default defineConfig({
     {
       // De laptopweergave: enkel de tests die over de indeling gaan.
       name: "desktop",
-      testMatch: ["navigation.spec.ts", "customers-jobs.spec.ts", "clock.spec.ts"],
+      testMatch: [
+        "navigation.spec.ts",
+        "customers-jobs.spec.ts",
+        "clock.spec.ts",
+        "materials.spec.ts",
+      ],
       use: {
         ...devices["Desktop Chrome"],
         launchOptions: { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined },

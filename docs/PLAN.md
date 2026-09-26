@@ -42,7 +42,8 @@ kan per klant of per job overschreven worden.
 | Klanttype                 | particulier of bedrijf (bepaalt standaard-btw en Peppol) | klant                 |
 | Btw-tarief                | 21%, of 6% bij renovatie woning > 10 jaar                | job, factuurregel     |
 
-Volgorde van voorrang: **regel > job > klant > algemene instelling**.
+Volgorde van voorrang: **regel > job > klant > algemene instelling**. Voor de marge op
+materiaal: job > materiaal > algemene instelling (zie `docs/VRAGEN.md`).
 
 Belangrijke keuzes:
 
@@ -77,7 +78,9 @@ Belangrijke keuzes:
 - [x] **Inklokknop**: in- en uitklokken vanop de startpagina, wisselen van job, uren per job
       bekijken en met de hand toevoegen of aanpassen
 - [x] Uurtarieven beheren (Account → Uurtarieven), één standaardtarief, tarief per job
-- [ ] Materiaalcatalogus en materiaal per job
+- [x] Materiaalcatalogus (prijs per verpakking, prijs per stuk afgeleid, archiveren) en
+      materiaal per job (uit de catalogus per stuk of per verpakking, of iets anders),
+      snelknop vanaf de klok op de startpagina
 - [ ] Verplaatsingen per job
 
 ### Fase 2: Geld

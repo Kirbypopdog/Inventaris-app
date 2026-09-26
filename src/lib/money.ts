@@ -138,3 +138,28 @@ const euroFormat = new Intl.NumberFormat("nl-BE", { style: "currency", currency:
 export function formatEuro(amount: Cents): string {
   return euroFormat.format(amount / 100);
 }
+
+/** An amount as it is typed in a form field, e.g. "1234,50". {@link parseEuro} reads it back. */
+export function formatEuroInput(amount: Cents): string {
+  const sign = amount < 0 ? "-" : "";
+  const absolute = Math.abs(amount);
+  return `${sign}${Math.trunc(absolute / 100)},${String(absolute % 100).padStart(2, "0")}`;
+}
+
+const unitPriceFormat = new Intl.NumberFormat("nl-BE", {
+  style: "currency",
+  currency: "EUR",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 4,
+});
+
+/**
+ * Price of one unit out of a package, for display only: a screw from a box of 200 at
+ * €12,50 costs €0,0625. Amounts are always calculated with {@link partOfPackage}.
+ */
+export function formatUnitPrice(packagePrice: Cents, unitsPerPackage: number): string {
+  if (!(unitsPerPackage > 0)) {
+    throw new RangeError("Aantal per verpakking moet groter zijn dan 0");
+  }
+  return unitPriceFormat.format(packagePrice / unitsPerPackage / 100);
+}

@@ -201,9 +201,53 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "add_member":
+            "add_material_usage":
+{ Args: { "per_package": boolean,"source_material_id": string,"target_job_id": string,"usage_date": string,"usage_quantity": number }; Returns: {
+              "created_at": string,
+"created_by": string,
+"description": string,
+"id": string,
+"job_id": string,
+"margin_bp": number,
+"material_id": string | null,
+"package_price_cents": number,
+"quantity": number,
+"unit": string,
+"units_per_package": number,
+"updated_at": string,
+"used_on": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "material_usages"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"add_member":
 { Args: { "member_display_name": string,"member_email": string,"member_role": Database["public"]['Enums']["app_role"] }; Returns: string
                            },
+"add_other_material_usage":
+{ Args: { "target_job_id": string,"unit_price_cents": number,"usage_date": string,"usage_description": string,"usage_quantity": number,"usage_unit": string }; Returns: {
+              "created_at": string,
+"created_by": string,
+"description": string,
+"id": string,
+"job_id": string,
+"margin_bp": number,
+"material_id": string | null,
+"package_price_cents": number,
+"quantity": number,
+"unit": string,
+"units_per_package": number,
+"updated_at": string,
+"used_on": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "material_usages"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "bootstrap_admin":
 { Args: { "admin_email": string }; Returns: boolean
                            },
