@@ -9,9 +9,9 @@ export const ROLE_LABELS: Record<AppRole, string> = {
   admin: "Beheerder",
 };
 
-/** Roles that may manage users. Must match private.is_manager() in the database. */
+/** Roles that may manage users and settings. Must match private.is_manager() in the database. */
 const MANAGER_ROLES: ReadonlySet<AppRole> = new Set(["owner", "admin"]);
 
-export function canManageMembers(role: AppRole): boolean {
+export function isManagerRole(role: AppRole): boolean {
   return MANAGER_ROLES.has(role);
 }

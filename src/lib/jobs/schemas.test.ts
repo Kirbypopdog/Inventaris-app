@@ -11,6 +11,7 @@ const valid = {
   status: "planned",
   startsOn: "",
   endsOn: "",
+  hourlyRateId: "",
 };
 
 describe("jobSchema", () => {
@@ -25,6 +26,7 @@ describe("jobSchema", () => {
       status: "planned",
       starts_on: null,
       ends_on: null,
+      hourly_rate_id: null,
     });
   });
 
@@ -40,6 +42,7 @@ describe("jobSchema", () => {
     [{ startsOn: "2026-02-30" }, "Geef een geldige datum in."],
     [{ startsOn: "01/10/2026" }, "Geef een geldige datum in."],
     [{ startsOn: "2026-10-02", endsOn: "2026-10-01" }, "De einddatum ligt vóór de startdatum."],
+    [{ hourlyRateId: "abc" }, "Kies een geldig uurtarief."],
   ])("rejects %o", (override, message) => {
     const result = jobSchema.safeParse({ ...valid, ...override });
     expect(result.success).toBe(false);

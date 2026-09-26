@@ -3,7 +3,7 @@ import Link from "next/link";
 import { secondaryButtonClass } from "@/components/form";
 import { PageHeader, pageClass, secondaryLinkButtonClass } from "@/components/page";
 import { signOut } from "@/lib/auth/actions";
-import { ROLE_LABELS, canManageMembers } from "@/lib/auth/roles";
+import { ROLE_LABELS, isManagerRole } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
 
 export const metadata: Metadata = { title: "Account · Schrijnwerk" };
@@ -30,10 +30,15 @@ export default async function AccountPage() {
             Wachtwoord wijzigen
           </Link>
         )}
-        {member && canManageMembers(member.role) && (
-          <Link href="/gebruikers" className={secondaryLinkButtonClass}>
-            Gebruikers beheren
-          </Link>
+        {member && isManagerRole(member.role) && (
+          <>
+            <Link href="/gebruikers" className={secondaryLinkButtonClass}>
+              Gebruikers beheren
+            </Link>
+            <Link href="/instellingen/uurtarieven" className={secondaryLinkButtonClass}>
+              Uurtarieven
+            </Link>
+          </>
         )}
         <form action={signOut}>
           <button type="submit" className={secondaryButtonClass}>

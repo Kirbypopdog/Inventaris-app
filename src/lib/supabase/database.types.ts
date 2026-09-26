@@ -207,6 +207,44 @@ isOneToOne: false
 "bootstrap_admin":
 { Args: { "admin_email": string }; Returns: boolean
                            },
+"clock_in":
+{ Args: { "target_job_id": string }; Returns: {
+              "created_at": string,
+"ended_at": string | null,
+"hourly_rate_cents": number,
+"hourly_rate_id": string | null,
+"id": string,
+"job_id": string,
+"note": string | null,
+"started_at": string,
+"updated_at": string,
+"user_id": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "time_entries"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"clock_out":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "created_at": string,
+"ended_at": string | null,
+"hourly_rate_cents": number,
+"hourly_rate_id": string | null,
+"id": string,
+"job_id": string,
+"note": string | null,
+"started_at": string,
+"updated_at": string,
+"user_id": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "time_entries"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "list_members":
 { Args: Record<PropertyKey, never>; Returns: {
               "display_name": string,"email": string,"last_sign_in_at": string,"must_change_password": boolean,"role": Database["public"]['Enums']["app_role"],"user_id": string
@@ -220,6 +258,9 @@ isOneToOne: false
                            },
 "require_password_change":
 { Args: { "target_user_id": string }; Returns: undefined
+                           },
+"set_default_hourly_rate":
+{ Args: { "rate_id": string }; Returns: undefined
                            },
 "update_member":
 { Args: { "member_display_name": string,"member_role": Database["public"]['Enums']["app_role"],"target_user_id": string }; Returns: undefined

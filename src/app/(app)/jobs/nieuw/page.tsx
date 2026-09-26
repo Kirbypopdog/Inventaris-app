@@ -3,6 +3,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { EmptyState, PageHeader, cardClass, linkButtonClass, pageClass } from "@/components/page";
 import { requireMember } from "@/lib/auth/session";
+import { getRateOptions } from "@/lib/rates/queries";
 import { createClient } from "@/lib/supabase/server";
 import { JobForm } from "../job-form";
 
@@ -22,6 +23,7 @@ export default async function NewJobPage({ searchParams }: PageProps<"/jobs/nieu
     throw new Error(`Could not load customers: ${error.message}`);
   }
 
+  const rates = await getRateOptions(supabase);
   const preselected =
     requestedCustomer.success && customers.some((c) => c.id === requestedCustomer.data)
       ? requestedCustomer.data
@@ -41,6 +43,7 @@ export default async function NewJobPage({ searchParams }: PageProps<"/jobs/nieu
         <div className={`${cardClass} md:max-w-2xl`}>
           <JobForm
             customers={customers}
+            rates={rates}
             job={{
               customerId: preselected,
               title: "",
@@ -51,6 +54,7 @@ export default async function NewJobPage({ searchParams }: PageProps<"/jobs/nieu
               status: "planned",
               startsOn: "",
               endsOn: "",
+              hourlyRateId: "",
             }}
           />
         </div>

@@ -10,7 +10,8 @@ const ITEMS = [
   {
     href: "/account",
     label: "Account",
-    matches: (path: string) => path.startsWith("/account") || path.startsWith("/gebruikers"),
+    matches: (path: string) =>
+      ["/account", "/gebruikers", "/instellingen"].some((prefix) => path.startsWith(prefix)),
   },
 ] as const;
 
