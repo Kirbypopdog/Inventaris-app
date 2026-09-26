@@ -10,6 +10,9 @@ export default async function globalSetup() {
     `delete from public.material_usages where job_id in (select id from public.jobs where title like 'E2E %')`,
   );
   sql(`delete from public.materials where name like 'E2E %'`);
+  sql(
+    `delete from public.trips where job_id in (select id from public.jobs where title like 'E2E %')`,
+  );
   sql(`delete from public.jobs where title like 'E2E %'`);
   sql(`update public.hourly_rates set is_default = false where name like 'E2E %'`);
   sql(`delete from public.hourly_rates where name like 'E2E %'`);

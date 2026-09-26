@@ -6,17 +6,20 @@ import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobStatusBadge } from "@/components/job-list";
 import { PageHeader, cardClass, pageClass } from "@/components/page";
+import { isManagerRole } from "@/lib/auth/roles";
 import { requireMember } from "@/lib/auth/session";
 import { getRateOptions } from "@/lib/rates/queries";
 import { formatPeriod } from "@/lib/dates";
 import { describePrice } from "@/lib/materials/format";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
+import { getJobTrips } from "@/lib/trips/queries";
 import { toBrusselsDate } from "@/lib/time";
 import { setJobStatus } from "../actions";
 import { JobForm } from "../job-form";
 import { JobHours } from "./job-hours";
 import { JobMaterials } from "./job-materials";
+import { JobTrips } from "./job-trips";
 
 export const metadata: Metadata = { title: "Job · Schrijnwerk" };
 
@@ -52,26 +55,28 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   if (customersError) {
     throw new Error(`Could not load customers: ${customersError.message}`);
   }
-  const [entriesResult, membersResult, rates, usagesResult, materialsResult] = await Promise.all([
-    supabase
-      .from("time_entries")
-      .select("id, user_id, started_at, ended_at, hourly_rate_cents, note")
-      .eq("job_id", job.id)
-      .order("started_at", { ascending: false }),
-    supabase.from("app_users").select("user_id, display_name"),
-    getRateOptions(supabase, job.hourly_rate_id),
-    supabase
-      .from("material_usages")
-      .select("id, description, unit, package_price_cents, units_per_package, quantity, used_on")
-      .eq("job_id", job.id)
-      .order("used_on", { ascending: false })
-      .order("created_at", { ascending: false }),
-    supabase
-      .from("materials")
-      .select("id, name, unit, package_price_cents, units_per_package")
-      .is("archived_at", null)
-      .order("name"),
-  ]);
+  const [entriesResult, membersResult, rates, usagesResult, materialsResult, travel] =
+    await Promise.all([
+      supabase
+        .from("time_entries")
+        .select("id, user_id, started_at, ended_at, hourly_rate_cents, note")
+        .eq("job_id", job.id)
+        .order("started_at", { ascending: false }),
+      supabase.from("app_users").select("user_id, display_name"),
+      getRateOptions(supabase, job.hourly_rate_id),
+      supabase
+        .from("material_usages")
+        .select("id, description, unit, package_price_cents, units_per_package, quantity, used_on")
+        .eq("job_id", job.id)
+        .order("used_on", { ascending: false })
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("materials")
+        .select("id, name, unit, package_price_cents, units_per_package")
+        .is("archived_at", null)
+        .order("name"),
+      getJobTrips(supabase, job.id),
+    ]);
   if (entriesResult.error || membersResult.error || usagesResult.error || materialsResult.error) {
     const loadError =
       entriesResult.error ?? membersResult.error ?? usagesResult.error ?? materialsResult.error;
@@ -107,6 +112,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     hourlyRateCents: entry.hourly_rate_cents,
     note: entry.note,
   }));
+  const today = toBrusselsDate(new Date().toISOString());
   const runningHere = entries.some(
     (entry) => entry.endedAt === null && entry.userId === member.userId,
   );
@@ -170,11 +176,14 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         showNames={new Set(entries.map((entry) => entry.userId)).size > 1}
       />
 
-      <JobMaterials
+      <JobMaterials jobId={job.id} usages={usages} materials={materials} today={today} />
+
+      <JobTrips
         jobId={job.id}
-        usages={usages}
-        materials={materials}
-        today={toBrusselsDate(new Date().toISOString())}
+        terms={travel.terms}
+        trips={travel.trips}
+        today={today}
+        canManageSettings={isManagerRole(member.role)}
       />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">

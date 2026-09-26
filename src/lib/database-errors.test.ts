@@ -13,6 +13,8 @@ describe("saveErrorMessage", () => {
     ["TS001", /standaard-uurtarief/],
     ["TS002", /niet ingeklokt/],
     ["TS003", /afgewerkt of geannuleerd/],
+    ["TS004", /inbegrepen/],
+    ["TS005", /afstand/],
     [undefined, /iets mis/],
   ])("maps %s", (code, message) => {
     expect(saveErrorMessage({ code })).toMatch(message);

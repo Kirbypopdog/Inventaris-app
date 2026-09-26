@@ -248,6 +248,25 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"add_trip":
+{ Args: { "distance"?: number,"on_date": string,"target_job_id": string,"trip_note"?: string }; Returns: {
+              "created_at": string,
+"created_by": string,
+"distance_km": number | null,
+"id": string,
+"job_id": string,
+"method": Database["public"]['Enums']["travel_method"],
+"note": string | null,
+"rate_cents": number,
+"trip_date": string,
+"updated_at": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "trips"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "bootstrap_admin":
 { Args: { "admin_email": string }; Returns: boolean
                            },
@@ -305,6 +324,11 @@ isOneToOne: false
                            },
 "set_default_hourly_rate":
 { Args: { "rate_id": string }; Returns: undefined
+                           },
+"travel_terms":
+{ Args: { "target_job_id": string }; Returns: {
+              "method": Database["public"]['Enums']["travel_method"],"rate_cents": number
+            }[]
                            },
 "update_member":
 { Args: { "member_display_name": string,"member_role": Database["public"]['Enums']["app_role"],"target_user_id": string }; Returns: undefined
