@@ -1,5 +1,7 @@
+import Link from "next/link";
+import { secondaryButtonClass } from "@/components/form";
 import { signOut } from "@/lib/auth/actions";
-import { ROLE_LABELS } from "@/lib/auth/roles";
+import { ROLE_LABELS, canManageMembers } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
 
 export default async function Home() {
@@ -24,11 +26,16 @@ export default async function Home() {
           </p>
         </div>
       )}
-      <form action={signOut}>
-        <button
-          type="submit"
-          className="min-h-14 w-full rounded-xl border border-zinc-300 px-4 text-lg font-medium dark:border-zinc-700"
+      {session.status === "member" && canManageMembers(session.member.role) && (
+        <Link
+          href="/gebruikers"
+          className={`${secondaryButtonClass} flex items-center justify-center`}
         >
+          Gebruikers beheren
+        </Link>
+      )}
+      <form action={signOut}>
+        <button type="submit" className={secondaryButtonClass}>
           Afmelden
         </button>
       </form>

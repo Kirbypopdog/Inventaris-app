@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type { AppRole } from "./roles";
+import { canManageMembers, type AppRole } from "./roles";
 
 export type Member = {
   userId: string;
@@ -57,4 +57,13 @@ export async function requireSession(): Promise<Session> {
     redirect("/login");
   }
   return session;
+}
+
+/** For pages that only the owner or an admin may open. Others go back to the home page. */
+export async function requireManager(): Promise<Member> {
+  const session = await requireSession();
+  if (session.status !== "member" || !canManageMembers(session.member.role)) {
+    redirect("/");
+  }
+  return session.member;
 }

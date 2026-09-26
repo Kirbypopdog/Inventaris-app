@@ -201,7 +201,20 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            [_ in never]: never
+            "add_member":
+{ Args: { "member_display_name": string,"member_email": string,"member_role": Database["public"]['Enums']["app_role"] }; Returns: string
+                           },
+"list_members":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "display_name": string,"email": string,"last_sign_in_at": string,"role": Database["public"]['Enums']["app_role"],"user_id": string
+            }[]
+                           },
+"remove_member":
+{ Args: { "target_user_id": string }; Returns: undefined
+                           },
+"update_member":
+{ Args: { "member_display_name": string,"member_role": Database["public"]['Enums']["app_role"],"target_user_id": string }; Returns: undefined
+                           }
           }
           Enums: {
             "app_role": "owner"|"admin","customer_type": "private"|"business","job_status": "planned"|"active"|"done"|"cancelled","travel_method": "per_km"|"flat"|"included"

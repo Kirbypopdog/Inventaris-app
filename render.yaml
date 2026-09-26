@@ -18,3 +18,6 @@ services:
         sync: false
       - key: NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
         sync: false
+      # Geheime sleutel voor gebruikersbeheer. Enkel op de server. Invullen in het Render-dashboard.
+      - key: SUPABASE_SECRET_KEY
+        sync: false

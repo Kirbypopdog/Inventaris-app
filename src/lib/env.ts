@@ -8,16 +8,23 @@ const publicEnvSchema = z.object({
 export type PublicEnv = z.infer<typeof publicEnvSchema>;
 
 /**
- * Validates the public environment variables. Throws with a clear message
+ * Validates environment variables against a schema. Throws with a clear message
  * when one is missing, instead of failing later with a vague Supabase error.
  */
-export function parsePublicEnv(source: Record<string, string | undefined>): PublicEnv {
-  const result = publicEnvSchema.safeParse(source);
+export function parseEnv<Schema extends z.ZodType>(
+  schema: Schema,
+  source: Record<string, string | undefined>,
+): z.infer<Schema> {
+  const result = schema.safeParse(source);
   if (!result.success) {
     const fields = result.error.issues.map((issue) => issue.path.join(".")).join(", ");
     throw new Error(`Ongeldige of ontbrekende environment variables: ${fields}. Zie .env.example.`);
   }
   return result.data;
+}
+
+export function parsePublicEnv(source: Record<string, string | undefined>): PublicEnv {
+  return parseEnv(publicEnvSchema, source);
 }
 
 export function getPublicEnv(): PublicEnv {
