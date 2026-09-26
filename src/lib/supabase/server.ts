@@ -6,8 +6,9 @@ import type { Database } from "./database.types";
 
 /** Supabase client for Server Components, Server Actions and Route Handlers. */
 export async function createClient() {
-  const env = getPublicEnv();
+  // Read cookies first: that marks the route as dynamic, so it is never prerendered at build time.
   const cookieStore = await cookies();
+  const env = getPublicEnv();
 
   return createServerClient<Database>(
     env.NEXT_PUBLIC_SUPABASE_URL,

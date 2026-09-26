@@ -46,3 +46,42 @@ jobs:
       - run: npm run db:types
       - name: Controleer of database.types.ts up-to-date is
         run: git diff --exit-code src/lib/supabase/database.types.ts
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # Lokale Supabase met auth, API en Mailpit (voor de aanmeldcodes).
+      - run: >-
+          npx supabase start
+          -x studio,storage-api,imgproxy,realtime,edge-runtime,logflare,vector,supavisor,postgres-meta
+      - name: Lokale Supabase-sleutels doorgeven
+        run: |
+          set -a
+          . <(npx supabase status -o env)
+          set +a
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
+            echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$PUBLISHABLE_KEY"
+            echo "E2E_SUPABASE_URL=$API_URL"
+            echo "E2E_SUPABASE_SECRET_KEY=$SECRET_KEY"
+            echo "E2E_DB_URL=$DB_URL"
+            echo "E2E_MAILPIT_URL=$MAILPIT_URL"
+          } >> "$GITHUB_ENV"
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

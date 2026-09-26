@@ -1,11 +1,37 @@
-export default function Home() {
+import { signOut } from "@/lib/auth/actions";
+import { ROLE_LABELS } from "@/lib/auth/roles";
+import { requireSession } from "@/lib/auth/session";
+
+export default async function Home() {
+  const session = await requireSession();
+
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-4 p-6">
-      <h1 className="text-3xl font-semibold">Schrijnwerk</h1>
-      <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        De app is in opbouw. Binnenkort kan je hier je uren, materiaal en verplaatsingen per job
-        bijhouden.
-      </p>
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 p-6">
+      {session.status === "member" ? (
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold">Dag {session.member.displayName}</h1>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+            Je bent aangemeld als {ROLE_LABELS[session.member.role].toLowerCase()}. Klanten, jobs en
+            de inklokknop komen hier binnenkort.
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold">Nog geen toegang</h1>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+            Je bent aangemeld als <strong>{session.email}</strong>, maar dit account heeft nog geen
+            toegang. Vraag de beheerder om je toe te voegen.
+          </p>
+        </div>
+      )}
+      <form action={signOut}>
+        <button
+          type="submit"
+          className="min-h-14 w-full rounded-xl border border-zinc-300 px-4 text-lg font-medium dark:border-zinc-700"
+        >
+          Afmelden
+        </button>
+      </form>
     </main>
   );
 }
