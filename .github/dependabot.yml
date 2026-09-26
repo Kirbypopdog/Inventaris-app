@@ -8,6 +8,16 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # Node draait op versie 22 (.nvmrc), de types moeten daarbij passen.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      # Tijdelijk: eslint-config-next werkt nog niet met ESLint 10 en typescript-eslint
+      # nog niet met TypeScript 7. Zie docs/VRAGEN.md.
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
