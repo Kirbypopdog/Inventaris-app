@@ -29,7 +29,7 @@ export function ProjectCard({
   return (
     <article
       aria-label={customer.name}
-      className={`flex h-full flex-col gap-3 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-800 dark:bg-stone-950 ${
+      className={`flex h-full flex-col gap-3 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm dark:border-stone-800 dark:bg-stone-900 ${
         section === "active" ? "border-l-brand-600 dark:border-l-brand-400 border-l-4" : ""
       }`}
     >
@@ -62,7 +62,7 @@ export function ProjectCard({
             <li key={job.id}>
               <Link
                 href={`/jobs/${job.id}`}
-                className="flex min-h-12 items-center justify-between gap-2 rounded-xl bg-stone-50 px-3 py-2 hover:bg-stone-100 dark:bg-stone-900 dark:hover:bg-stone-800"
+                className="flex min-h-12 items-center justify-between gap-2 rounded-xl bg-stone-50 px-3 py-2 hover:bg-stone-100 dark:bg-stone-800 dark:hover:bg-stone-700"
               >
                 <span className="flex min-w-0 flex-col">
                   <span className="font-medium break-words">{job.title}</span>

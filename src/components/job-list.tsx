@@ -37,7 +37,7 @@ export function JobList({ jobs }: { jobs: JobListItem[] }) {
           <li key={job.id}>
             <Link
               href={`/jobs/${job.id}`}
-              className="flex min-h-16 flex-col gap-2 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
+              className="flex min-h-16 flex-col gap-2 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-600"
             >
               <span className="flex items-start justify-between gap-3">
                 <span className="text-lg font-semibold break-words">{job.title}</span>

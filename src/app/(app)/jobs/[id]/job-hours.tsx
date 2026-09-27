@@ -43,7 +43,7 @@ export function JobHours({
 
   return (
     <section aria-label="Uren" className="flex flex-col gap-4">
-      <h2 className="text-xl font-semibold">Uren</h2>
+      <h2 className="sr-only">Uren</h2>
 
       <p className="text-lg">
         Totaal: <strong>{formatDuration(totals.minutes)}</strong> ·{" "}

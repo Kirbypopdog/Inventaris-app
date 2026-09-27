@@ -90,7 +90,7 @@ export function ClockPanel({
             return (
               <li
                 key={job.id}
-                className="flex flex-col gap-3 rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-950"
+                className="flex flex-col gap-3 rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900"
               >
                 <Link href={`/jobs/${job.id}`} className="flex items-start justify-between gap-3">
                   <span className="flex min-w-0 flex-col gap-1">

@@ -52,7 +52,7 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
             <li key={material.id}>
               <Link
                 href={`/materiaal/${material.id}`}
-                className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
+                className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-600"
               >
                 <span className="text-lg font-semibold break-words">{material.name}</span>
                 <span className="text-base text-stone-600 dark:text-stone-400">

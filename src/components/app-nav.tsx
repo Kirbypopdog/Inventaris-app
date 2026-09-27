@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandMark } from "@/components/brand-mark";
 import type { ReactNode } from "react";
 import {
   AgendaIcon,
@@ -81,10 +82,10 @@ export function AppNav() {
   return (
     <nav
       aria-label="Hoofdmenu"
-      className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:sticky md:top-0 md:h-dvh md:w-60 md:shrink-0 md:border-t-0 md:border-r md:bg-white md:pb-0 dark:border-stone-800 dark:bg-stone-950/95 dark:md:bg-stone-950"
+      className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:sticky md:top-0 md:h-dvh md:w-60 md:shrink-0 md:border-t-0 md:border-r md:bg-white md:pb-0 dark:border-stone-800 dark:bg-stone-900/95 dark:md:bg-stone-950"
     >
-      <p className="hidden items-center gap-2 px-6 pt-6 pb-5 text-xl font-semibold md:flex">
-        <span aria-hidden="true" className="bg-brand-600 dark:bg-brand-400 size-3 rounded-sm" />
+      <p className="hidden items-center gap-2.5 px-6 pt-6 pb-5 text-xl font-semibold md:flex">
+        <BrandMark />
         Schrijnwerk
       </p>
       <ul className="grid grid-cols-5 md:hidden">

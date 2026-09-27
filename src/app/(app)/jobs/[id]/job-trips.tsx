@@ -41,7 +41,7 @@ export function JobTrips({
 
   return (
     <section id="ritten" className="flex scroll-mt-4 flex-col gap-4">
-      <h2 className="text-xl font-semibold">Verplaatsingen</h2>
+      <h2 className="sr-only">Ritten</h2>
       <p className="text-lg">
         {describeTerms(terms)}
         {unpriced && canManageSettings && (

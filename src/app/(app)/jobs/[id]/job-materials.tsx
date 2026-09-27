@@ -39,7 +39,7 @@ export function JobMaterials({
 }) {
   return (
     <section id="materiaal" className="flex scroll-mt-4 flex-col gap-4">
-      <h2 className="text-xl font-semibold">Materiaal</h2>
+      <h2 className="sr-only">Materiaal</h2>
 
       <div className={cardClass}>
         {materials.length > 0 ? (
