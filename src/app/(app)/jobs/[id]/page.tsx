@@ -6,7 +6,10 @@ import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobStatusBadge } from "@/components/job-list";
 import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { JobCalculationSummary } from "@/components/job-calculation";
 import { QuoteList } from "@/components/quote-list";
+import { jobCalculation } from "@/lib/analyses";
+import { loadAnalysisData } from "@/lib/analyses-queries";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireMember } from "@/lib/auth/session";
 import { marginFormValue, travelOverrideFormValues } from "@/lib/rates/overrides";
@@ -59,29 +62,38 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   if (customersError) {
     throw new Error(`Could not load customers: ${customersError.message}`);
   }
-  const [entriesResult, membersResult, rates, usagesResult, materialsResult, travel, quotesResult] =
-    await Promise.all([
-      supabase
-        .from("time_entries")
-        .select("id, user_id, started_at, ended_at, hourly_rate_cents, note")
-        .eq("job_id", job.id)
-        .order("started_at", { ascending: false }),
-      supabase.from("app_users").select("user_id, display_name"),
-      getRateOptions(supabase, job.hourly_rate_id),
-      supabase
-        .from("material_usages")
-        .select("id, description, unit, package_price_cents, units_per_package, quantity, used_on")
-        .eq("job_id", job.id)
-        .order("used_on", { ascending: false })
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("materials")
-        .select("id, name, unit, package_price_cents, units_per_package")
-        .is("archived_at", null)
-        .order("name"),
-      getJobTrips(supabase, job.id),
-      quotesQuery(supabase).eq("job_id", job.id),
-    ]);
+  const [
+    entriesResult,
+    membersResult,
+    rates,
+    usagesResult,
+    materialsResult,
+    travel,
+    quotesResult,
+    analysis,
+  ] = await Promise.all([
+    supabase
+      .from("time_entries")
+      .select("id, user_id, started_at, ended_at, hourly_rate_cents, note")
+      .eq("job_id", job.id)
+      .order("started_at", { ascending: false }),
+    supabase.from("app_users").select("user_id, display_name"),
+    getRateOptions(supabase, job.hourly_rate_id),
+    supabase
+      .from("material_usages")
+      .select("id, description, unit, package_price_cents, units_per_package, quantity, used_on")
+      .eq("job_id", job.id)
+      .order("used_on", { ascending: false })
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("materials")
+      .select("id, name, unit, package_price_cents, units_per_package")
+      .is("archived_at", null)
+      .order("name"),
+    getJobTrips(supabase, job.id),
+    quotesQuery(supabase).eq("job_id", job.id),
+    loadAnalysisData(supabase, job.id),
+  ]);
   if (
     entriesResult.error ||
     membersResult.error ||
@@ -201,6 +213,13 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         today={today}
         canManageSettings={isManagerRole(member.role)}
       />
+
+      <section className="flex flex-col gap-4 md:max-w-2xl" aria-label="Nacalculatie">
+        <h2 className="text-xl font-semibold">Nacalculatie</h2>
+        <div className={cardClass}>
+          <JobCalculationSummary calculation={jobCalculation(analysis)} />
+        </div>
+      </section>
 
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">Offertes</h2>

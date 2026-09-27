@@ -11,6 +11,7 @@ import { documentTotals, lineNet } from "@/lib/quotes/totals";
 import type { createClient } from "@/lib/supabase/server";
 import { toBrusselsDate, toBrusselsTime } from "@/lib/time";
 import { tripCost } from "@/lib/trips/totals";
+import { fetchAll } from "@/lib/supabase/fetch-all";
 import { centsToEuros, type CsvCell } from "./csv";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -22,29 +23,6 @@ export type ExportDataset = {
   description: string;
   load: (supabase: Client) => Promise<ExportTable>;
 };
-
-/** The API returns at most this many rows per request (supabase/config.toml, max_rows). */
-const PAGE_SIZE = 1000;
-
-/** Fetches every row, page by page, so an export is never cut off. */
-async function fetchAll<Row>(
-  page: (
-    from: number,
-    to: number,
-  ) => PromiseLike<{ data: Row[] | null; error: { message: string } | null }>,
-): Promise<Row[]> {
-  const rows: Row[] = [];
-  for (let from = 0; ; from += PAGE_SIZE) {
-    const { data, error } = await page(from, from + PAGE_SIZE - 1);
-    if (error) {
-      throw new Error(`Export failed: ${error.message}`);
-    }
-    rows.push(...(data ?? []));
-    if (!data || data.length < PAGE_SIZE) {
-      return rows;
-    }
-  }
-}
 
 function basisPointsToPercent(value: number | null): number | null {
   return value === null ? null : value / 100;
