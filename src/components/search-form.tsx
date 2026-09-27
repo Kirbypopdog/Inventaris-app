@@ -28,7 +28,7 @@ export function SearchForm({
       />
       <button
         type="submit"
-        className="min-h-14 shrink-0 rounded-xl border border-zinc-300 px-5 text-lg font-medium dark:border-zinc-700"
+        className="min-h-14 shrink-0 rounded-xl border border-stone-300 px-5 text-lg font-medium dark:border-stone-700"
       >
         Zoek
       </button>

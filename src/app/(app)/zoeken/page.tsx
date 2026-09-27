@@ -42,16 +42,16 @@ export default async function SearchPage({ searchParams }: PageProps<"/zoeken">)
               <li key={`${result.kind}-${result.id}`}>
                 <Link
                   href={searchResultHref(result)}
-                  className="flex min-h-16 flex-col gap-1 rounded-2xl border border-zinc-200 bg-white p-4 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+                  className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
                 >
                   <span className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-zinc-100 px-3 py-1 text-sm font-medium dark:bg-zinc-800">
+                    <span className="rounded-full bg-stone-100 px-3 py-1 text-sm font-medium dark:bg-stone-800">
                       {SEARCH_KIND_LABELS[result.kind]}
                     </span>
                     <span className="text-lg font-semibold break-words">{result.title}</span>
                   </span>
                   {result.detail && (
-                    <span className="text-base break-words text-zinc-600 dark:text-zinc-400">
+                    <span className="text-base break-words text-stone-600 dark:text-stone-400">
                       {result.detail}
                     </span>
                   )}

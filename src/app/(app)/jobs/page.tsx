@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FilterChips } from "@/components/filter-chips";
 import { JobList } from "@/components/job-list";
 import { EmptyState, PageHeader, linkButtonClass, pageClass } from "@/components/page";
 import { SearchForm } from "@/components/search-form";
@@ -54,16 +55,6 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
     <main className={pageClass}>
       <PageHeader
         title="Jobs"
-        description={
-          <span className="flex gap-4">
-            <Link href="/agenda" className="underline">
-              Naar de agenda
-            </Link>
-            <Link href="/analyses" className="underline">
-              Analyses
-            </Link>
-          </span>
-        }
         action={
           <Link href="/jobs/nieuw" className={linkButtonClass}>
             Nieuwe job
@@ -75,25 +66,14 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
         defaultValue={term}
         hidden={status ? { status } : undefined}
       />
-      <nav aria-label="Filter op status" className="flex flex-wrap gap-2">
-        {chips.map((chip) => {
-          const active = chip.status === status;
-          return (
-            <Link
-              key={chip.label}
-              href={filterHref(chip.status, term)}
-              aria-current={active ? "true" : undefined}
-              className={`flex min-h-12 items-center rounded-full border px-4 text-base ${
-                active
-                  ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-                  : "border-zinc-300 dark:border-zinc-700"
-              }`}
-            >
-              {chip.label}
-            </Link>
-          );
-        })}
-      </nav>
+      <FilterChips
+        label="Filter op status"
+        chips={chips.map((chip) => ({
+          label: chip.label,
+          href: filterHref(chip.status, term),
+          active: chip.status === status,
+        }))}
+      />
       {jobs.length > 0 ? (
         <JobList jobs={jobs} />
       ) : (

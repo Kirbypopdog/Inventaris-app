@@ -2,53 +2,130 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
+import {
+  AgendaIcon,
+  AnalysesIcon,
+  CustomersIcon,
+  HomeIcon,
+  JobsIcon,
+  MaterialsIcon,
+  MoreIcon,
+  QuotesIcon,
+  SearchIcon,
+} from "@/components/icons";
 
-const ITEMS = [
-  { href: "/", label: "Start", matches: (path: string) => path === "/" },
-  { href: "/jobs", label: "Jobs", matches: (path: string) => path.startsWith("/jobs") },
-  { href: "/klanten", label: "Klanten", matches: (path: string) => path.startsWith("/klanten") },
-  {
-    href: "/offertes",
-    label: "Offertes",
-    matches: (path: string) => path.startsWith("/offertes"),
-  },
-  {
-    href: "/materiaal",
-    label: "Materiaal",
-    matches: (path: string) => path.startsWith("/materiaal"),
-  },
+type NavItem = { href: string; label: string; icon: ReactNode; prefixes: string[] };
+
+const START: NavItem = { href: "/", label: "Start", icon: <HomeIcon />, prefixes: [] };
+const JOBS: NavItem = { href: "/jobs", label: "Jobs", icon: <JobsIcon />, prefixes: ["/jobs"] };
+const AGENDA: NavItem = {
+  href: "/agenda",
+  label: "Agenda",
+  icon: <AgendaIcon />,
+  prefixes: ["/agenda"],
+};
+const CUSTOMERS: NavItem = {
+  href: "/klanten",
+  label: "Klanten",
+  icon: <CustomersIcon />,
+  prefixes: ["/klanten"],
+};
+/** Everything that is not in the phone's bottom bar is reached via "Meer" there. */
+const SECONDARY: NavItem[] = [
+  { href: "/offertes", label: "Offertes", icon: <QuotesIcon />, prefixes: ["/offertes"] },
+  { href: "/materiaal", label: "Materiaal", icon: <MaterialsIcon />, prefixes: ["/materiaal"] },
+  { href: "/analyses", label: "Analyses", icon: <AnalysesIcon />, prefixes: ["/analyses"] },
+  { href: "/zoeken", label: "Zoeken", icon: <SearchIcon />, prefixes: ["/zoeken"] },
+];
+const ACCOUNT_PREFIXES = ["/account", "/gebruikers", "/instellingen", "/export"];
+
+const PHONE_ITEMS: NavItem[] = [
+  START,
+  JOBS,
+  AGENDA,
+  CUSTOMERS,
   {
     href: "/account",
-    label: "Account",
-    matches: (path: string) =>
-      ["/account", "/gebruikers", "/instellingen"].some((prefix) => path.startsWith(prefix)),
+    label: "Meer",
+    icon: <MoreIcon />,
+    prefixes: [...ACCOUNT_PREFIXES, ...SECONDARY.flatMap((item) => item.prefixes)],
   },
-] as const;
+];
 
-/** Bottom bar on a phone, sidebar on a laptop. */
+const LAPTOP_ITEMS: NavItem[] = [
+  START,
+  JOBS,
+  AGENDA,
+  CUSTOMERS,
+  ...SECONDARY,
+  { href: "/account", label: "Meer", icon: <MoreIcon />, prefixes: ACCOUNT_PREFIXES },
+];
+
+function isActive(item: NavItem, pathname: string): boolean {
+  return item.href === "/"
+    ? pathname === "/"
+    : item.prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
+
+/**
+ * Bottom bar with the five daily items on a phone, full sidebar on a laptop.
+ * Only one of the two lists is displayed, so the other is hidden from screen readers too.
+ */
 export function AppNav() {
   const pathname = usePathname();
 
   return (
     <nav
       aria-label="Hoofdmenu"
-      className="fixed inset-x-0 bottom-0 z-10 border-t border-zinc-200 bg-white pb-[env(safe-area-inset-bottom)] md:static md:w-56 md:shrink-0 md:border-t-0 md:border-r md:pb-0 dark:border-zinc-800 dark:bg-zinc-950"
+      className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:sticky md:top-0 md:h-dvh md:w-60 md:shrink-0 md:border-t-0 md:border-r md:bg-white md:pb-0 dark:border-stone-800 dark:bg-stone-950/95 dark:md:bg-stone-950"
     >
-      <p className="hidden px-6 pt-6 pb-4 text-xl font-semibold md:block">Schrijnwerk</p>
-      <ul className="grid grid-cols-6 md:flex md:flex-col md:gap-1 md:px-3">
-        {ITEMS.map((item) => {
-          const active = item.matches(pathname);
+      <p className="hidden items-center gap-2 px-6 pt-6 pb-5 text-xl font-semibold md:flex">
+        <span aria-hidden="true" className="bg-brand-600 dark:bg-brand-400 size-3 rounded-sm" />
+        Schrijnwerk
+      </p>
+      <ul className="grid grid-cols-5 md:hidden">
+        {PHONE_ITEMS.map((item) => {
+          const active = isActive(item, pathname);
           return (
-            <li key={item.href}>
+            <li key={item.label}>
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-16 items-center justify-center text-xs font-medium sm:text-base md:min-h-12 md:justify-start md:rounded-xl md:px-3 ${
+                className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-medium ${
                   active
-                    ? "text-zinc-900 underline decoration-2 underline-offset-8 md:bg-zinc-100 md:no-underline dark:text-zinc-50 dark:md:bg-zinc-800"
-                    : "text-zinc-500 dark:text-zinc-400"
+                    ? "text-brand-700 dark:text-brand-300"
+                    : "text-stone-500 dark:text-stone-400"
                 }`}
               >
+                <span
+                  className={`flex h-8 w-14 items-center justify-center rounded-full ${
+                    active ? "bg-brand-100 dark:bg-brand-900" : ""
+                  }`}
+                >
+                  {item.icon}
+                </span>
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+      <ul className="hidden flex-col gap-1 px-3 md:flex">
+        {LAPTOP_ITEMS.map((item) => {
+          const active = isActive(item, pathname);
+          return (
+            <li key={item.label}>
+              <Link
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`flex min-h-12 items-center gap-3 rounded-xl px-3 text-base font-medium ${
+                  active
+                    ? "bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-100"
+                    : "text-stone-600 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-900"
+                }`}
+              >
+                {item.icon}
                 {item.label}
               </Link>
             </li>

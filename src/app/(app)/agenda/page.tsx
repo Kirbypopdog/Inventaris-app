@@ -54,7 +54,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
       {unplannedJobs.length > 0 && (
         <section className="flex flex-col gap-4" aria-label="Nog niet ingepland">
           <h2 className="text-xl font-semibold">Nog niet ingepland</h2>
-          <p className="text-base text-zinc-600 dark:text-zinc-400">
+          <p className="text-base text-stone-600 dark:text-stone-400">
             Open jobs zonder startdatum. Geef ze een start (en einde) op de jobpagina.
           </p>
           <JobList jobs={unplannedJobs} />

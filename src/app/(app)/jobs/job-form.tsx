@@ -82,7 +82,7 @@ export function JobForm({
       <fieldset className="flex flex-col gap-4">
         <legend className="mb-1 text-base font-medium">
           Adres van de werf{" "}
-          <span className="font-normal text-zinc-500">(leeg = adres van de klant)</span>
+          <span className="font-normal text-stone-500">(leeg = adres van de klant)</span>
         </legend>
         <input
           name="addressLine"
@@ -149,7 +149,7 @@ export function JobForm({
             </option>
           ))}
         </select>
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-stone-500">
           Geldt voor nieuwe uren. Uren die al geregistreerd zijn, houden hun tarief.
         </span>
       </label>
@@ -163,7 +163,7 @@ export function JobForm({
           <option value="12">12%</option>
           <option value="0">0%</option>
         </select>
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-stone-500">
           Standaard voor nieuwe offerteregels. Per regel aanpasbaar.
         </span>
       </label>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { FormMessage, inputClass, primaryButtonClass } from "@/components/form";
+import { FormMessage, choiceClass, inputClass, primaryButtonClass } from "@/components/form";
 import { RateOverrideFields } from "@/components/rate-override-fields";
 import { idleFormState } from "@/lib/forms";
 import { CUSTOMER_TYPE_LABELS, type CustomerType } from "@/lib/labels";
@@ -54,7 +54,7 @@ function TextField({
     <label className="flex flex-col gap-2">
       <span className="text-base font-medium">{label}</span>
       <input name={name} defaultValue={defaultValue} className={inputClass} {...props} />
-      {hint && <span className="text-sm text-zinc-500">{hint}</span>}
+      {hint && <span className="text-sm text-stone-500">{hint}</span>}
     </label>
   );
 }
@@ -73,10 +73,7 @@ export function CustomerForm({ customer }: { customer: CustomerFormValues }) {
         <legend className="mb-2 text-base font-medium">Soort klant</legend>
         <div className="grid grid-cols-2 gap-3">
           {(Object.keys(CUSTOMER_TYPE_LABELS) as CustomerType[]).map((type) => (
-            <label
-              key={type}
-              className="flex min-h-14 items-center gap-3 rounded-xl border border-zinc-300 px-4 text-lg has-[:checked]:border-zinc-900 has-[:checked]:bg-zinc-100 dark:border-zinc-700 dark:has-[:checked]:border-zinc-50 dark:has-[:checked]:bg-zinc-800"
-            >
+            <label key={type} className={choiceClass}>
               <input
                 type="radio"
                 name="type"
@@ -145,7 +142,7 @@ export function CustomerForm({ customer }: { customer: CustomerFormValues }) {
           kmRate: values.kmRate,
           tripFlat: values.tripFlat,
         }}
-        fallback="de algemene instelling (Account → Verplaatsingen)"
+        fallback="de algemene instelling (Meer → Verplaatsingen)"
         showMargin={false}
       />
 

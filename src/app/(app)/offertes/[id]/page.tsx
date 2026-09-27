@@ -107,7 +107,7 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
       />
 
       {!isDraft && (
-        <p className="rounded-xl bg-zinc-100 p-4 text-base dark:bg-zinc-900">
+        <p className="rounded-xl bg-stone-100 p-4 text-base dark:bg-stone-900">
           Deze offerte is {QUOTE_STATUS_LABELS[quote.status].toLowerCase()} en kan niet meer
           aangepast worden. Zet ze terug op ontwerp om iets te wijzigen.
         </p>
@@ -126,7 +126,7 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
                     </span>
                     <span className="text-lg tabular-nums">{formatEuro(lineNet(line))}</span>
                   </div>
-                  <p className="text-base text-zinc-600 dark:text-zinc-400">
+                  <p className="text-base text-stone-600 dark:text-stone-400">
                     {formatQuantity(line.quantity)} {line.unit} ×{" "}
                     {formatEuro(cents(line.unitPriceCents))} · btw {line.vatRate}%
                   </p>
@@ -235,7 +235,7 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
           <section className="flex flex-col gap-2 md:max-w-2xl">
             {quote.intro && <p className="text-lg whitespace-pre-line">{quote.intro}</p>}
             {quote.notes && (
-              <p className="text-base whitespace-pre-line text-zinc-600 dark:text-zinc-400">
+              <p className="text-base whitespace-pre-line text-stone-600 dark:text-stone-400">
                 {quote.notes}
               </p>
             )}

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, sql, users } from "./support";
+import { logIn, openFromMenu, sql, users } from "./support";
 
 test("the agenda shows a week with the planned jobs", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -25,8 +25,7 @@ test("the agenda shows a week with the planned jobs", async ({ page }, testInfo)
   );
 
   await logIn(page, users.owner.email, users.owner.password);
-  await page.goto("/jobs");
-  await page.getByRole("link", { name: "Naar de agenda" }).click();
+  await openFromMenu(page, "Agenda");
   await expect(page.getByRole("heading", { name: /^Week \d+$/ })).toBeVisible();
 
   const days = page.getByRole("main").locator("ol > li");

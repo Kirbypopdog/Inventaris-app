@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, sql, users } from "./support";
+import { logIn, openFromMenu, sql, users } from "./support";
 
 test("catalogue, material on a job, correct and delete", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -15,10 +15,7 @@ test("catalogue, material on a job, correct and delete", async ({ page }, testIn
   await logIn(page, users.owner.email, users.owner.password);
 
   // A box of 200 screws in the catalogue; the price per screw is derived.
-  await page
-    .getByRole("navigation", { name: "Hoofdmenu" })
-    .getByRole("link", { name: "Materiaal" })
-    .click();
+  await openFromMenu(page, "Materiaal");
   await page.getByRole("link", { name: "Nieuw materiaal" }).click();
   await expect(page.getByRole("heading", { name: "Nieuw materiaal" })).toBeVisible();
   await page.getByLabel("Naam", { exact: true }).fill(screws);

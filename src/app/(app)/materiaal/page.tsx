@@ -52,10 +52,10 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
             <li key={material.id}>
               <Link
                 href={`/materiaal/${material.id}`}
-                className="flex min-h-16 flex-col gap-1 rounded-2xl border border-zinc-200 bg-white p-4 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+                className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
               >
                 <span className="text-lg font-semibold break-words">{material.name}</span>
-                <span className="text-base text-zinc-600 dark:text-zinc-400">
+                <span className="text-base text-stone-600 dark:text-stone-400">
                   {describePrice({
                     packagePriceCents: material.package_price_cents,
                     unitsPerPackage: material.units_per_package,
@@ -63,7 +63,7 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
                   })}
                 </span>
                 {material.supplier && (
-                  <span className="text-sm text-zinc-500">{material.supplier}</span>
+                  <span className="text-sm text-stone-500">{material.supplier}</span>
                 )}
               </Link>
             </li>
@@ -76,7 +76,7 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
       )}
       <Link
         href={showArchived ? "/materiaal" : "/materiaal?archief=1"}
-        className="self-start py-2 text-base text-zinc-600 underline dark:text-zinc-400"
+        className="self-start py-2 text-base text-stone-600 underline dark:text-stone-400"
       >
         {showArchived ? "← Terug naar het materiaal" : "Gearchiveerd materiaal bekijken"}
       </Link>

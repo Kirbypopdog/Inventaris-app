@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { addCatalogUsage, addOtherUsage, updateUsage } from "@/app/(app)/materiaal/usage-actions";
 import {
   FormMessage,
+  choiceClass,
   inputClass,
   primaryButtonClass,
   secondaryButtonClass,
@@ -90,7 +91,7 @@ export function CatalogUsageForm({
             </option>
           ))}
         </select>
-        {material && <span className="text-sm text-zinc-500">{material.priceLabel}</span>}
+        {material && <span className="text-sm text-stone-500">{material.priceLabel}</span>}
       </label>
       <div className="grid grid-cols-2 gap-3">
         <QuantityField defaultValue={values?.quantity} />
@@ -105,10 +106,7 @@ export function CatalogUsageForm({
               ["package", `per verpakking (${formatQuantity(material.unitsPerPackage)})`],
             ] as const
           ).map(([value, label]) => (
-            <label
-              key={value}
-              className="flex min-h-14 items-center gap-3 rounded-xl border border-zinc-300 px-4 text-base has-[:checked]:border-zinc-900 has-[:checked]:bg-zinc-100 dark:border-zinc-700 dark:has-[:checked]:border-zinc-50 dark:has-[:checked]:bg-zinc-800"
-            >
+            <label key={value} className={`${choiceClass} text-base`}>
               <input
                 type="radio"
                 name="per"
@@ -176,7 +174,7 @@ export function OtherUsageForm({ jobId, today }: { jobId: string; today: string 
         </label>
         <DateField defaultValue={values?.usedOn ?? today} />
       </div>
-      <p className="-mt-2 text-sm text-zinc-500">Prijs excl. btw.</p>
+      <p className="-mt-2 text-sm text-stone-500">Prijs excl. btw.</p>
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={secondaryButtonClass}>
         {pending ? "Bezig met toevoegen…" : "Toevoegen"}

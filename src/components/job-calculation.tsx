@@ -5,7 +5,7 @@ import { formatDuration } from "@/lib/time";
 function Row({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
   return (
     <>
-      <dt className={strong ? "font-semibold" : "text-zinc-600 dark:text-zinc-400"}>{label}</dt>
+      <dt className={strong ? "font-semibold" : "text-stone-600 dark:text-stone-400"}>{label}</dt>
       <dd className={`text-right tabular-nums ${strong ? "font-semibold" : ""}`}>{value}</dd>
     </>
   );
@@ -42,7 +42,7 @@ export function JobCalculationSummary({ calculation }: { calculation: JobCalcula
             : `Er is ${formatEuro(subtract(cents(0), difference))} meer gepresteerd dan de offerte.`}
         </p>
       )}
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-stone-500">
         Bedragen excl. btw. Uren tegen het tarief, materiaal met de marge. Een lopende klok telt pas
         mee als hij gestopt is.
       </p>

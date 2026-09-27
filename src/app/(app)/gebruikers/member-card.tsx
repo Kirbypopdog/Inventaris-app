@@ -28,14 +28,14 @@ export function MemberCard({ member, isSelf }: { member: MemberView; isSelf: boo
   const state = [removeState, resetState, updateState].find((s) => s.status !== "idle");
 
   return (
-    <li className="flex flex-col gap-4 rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800">
+    <li className="flex flex-col gap-4 rounded-2xl border border-stone-200 p-4 dark:border-stone-800">
       <div>
         <p className="text-lg font-semibold">
           {member.displayName}
-          {isSelf && <span className="font-normal text-zinc-500"> (jij)</span>}
+          {isSelf && <span className="font-normal text-stone-500"> (jij)</span>}
         </p>
-        <p className="text-base break-all text-zinc-600 dark:text-zinc-400">{member.email}</p>
-        <p className="text-sm text-zinc-500">{member.lastSignIn}</p>
+        <p className="text-base break-all text-stone-600 dark:text-stone-400">{member.email}</p>
+        <p className="text-sm text-stone-500">{member.lastSignIn}</p>
         {member.mustChangePassword && (
           <p className="text-sm text-amber-700 dark:text-amber-400">
             Moet nog een eigen wachtwoord kiezen

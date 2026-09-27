@@ -11,13 +11,13 @@ export function QuoteList({ quotes, showJob }: { quotes: QuoteListItem[]; showJo
         <li key={quote.id}>
           <Link
             href={`/offertes/${quote.id}`}
-            className="flex min-h-16 flex-col gap-2 rounded-2xl border border-zinc-200 bg-white p-4 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+            className="flex min-h-16 flex-col gap-2 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
           >
             <span className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-lg font-semibold">{quote.number}</span>
               <QuoteStatusBadge status={quote.status} />
             </span>
-            <span className="flex flex-wrap justify-between gap-2 text-base text-zinc-600 dark:text-zinc-400">
+            <span className="flex flex-wrap justify-between gap-2 text-base text-stone-600 dark:text-stone-400">
               <span>
                 {[
                   showJob ? quote.jobTitle : null,

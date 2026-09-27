@@ -22,7 +22,7 @@ export default async function MarginPage() {
     <main className={pageClass}>
       <PageHeader
         title="Marge op materiaal"
-        back={{ href: "/account", label: "Account" }}
+        back={{ href: "/account", label: "Meer" }}
         description="Geldt voor alle materiaal, tenzij een job of een materiaal een eigen marge heeft (job gaat voor materiaal)."
       />
       <div className={`${cardClass} md:max-w-2xl`}>

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, users } from "./support";
+import { logIn, openFromMenu, users } from "./support";
 
 test("the main menu is at the bottom on a phone and on the left on a laptop", async ({ page }) => {
   await logIn(page, users.owner.email, users.owner.password);
@@ -10,8 +10,9 @@ test("the main menu is at the bottom on a phone and on the left on a laptop", as
   const viewport = page.viewportSize();
   expect(box).not.toBeNull();
   expect(viewport).not.toBeNull();
+  const onLaptop = viewport !== null && viewport.width >= 768;
   if (box && viewport) {
-    if (viewport.width >= 768) {
+    if (onLaptop) {
       expect(box.x).toBe(0);
       expect(box.width).toBeLessThan(300);
     } else {
@@ -20,15 +21,34 @@ test("the main menu is at the bottom on a phone and on the left on a laptop", as
     }
   }
 
+  // A phone shows the five daily items; the rest sits behind "Meer".
+  await expect(nav.getByRole("link")).toHaveCount(onLaptop ? 9 : 5);
+
   for (const [label, heading] of [
     ["Jobs", "Jobs"],
+    ["Agenda", /^Week \d+$/],
     ["Klanten", "Klanten"],
-    ["Offertes", "Offertes"],
-    ["Materiaal", "Materiaal"],
-    ["Account", "Account"],
+    ["Meer", "Meer"],
+    ["Start", null],
   ] as const) {
-    await nav.getByRole("link", { name: label }).click();
-    await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
-    await expect(nav.getByRole("link", { name: label })).toHaveAttribute("aria-current", "page");
+    await nav.getByRole("link", { name: label, exact: true }).click();
+    if (heading) {
+      await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
+    }
+    await expect(nav.getByRole("link", { name: label, exact: true })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+  }
+
+  // Offertes, Materiaal and Analyses: in the sidebar on a laptop, under "Meer" on a phone.
+  for (const label of ["Offertes", "Materiaal", "Analyses"]) {
+    await openFromMenu(page, label);
+    await expect(
+      page.getByRole("heading", { level: 1, name: new RegExp(`^${label}`) }),
+    ).toBeVisible();
+    await expect(
+      nav.getByRole("link", { name: onLaptop ? label : "Meer", exact: true }),
+    ).toHaveAttribute("aria-current", "page");
   }
 });

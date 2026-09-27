@@ -26,7 +26,7 @@ export default async function HourlyRatesPage() {
     <main className={pageClass}>
       <PageHeader
         title="Uurtarieven"
-        back={{ href: "/account", label: "Account" }}
+        back={{ href: "/account", label: "Meer" }}
         description="Bij het inklokken geldt het tarief van de job, anders het standaardtarief. Uren die al geregistreerd zijn, houden hun tarief."
       />
       <div className="grid gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
@@ -53,7 +53,7 @@ export default async function HourlyRatesPage() {
                       Standaardtarief
                     </p>
                   )}
-                  {rate.archived_at && <p className="text-base text-zinc-500">Gearchiveerd</p>}
+                  {rate.archived_at && <p className="text-base text-stone-500">Gearchiveerd</p>}
                   {!rate.is_default && !rate.archived_at && (
                     <ActionButton
                       action={makeDefaultHourlyRate}

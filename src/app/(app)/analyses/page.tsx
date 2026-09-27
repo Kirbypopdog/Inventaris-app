@@ -99,7 +99,7 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
         <h2 className="text-xl font-semibold">Per maand</h2>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[32rem] text-left text-base">
-            <thead className="text-sm text-zinc-600 dark:text-zinc-400">
+            <thead className="text-sm text-stone-600 dark:text-stone-400">
               <tr>
                 <th className="py-2 pr-3 font-medium">Maand</th>
                 <th className="py-2 pr-3 text-right font-medium">Uren</th>
@@ -110,7 +110,7 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
             </thead>
             <tbody className="tabular-nums">
               {months.map((month) => (
-                <tr key={month.month} className="border-t border-zinc-200 dark:border-zinc-800">
+                <tr key={month.month} className="border-t border-stone-200 dark:border-stone-800">
                   <td className="py-2 pr-3">{MONTHS[month.month - 1]}</td>
                   <td className="py-2 pr-3 text-right">{formatDuration(month.minutes)}</td>
                   <td className="py-2 pr-3 text-right">{formatEuro(month.labour)}</td>
@@ -118,7 +118,7 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
                   <td className="py-2 text-right">{formatEuro(month.travel)}</td>
                 </tr>
               ))}
-              <tr className="border-t-2 border-zinc-400 font-semibold dark:border-zinc-600">
+              <tr className="border-t-2 border-stone-400 font-semibold dark:border-stone-600">
                 <td className="py-2 pr-3">Totaal</td>
                 <td className="py-2 pr-3 text-right">{formatDuration(yearTotals.minutes)}</td>
                 <td className="py-2 pr-3 text-right">{formatEuro(yearTotals.labour)}</td>
@@ -128,7 +128,7 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
             </tbody>
           </table>
         </div>
-        <p className="text-sm text-zinc-500">Materiaal tegen kostprijs.</p>
+        <p className="text-sm text-stone-500">Materiaal tegen kostprijs.</p>
       </section>
 
       <section className="flex flex-col gap-4" aria-label="Per job">
@@ -141,7 +141,7 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
                   {job.title}
                 </Link>
                 {job.customers && (
-                  <p className="-mt-3 text-base text-zinc-600 dark:text-zinc-400">
+                  <p className="-mt-3 text-base text-stone-600 dark:text-stone-400">
                     {job.customers.name}
                   </p>
                 )}

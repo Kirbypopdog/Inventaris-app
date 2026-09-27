@@ -98,7 +98,7 @@ export function JobHours({
                     · {formatEuro(amount)}
                   </span>
                 </div>
-                <p className="text-base text-zinc-600 dark:text-zinc-400">
+                <p className="text-base text-stone-600 dark:text-stone-400">
                   {[
                     showNames ? entry.userName : null,
                     `${formatEuro(cents(entry.hourlyRateCents))}/u`,

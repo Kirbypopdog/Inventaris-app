@@ -1,15 +1,26 @@
 export const inputClass =
-  "w-full rounded-xl border border-zinc-300 bg-white px-4 py-4 text-lg text-zinc-900 " +
-  "focus:border-zinc-900 focus:outline-none disabled:bg-zinc-100 disabled:text-zinc-500 " +
-  "dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:disabled:bg-zinc-800";
+  "w-full rounded-xl border border-stone-300 bg-white px-4 py-4 text-lg text-stone-900 " +
+  "focus:border-brand-600 focus:ring-2 focus:ring-brand-200 focus:outline-none " +
+  "disabled:bg-stone-100 disabled:text-stone-500 dark:border-stone-700 dark:bg-stone-900 " +
+  "dark:text-stone-50 dark:focus:border-brand-400 dark:focus:ring-brand-900 dark:disabled:bg-stone-800";
 
 export const primaryButtonClass =
-  "min-h-14 w-full rounded-xl bg-zinc-900 px-4 text-lg font-semibold text-white " +
-  "disabled:opacity-60 dark:bg-zinc-50 dark:text-zinc-900";
+  "min-h-14 w-full rounded-xl bg-brand-700 px-4 text-lg font-semibold text-white " +
+  "hover:bg-brand-800 disabled:opacity-60 dark:bg-brand-400 dark:text-brand-950 dark:hover:bg-brand-300";
 
 export const secondaryButtonClass =
-  "min-h-14 w-full rounded-xl border border-zinc-300 px-4 text-lg font-medium " +
-  "disabled:opacity-60 dark:border-zinc-700";
+  "min-h-14 w-full rounded-xl border border-stone-300 bg-white px-4 text-lg font-medium " +
+  "hover:border-stone-400 disabled:opacity-60 dark:border-stone-700 dark:bg-stone-900";
+
+/**
+ * A radio or checkbox wrapped in a big label: the whole card is the tap target and
+ * gets the accent colour when checked.
+ */
+export const choiceClass =
+  "flex min-h-14 items-center gap-3 rounded-xl border border-stone-300 bg-white px-4 text-lg " +
+  "accent-brand-700 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 " +
+  "dark:border-stone-700 dark:bg-stone-900 dark:has-[:checked]:border-brand-400 " +
+  "dark:has-[:checked]:bg-brand-950";
 
 export const dangerButtonClass =
   "min-h-14 w-full rounded-xl border border-red-300 px-4 text-lg font-medium text-red-700 " +

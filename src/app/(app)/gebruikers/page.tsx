@@ -36,7 +36,7 @@ export default async function MembersPage() {
     <main className={pageClass}>
       <PageHeader
         title="Gebruikers"
-        back={{ href: "/account", label: "Account" }}
+        back={{ href: "/account", label: "Meer" }}
         description="Wie hier staat, kan aanmelden met e-mailadres en wachtwoord."
       />
       <div className="grid gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">

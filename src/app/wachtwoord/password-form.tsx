@@ -22,7 +22,7 @@ export function PasswordForm() {
           required
           className={inputClass}
         />
-        <span className="text-sm text-zinc-500">Minstens {MIN_PASSWORD_LENGTH} tekens.</span>
+        <span className="text-sm text-stone-500">Minstens {MIN_PASSWORD_LENGTH} tekens.</span>
       </label>
       <label className="flex flex-col gap-2">
         <span className="text-base font-medium">Herhaal het nieuwe wachtwoord</span>
