@@ -29,7 +29,8 @@ test("exceptions on rates for a customer, a job and a material", async ({ page }
   // The customer gets a fixed amount per trip.
   await page.goto(`/klanten?q=${encodeURIComponent(customer)}`);
   await page.getByRole("link", { name: new RegExp(`^${customer}`) }).click();
-  const exceptions = page.locator("details", { hasText: "Uitzonderingen op tarieven" });
+  await page.getByText("Gegevens bewerken").click();
+  const exceptions = page.locator('details:has(> summary:has-text("Uitzonderingen op tarieven"))');
   await exceptions.getByText("Uitzonderingen op tarieven").click();
   await exceptions.getByRole("combobox", { name: "Verplaatsingen" }).selectOption("flat");
   await exceptions.getByLabel("Bedrag per rit", { exact: true }).fill("35");
