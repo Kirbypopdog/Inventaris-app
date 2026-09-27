@@ -90,7 +90,10 @@ Belangrijke keuzes:
 
 - [x] Bedrijfsgegevens (Account → Bedrijfsgegevens): naam, btw-nummer, adres, contact en
       IBAN, met controle op tikfouten in btw- en rekeningnummer
-- [ ] Offertes (pdf)
+- [x] Offertes: per job, nummer per jaar (OFF-2026-001), regels met btw per regel, totalen
+      per btw-tarief, status (ontwerp, verzonden, aanvaard, geweigerd); na verzenden vergrendeld
+- [ ] Offerte als pdf
+- [ ] Btw-tarief per job instellen (standaard voor nieuwe regels) en btw verlegd
 - [ ] Facturen (pdf + UBL), doorlopende nummering, creditnota's
 - [ ] Btw-logica (6%/21%) en marge op materiaal
 

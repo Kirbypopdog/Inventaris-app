@@ -62,6 +62,19 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"document_counters": {
+                  Row: {
+                    "kind": string,"last_number": number,"year": number
+                  }
+                  Insert: {
+                    "kind": string,"last_number": number,"year": number
+                  }
+                  Update: {
+                    "kind"?: string,"last_number"?: number,"year"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"hourly_rates": {
                   Row: {
                     "archived_at": string | null,"created_at": string,"id": string,"is_default": boolean,"name": string,"rate_cents": number,"updated_at": string
@@ -138,15 +151,53 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
-                },"settings": {
+                },"quote_lines": {
                   Row: {
-                    "address_line": string | null,"city": string | null,"company_name": string,"created_at": string,"email": string | null,"iban": string | null,"id": string,"km_rate_cents": number,"material_margin_bp": number,"phone": string | null,"postal_code": string | null,"singleton": boolean,"travel_method": Database["public"]['Enums']["travel_method"],"trip_flat_cents": number,"updated_at": string,"vat_number": string | null,"vat_rate": number
+                    "created_at": string,"description": string,"id": string,"quantity": number,"quote_id": string,"unit": string,"unit_price_cents": number,"updated_at": string,"vat_rate": number
                   }
                   Insert: {
-                    "address_line"?: string | null,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
+                    "created_at"?: string,"description": string,"id"?: string,"quantity": number,"quote_id": string,"unit": string,"unit_price_cents": number,"updated_at"?: string,"vat_rate": number
                   }
                   Update: {
-                    "address_line"?: string | null,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
+                    "created_at"?: string,"description"?: string,"id"?: string,"quantity"?: number,"quote_id"?: string,"unit"?: string,"unit_price_cents"?: number,"updated_at"?: string,"vat_rate"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "quote_lines_quote_id_fkey"
+      columns: ["quote_id"]
+isOneToOne: false
+      referencedRelation: "quotes"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"quotes": {
+                  Row: {
+                    "created_at": string,"created_by": string,"id": string,"intro": string | null,"job_id": string,"notes": string | null,"number": string,"quote_date": string,"status": Database["public"]['Enums']["quote_status"],"updated_at": string,"valid_until": string | null
+                  }
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string,"id"?: string,"intro"?: string | null,"job_id": string,"notes"?: string | null,"number": string,"quote_date"?: string,"status"?: Database["public"]['Enums']["quote_status"],"updated_at"?: string,"valid_until"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string,"id"?: string,"intro"?: string | null,"job_id"?: string,"notes"?: string | null,"number"?: string,"quote_date"?: string,"status"?: Database["public"]['Enums']["quote_status"],"updated_at"?: string,"valid_until"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "quotes_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "jobs"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"settings": {
+                  Row: {
+                    "address_line": string | null,"city": string | null,"company_name": string,"created_at": string,"email": string | null,"iban": string | null,"id": string,"km_rate_cents": number,"material_margin_bp": number,"phone": string | null,"postal_code": string | null,"quote_validity_days": number,"singleton": boolean,"travel_method": Database["public"]['Enums']["travel_method"],"trip_flat_cents": number,"updated_at": string,"vat_number": string | null,"vat_rate": number
+                  }
+                  Insert: {
+                    "address_line"?: string | null,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"quote_validity_days"?: number,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
+                  }
+                  Update: {
+                    "address_line"?: string | null,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"quote_validity_days"?: number,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
                   }
                   Relationships: [
                     
@@ -308,6 +359,26 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"create_quote":
+{ Args: { "target_job_id": string }; Returns: {
+              "created_at": string,
+"created_by": string,
+"id": string,
+"intro": string | null,
+"job_id": string,
+"notes": string | null,
+"number": string,
+"quote_date": string,
+"status": Database["public"]['Enums']["quote_status"],
+"updated_at": string,
+"valid_until": string | null
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "quotes"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "list_members":
 { Args: Record<PropertyKey, never>; Returns: {
               "display_name": string,"email": string,"last_sign_in_at": string,"must_change_password": boolean,"role": Database["public"]['Enums']["app_role"],"user_id": string
@@ -354,7 +425,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "app_role": "owner"|"admin","customer_type": "private"|"business","job_status": "planned"|"active"|"done"|"cancelled","travel_method": "per_km"|"flat"|"included"
+            "app_role": "owner"|"admin","customer_type": "private"|"business","job_status": "planned"|"active"|"done"|"cancelled","quote_status": "draft"|"sent"|"accepted"|"rejected","travel_method": "per_km"|"flat"|"included"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -474,7 +545,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_role": ["owner", "admin"],"customer_type": ["private", "business"],"job_status": ["planned", "active", "done", "cancelled"],"travel_method": ["per_km", "flat", "included"]
+            "app_role": ["owner", "admin"],"customer_type": ["private", "business"],"job_status": ["planned", "active", "done", "cancelled"],"quote_status": ["draft", "sent", "accepted", "rejected"],"travel_method": ["per_km", "flat", "included"]
           }
         }
 } as const

@@ -13,7 +13,9 @@ export default async function CompanyPage() {
   const supabase = await createClient();
   const { data: settings, error } = await supabase
     .from("settings")
-    .select("company_name, vat_number, address_line, postal_code, city, email, phone, iban")
+    .select(
+      "company_name, vat_number, address_line, postal_code, city, email, phone, iban, quote_validity_days",
+    )
     .single();
   if (error) {
     throw new Error(`Could not load settings: ${error.message}`);
@@ -37,6 +39,7 @@ export default async function CompanyPage() {
             email: settings.email ?? "",
             phone: settings.phone ?? "",
             iban: settings.iban ? formatIban(settings.iban) : "",
+            quoteValidityDays: String(settings.quote_validity_days),
           }}
         />
       </div>

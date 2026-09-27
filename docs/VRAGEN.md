@@ -11,6 +11,11 @@
       geldt dan? Nu wint de job (job > materiaal > algemeen). De marge wordt vastgelegd
       bij het toevoegen aan een job, en telt pas mee vanaf de facturen (fase 2).
 
+- [ ] Werkt hij soms als onderaannemer voor een aannemer? Dan geldt "btw verlegd"
+      (medecontractant): 0% btw met een verplichte vermelding op offerte en factuur.
+- [ ] Wat moet er standaard als voorwaarden onderaan een offerte staan (betaling, voorschot,
+      geldigheid)?
+
 ## Praktisch
 
 - [ ] Accounts (Supabase, hosting, GitHub) overzetten naar het mailadres of

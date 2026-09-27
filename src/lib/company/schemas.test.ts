@@ -10,6 +10,7 @@ const valid = {
   email: " Info@Peeters.be ",
   phone: "050 12 34 56",
   iban: "be68 5390 0754 7034",
+  quoteValidityDays: "30",
 };
 
 describe("companySchema", () => {
@@ -23,6 +24,7 @@ describe("companySchema", () => {
       email: "info@peeters.be",
       phone: "050 12 34 56",
       iban: "BE68539007547034",
+      quote_validity_days: 30,
     });
   });
 
@@ -37,6 +39,7 @@ describe("companySchema", () => {
         email: "",
         phone: "",
         iban: "",
+        quoteValidityDays: "14",
       }),
     );
     expect(row.vat_number).toBeNull();
@@ -49,6 +52,8 @@ describe("companySchema", () => {
     [{ iban: "BE68 5390 0754 7035" }, "rekeningnummer klopt niet"],
     [{ postalCode: "800" }, "postcode"],
     [{ email: "info@" }, "e-mailadres"],
+    [{ quoteValidityDays: "0" }, "1 tot 365"],
+    [{ quoteValidityDays: "" }, "aantal dagen"],
   ])("refuses %j", (change, message) => {
     const result = companySchema.safeParse({ ...valid, ...change });
     expect(result.success).toBe(false);

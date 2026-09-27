@@ -4,6 +4,7 @@ type Enums = Database["public"]["Enums"];
 export type CustomerType = Enums["customer_type"];
 export type JobStatus = Enums["job_status"];
 export type TravelMethod = Enums["travel_method"];
+export type QuoteStatus = Enums["quote_status"];
 
 export const CUSTOMER_TYPE_LABELS: Record<CustomerType, string> = {
   private: "Particulier",
@@ -24,4 +25,11 @@ export const TRAVEL_METHOD_LABELS: Record<TravelMethod, string> = {
   per_km: "Per km",
   flat: "Vast bedrag per rit",
   included: "Inbegrepen (niet aanrekenen)",
+};
+
+export const QUOTE_STATUS_LABELS: Record<QuoteStatus, string> = {
+  draft: "Ontwerp",
+  sent: "Verzonden",
+  accepted: "Aanvaard",
+  rejected: "Geweigerd",
 };

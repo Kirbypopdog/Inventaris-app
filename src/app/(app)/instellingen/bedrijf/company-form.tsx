@@ -14,6 +14,7 @@ export type CompanyFormValues = {
   email: string;
   phone: string;
   iban: string;
+  quoteValidityDays: string;
 };
 
 function TextField({
@@ -100,6 +101,14 @@ export function CompanyForm({ company }: { company: CompanyFormValues }) {
         defaultValue={values.iban}
         placeholder="BE68 5390 0754 7034"
         hint="Komt op facturen, zodat klanten weten waarheen ze betalen."
+      />
+      <TextField
+        label="Offerte geldig (dagen)"
+        name="quoteValidityDays"
+        inputMode="numeric"
+        defaultValue={values.quoteValidityDays}
+        required
+        hint="Een nieuwe offerte is standaard zo lang geldig. Per offerte aanpasbaar."
       />
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>

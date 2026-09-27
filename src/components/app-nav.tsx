@@ -8,6 +8,11 @@ const ITEMS = [
   { href: "/jobs", label: "Jobs", matches: (path: string) => path.startsWith("/jobs") },
   { href: "/klanten", label: "Klanten", matches: (path: string) => path.startsWith("/klanten") },
   {
+    href: "/offertes",
+    label: "Offertes",
+    matches: (path: string) => path.startsWith("/offertes"),
+  },
+  {
     href: "/materiaal",
     label: "Materiaal",
     matches: (path: string) => path.startsWith("/materiaal"),
@@ -30,7 +35,7 @@ export function AppNav() {
       className="fixed inset-x-0 bottom-0 z-10 border-t border-zinc-200 bg-white pb-[env(safe-area-inset-bottom)] md:static md:w-56 md:shrink-0 md:border-t-0 md:border-r md:pb-0 dark:border-zinc-800 dark:bg-zinc-950"
     >
       <p className="hidden px-6 pt-6 pb-4 text-xl font-semibold md:block">Schrijnwerk</p>
-      <ul className="grid grid-cols-5 md:flex md:flex-col md:gap-1 md:px-3">
+      <ul className="grid grid-cols-6 md:flex md:flex-col md:gap-1 md:px-3">
         {ITEMS.map((item) => {
           const active = item.matches(pathname);
           return (
@@ -38,7 +43,7 @@ export function AppNav() {
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-16 items-center justify-center text-sm font-medium sm:text-base md:min-h-12 md:justify-start md:rounded-xl md:px-3 ${
+                className={`flex min-h-16 items-center justify-center text-xs font-medium sm:text-base md:min-h-12 md:justify-start md:rounded-xl md:px-3 ${
                   active
                     ? "text-zinc-900 underline decoration-2 underline-offset-8 md:bg-zinc-100 md:no-underline dark:text-zinc-50 dark:md:bg-zinc-800"
                     : "text-zinc-500 dark:text-zinc-400"

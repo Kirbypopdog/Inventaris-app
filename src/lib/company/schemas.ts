@@ -12,6 +12,7 @@ export const COMPANY_FIELDS = [
   "email",
   "phone",
   "iban",
+  "quoteValidityDays",
 ] as const;
 
 const ibanSchema = z
@@ -39,6 +40,14 @@ export const companySchema = z.object({
   email: emailSchema,
   phone: optionalText(50, "Het telefoonnummer is te lang."),
   iban: ibanSchema,
+  quoteValidityDays: z
+    .string()
+    .trim()
+    .regex(/^\d{1,3}$/, { error: "Geef het aantal dagen dat een offerte geldig is, bv. 30." })
+    .transform(Number)
+    .refine((days) => days >= 1 && days <= 365, {
+      error: "Een offerte is 1 tot 365 dagen geldig.",
+    }),
 });
 
 export type CompanyInput = z.infer<typeof companySchema>;
@@ -54,5 +63,6 @@ export function companyRow(input: CompanyInput) {
     email: input.email,
     phone: input.phone,
     iban: input.iban,
+    quote_validity_days: input.quoteValidityDays,
   };
 }
