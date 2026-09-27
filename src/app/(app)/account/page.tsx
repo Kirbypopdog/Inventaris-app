@@ -30,6 +30,11 @@ export default async function AccountPage() {
             Wachtwoord wijzigen
           </Link>
         )}
+        {member && (
+          <Link href="/export" className={secondaryLinkButtonClass}>
+            Gegevens exporteren
+          </Link>
+        )}
         {member && isManagerRole(member.role) && (
           <>
             <Link href="/gebruikers" className={secondaryLinkButtonClass}>
