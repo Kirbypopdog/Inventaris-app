@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JobCalculationSummary } from "@/components/job-calculation";
-import {
-  EmptyState,
-  PageHeader,
-  cardClass,
-  pageClass,
-  secondaryLinkButtonClass,
-} from "@/components/page";
+import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { StepNav } from "@/components/step-nav";
 import { jobCalculation, monthlyTotals } from "@/lib/analyses";
 import { loadAnalysisData } from "@/lib/analyses-queries";
 import { requireMember } from "@/lib/auth/session";
@@ -83,17 +78,12 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
         title={`Analyses ${year}`}
         description="Wat er gepresteerd is, per maand en per job. Bedragen excl. btw."
       />
-      <nav aria-label="Ander jaar" className="grid grid-cols-3 gap-3 md:max-w-lg">
-        <Link href={`/analyses?jaar=${year - 1}`} className={secondaryLinkButtonClass}>
-          ← {year - 1}
-        </Link>
-        <Link href="/analyses" className={secondaryLinkButtonClass}>
-          Dit jaar
-        </Link>
-        <Link href={`/analyses?jaar=${year + 1}`} className={secondaryLinkButtonClass}>
-          {year + 1} →
-        </Link>
-      </nav>
+      <StepNav
+        label="Ander jaar"
+        previous={{ href: `/analyses?jaar=${year - 1}`, label: `Vorig jaar (${year - 1})` }}
+        current={{ href: "/analyses", label: "Dit jaar" }}
+        next={{ href: `/analyses?jaar=${year + 1}`, label: `Volgend jaar (${year + 1})` }}
+      />
 
       <section className="flex flex-col gap-4" aria-label="Per maand">
         <h2 className="text-xl font-semibold">Per maand</h2>
@@ -110,7 +100,14 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
             </thead>
             <tbody className="tabular-nums">
               {months.map((month) => (
-                <tr key={month.month} className="border-t border-stone-200 dark:border-stone-800">
+                <tr
+                  key={month.month}
+                  className={`border-t border-stone-200 dark:border-stone-800 ${
+                    month.minutes === 0 && month.materialCost === 0 && month.travel === 0
+                      ? "text-stone-400 dark:text-stone-600"
+                      : ""
+                  }`}
+                >
                   <td className="py-2 pr-3">{MONTHS[month.month - 1]}</td>
                   <td className="py-2 pr-3 text-right">{formatDuration(month.minutes)}</td>
                   <td className="py-2 pr-3 text-right">{formatEuro(month.labour)}</td>

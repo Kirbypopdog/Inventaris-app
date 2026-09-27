@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MonthGrid, WeekCalendar } from "@/components/agenda-grid";
-import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import { JobList } from "@/components/job-list";
 import { PageHeader, pageClass } from "@/components/page";
+import { StepNav } from "@/components/step-nav";
 import {
   addDays,
   addMonths,
@@ -22,10 +22,6 @@ import { createClient } from "@/lib/supabase/server";
 import { toBrusselsDate } from "@/lib/time";
 
 export const metadata: Metadata = { title: "Agenda · Schrijnwerk" };
-
-const stepClass =
-  "flex min-h-12 min-w-11 items-center justify-center rounded-xl border border-stone-300 bg-white " +
-  "px-3 text-base font-medium hover:border-stone-400 dark:border-stone-700 dark:bg-stone-900";
 
 function viewClass(active: boolean): string {
   return `flex min-h-11 items-center rounded-lg px-3 text-base font-medium ${
@@ -123,17 +119,12 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
             Maand
           </Link>
         </nav>
-        <nav aria-label={`Andere ${step.unit}`} className="flex gap-1.5">
-          <Link href={step.previous} aria-label={`Vorige ${step.unit}`} className={stepClass}>
-            <ChevronLeftIcon className="size-5" />
-          </Link>
-          <Link href={step.today} className={stepClass}>
-            Vandaag
-          </Link>
-          <Link href={step.next} aria-label={`Volgende ${step.unit}`} className={stepClass}>
-            <ChevronRightIcon className="size-5" />
-          </Link>
-        </nav>
+        <StepNav
+          label={`Andere ${step.unit}`}
+          previous={{ href: step.previous, label: `Vorige ${step.unit}` }}
+          current={{ href: step.today, label: "Vandaag" }}
+          next={{ href: step.next, label: `Volgende ${step.unit}` }}
+        />
       </div>
 
       {isWeek ? (
