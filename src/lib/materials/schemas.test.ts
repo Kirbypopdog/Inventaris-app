@@ -17,6 +17,7 @@ describe("materialSchema", () => {
     packagePrice: "12,50",
     unitsPerPackage: "200",
     supplier: "",
+    margin: "",
   };
 
   it("maps a package to the database columns", () => {
@@ -27,7 +28,12 @@ describe("materialSchema", () => {
       package_price_cents: 1250,
       units_per_package: 200,
       supplier: null,
+      margin_bp: null,
     });
+  });
+
+  it("keeps a margin for this material", () => {
+    expect(materialRow(materialSchema.parse({ ...valid, margin: "30" })).margin_bp).toBe(3000);
   });
 
   it("allows a free item and a fractional package, like a roll of 2,5 m", () => {
@@ -42,6 +48,7 @@ describe("materialSchema", () => {
     [{ packagePrice: "-1" }, "prijs van de verpakking"],
     [{ packagePrice: "twaalf" }, "prijs van de verpakking"],
     [{ unitsPerPackage: "0" }, "in één verpakking"],
+    [{ margin: "-5" }, "marge"],
   ])("refuses %j", (change, message) => {
     const result = materialSchema.safeParse({ ...valid, ...change });
     expect(result.success).toBe(false);

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { FormMessage, inputClass, primaryButtonClass } from "@/components/form";
+import { RateOverrideFields } from "@/components/rate-override-fields";
 import { idleFormState } from "@/lib/forms";
 import { CUSTOMER_TYPE_LABELS, type CustomerType } from "@/lib/labels";
 import { saveCustomer } from "./actions";
@@ -17,6 +18,9 @@ export type CustomerFormValues = {
   postalCode: string;
   city: string;
   notes: string;
+  travelMethod: string;
+  kmRate: string;
+  tripFlat: string;
 };
 
 export const emptyCustomer: CustomerFormValues = {
@@ -29,6 +33,9 @@ export const emptyCustomer: CustomerFormValues = {
   postalCode: "",
   city: "",
   notes: "",
+  travelMethod: "",
+  kmRate: "",
+  tripFlat: "",
 };
 
 function TextField({
@@ -131,6 +138,16 @@ export function CustomerForm({ customer }: { customer: CustomerFormValues }) {
         <span className="text-base font-medium">Notities</span>
         <textarea name="notes" rows={3} defaultValue={values.notes} className={inputClass} />
       </label>
+
+      <RateOverrideFields
+        values={{
+          travelMethod: values.travelMethod,
+          kmRate: values.kmRate,
+          tripFlat: values.tripFlat,
+        }}
+        fallback="de algemene instelling (Account → Verplaatsingen)"
+        showMargin={false}
+      />
 
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>

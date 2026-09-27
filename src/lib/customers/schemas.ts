@@ -1,6 +1,11 @@
 import { z } from "zod";
 import { isValidVatNumber, normalizeVatNumber } from "@/lib/belgium";
 import { optionalText } from "@/lib/forms";
+import {
+  TRAVEL_OVERRIDE_FIELDS,
+  travelOverrideRow,
+  travelOverrideShape,
+} from "@/lib/rates/overrides";
 import { Constants } from "@/lib/supabase/database.types";
 
 export const CUSTOMER_FIELDS = [
@@ -13,6 +18,7 @@ export const CUSTOMER_FIELDS = [
   "postalCode",
   "city",
   "notes",
+  ...TRAVEL_OVERRIDE_FIELDS,
 ] as const;
 
 const vatNumberSchema = z
@@ -54,6 +60,7 @@ export const customerSchema = z.object({
   postalCode: postalCodeSchema,
   city: optionalText(100, "De gemeente is te lang."),
   notes: optionalText(2000, "De notities zijn te lang (maximaal 2000 tekens)."),
+  ...travelOverrideShape,
 });
 
 export type CustomerInput = z.infer<typeof customerSchema>;
@@ -70,5 +77,6 @@ export function customerRow(input: CustomerInput) {
     postal_code: input.postalCode,
     city: input.city,
     notes: input.notes,
+    ...travelOverrideRow(input),
   };
 }

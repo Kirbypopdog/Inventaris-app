@@ -8,6 +8,7 @@ import { JobStatusBadge } from "@/components/job-list";
 import { PageHeader, cardClass, pageClass } from "@/components/page";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireMember } from "@/lib/auth/session";
+import { marginFormValue, travelOverrideFormValues } from "@/lib/rates/overrides";
 import { getRateOptions } from "@/lib/rates/queries";
 import { formatPeriod } from "@/lib/dates";
 import { describePrice } from "@/lib/materials/format";
@@ -223,6 +224,8 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                 startsOn: job.starts_on ?? "",
                 endsOn: job.ends_on ?? "",
                 hourlyRateId: job.hourly_rate_id ?? "",
+                ...travelOverrideFormValues(job),
+                materialMargin: marginFormValue(job.material_margin_bp),
               }}
             />
           </div>

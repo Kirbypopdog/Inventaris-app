@@ -5,9 +5,12 @@ import {
   forMinutes,
   formatEuro,
   formatEuroInput,
+  formatPercentage,
+  formatPercentageInput,
   formatUnitPrice,
   multiply,
   parseEuro,
+  parsePercentage,
   partOfPackage,
   percentageOf,
   subtract,
@@ -202,5 +205,36 @@ describe("formatEuroInput", () => {
   ])("formats %i cent as %j, and parseEuro reads it back", (amount, text) => {
     expect(formatEuroInput(cents(amount))).toBe(text);
     expect(parseEuro(text)).toBe(amount);
+  });
+});
+
+describe("parsePercentage", () => {
+  it.each([
+    ["15", 1500],
+    ["12,5", 1250],
+    ["12.25", 1225],
+    ["0", 0],
+    ["15 %", 1500],
+    ["1000", 100_000],
+  ])("reads %j as %i basis points", (input, expected) => {
+    expect(parsePercentage(input)).toBe(expected);
+  });
+
+  it.each(["", "-5", "12,345", "1000,01", "vijftien"])("refuses %j", (input) => {
+    expect(parsePercentage(input)).toBeNull();
+  });
+});
+
+describe("formatPercentageInput / formatPercentage", () => {
+  it.each([
+    [1500, "15"],
+    [1250, "12,5"],
+    [1225, "12,25"],
+    [5, "0,05"],
+    [0, "0"],
+  ])("formats %i as %j, and parsePercentage reads it back", (rate, text) => {
+    expect(formatPercentageInput(rate)).toBe(text);
+    expect(parsePercentage(text)).toBe(rate);
+    expect(formatPercentage(rate)).toBe(`${text}%`);
   });
 });

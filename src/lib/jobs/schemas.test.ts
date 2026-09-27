@@ -12,6 +12,10 @@ const valid = {
   startsOn: "",
   endsOn: "",
   hourlyRateId: "",
+  travelMethod: "",
+  kmRate: "",
+  tripFlat: "",
+  materialMargin: "",
 };
 
 describe("jobSchema", () => {
@@ -27,7 +31,18 @@ describe("jobSchema", () => {
       starts_on: null,
       ends_on: null,
       hourly_rate_id: null,
+      travel_method: null,
+      km_rate_cents: null,
+      trip_flat_cents: null,
+      material_margin_bp: null,
     });
+  });
+
+  it("keeps exceptions for this job", () => {
+    const row = jobRow(
+      jobSchema.parse({ ...valid, travelMethod: "included", materialMargin: "12,5" }),
+    );
+    expect(row).toMatchObject({ travel_method: "included", material_margin_bp: 1250 });
   });
 
   it("accepts a period", () => {

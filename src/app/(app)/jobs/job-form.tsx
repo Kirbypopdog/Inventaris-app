@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { FormMessage, inputClass, primaryButtonClass } from "@/components/form";
+import { RateOverrideFields } from "@/components/rate-override-fields";
 import { idleFormState } from "@/lib/forms";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
 import type { RateOption } from "@/lib/rates/schemas";
@@ -19,6 +20,10 @@ export type JobFormValues = {
   startsOn: string;
   endsOn: string;
   hourlyRateId: string;
+  travelMethod: string;
+  kmRate: string;
+  tripFlat: string;
+  materialMargin: string;
 };
 
 export type CustomerOption = { id: string; name: string };
@@ -147,6 +152,17 @@ export function JobForm({
           Geldt voor nieuwe uren. Uren die al geregistreerd zijn, houden hun tarief.
         </span>
       </label>
+
+      <RateOverrideFields
+        values={{
+          travelMethod: values.travelMethod,
+          kmRate: values.kmRate,
+          tripFlat: values.tripFlat,
+          materialMargin: values.materialMargin,
+        }}
+        fallback="zoals bij de klant, anders de algemene instelling"
+        showMargin
+      />
 
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>

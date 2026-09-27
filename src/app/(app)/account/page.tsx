@@ -41,6 +41,9 @@ export default async function AccountPage() {
             <Link href="/instellingen/verplaatsingen" className={secondaryLinkButtonClass}>
               Verplaatsingen
             </Link>
+            <Link href="/instellingen/marge" className={secondaryLinkButtonClass}>
+              Marge op materiaal
+            </Link>
           </>
         )}
         <form action={signOut}>
