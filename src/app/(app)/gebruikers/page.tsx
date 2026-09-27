@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader, pageClass } from "@/components/page";
+import { Disclosure } from "@/components/disclosure";
 import { requireManager } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
 import { AddMemberForm } from "./add-member-form";
@@ -39,15 +40,10 @@ export default async function MembersPage() {
         back={{ href: "/account", label: "Meer" }}
         description="Wie hier staat, kan aanmelden met e-mailadres en wachtwoord."
       />
-      <div className="grid gap-8 lg:grid-cols-[22rem_1fr] lg:items-start">
-        <section className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">Nieuwe gebruiker</h2>
-          <AddMemberForm />
-        </section>
-
+      <div className="flex flex-col gap-6">
         <section className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">Huidige gebruikers</h2>
-          <ul className="grid gap-4 xl:grid-cols-2">
+          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {members.map((member) => (
               <MemberCard
                 key={member.userId}
@@ -57,6 +53,11 @@ export default async function MembersPage() {
             ))}
           </ul>
         </section>
+        <div className="md:max-w-xl">
+          <Disclosure summary="Nieuwe gebruiker">
+            <AddMemberForm />
+          </Disclosure>
+        </div>
       </div>
     </main>
   );

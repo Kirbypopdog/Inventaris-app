@@ -3,6 +3,7 @@ import { ActionButton } from "@/components/action-button";
 import { ElapsedTime } from "@/components/clock";
 import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { EmptyState, cardClass } from "@/components/page";
+import { Disclosure } from "@/components/disclosure";
 import { entryTotals, sumEntries } from "@/lib/hours/totals";
 import { cents, formatEuro } from "@/lib/money";
 import { formatDate } from "@/lib/dates";
@@ -90,31 +91,29 @@ export function JobHours({
                     confirm={`De klok van ${entry.userName} nu stoppen? Je kan het einduur daarna nog aanpassen.`}
                   />
                 )}
-                <details>
-                  <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
-                    {running ? "Einduur invullen" : "Aanpassen of verwijderen"}
-                  </summary>
-                  <div className="mt-3 flex flex-col gap-3">
-                    <TimeEntryForm
-                      entry={{
-                        id: entry.id,
-                        jobId,
-                        date: toBrusselsDate(entry.startedAt),
-                        from: toBrusselsTime(entry.startedAt),
-                        until: entry.endedAt ? toBrusselsTime(entry.endedAt) : "",
-                        note: entry.note ?? "",
-                      }}
-                    />
-                    <ActionButton
-                      action={deleteTimeEntry}
-                      values={{ id: entry.id }}
-                      label="Verwijderen"
-                      pendingLabel="Bezig…"
-                      className={dangerButtonClass}
-                      confirm="Deze uren verwijderen?"
-                    />
-                  </div>
-                </details>
+                <Disclosure
+                  variant="inline"
+                  summary={running ? "Einduur invullen" : "Aanpassen of verwijderen"}
+                >
+                  <TimeEntryForm
+                    entry={{
+                      id: entry.id,
+                      jobId,
+                      date: toBrusselsDate(entry.startedAt),
+                      from: toBrusselsTime(entry.startedAt),
+                      until: entry.endedAt ? toBrusselsTime(entry.endedAt) : "",
+                      note: entry.note ?? "",
+                    }}
+                  />
+                  <ActionButton
+                    action={deleteTimeEntry}
+                    values={{ id: entry.id }}
+                    label="Verwijderen"
+                    pendingLabel="Bezig…"
+                    className={dangerButtonClass}
+                    confirm="Deze uren verwijderen?"
+                  />
+                </Disclosure>
               </li>
             );
           })}
@@ -123,14 +122,9 @@ export function JobHours({
         <EmptyState>Nog geen uren op deze job.</EmptyState>
       )}
 
-      <details className={cardClass}>
-        <summary className="flex min-h-12 cursor-pointer items-center text-lg font-medium">
-          Uren met de hand toevoegen
-        </summary>
-        <div className="mt-3">
-          <TimeEntryForm entry={{ jobId, date: today, from: "", until: "", note: "" }} />
-        </div>
-      </details>
+      <Disclosure summary="Uren met de hand toevoegen">
+        <TimeEntryForm entry={{ jobId, date: today, from: "", until: "", note: "" }} />
+      </Disclosure>
     </section>
   );
 }

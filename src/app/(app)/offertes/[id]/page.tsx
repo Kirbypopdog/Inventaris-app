@@ -7,6 +7,7 @@ import { DocumentTotals } from "@/components/document-totals";
 import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
 import { QuoteStatusBadge } from "@/components/quote-status-badge";
+import { Disclosure } from "@/components/disclosure";
 import { requireMember } from "@/lib/auth/session";
 import { jobTabHref } from "@/lib/jobs/tabs";
 import { formatDate } from "@/lib/dates";
@@ -132,32 +133,27 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
                     {formatEuro(cents(line.unitPriceCents))} · btw {line.vatRate}%
                   </p>
                   {isDraft && (
-                    <details>
-                      <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
-                        Aanpassen of verwijderen
-                      </summary>
-                      <div className="mt-3 flex flex-col gap-3">
-                        <QuoteLineForm
-                          line={{
-                            id: line.id,
-                            quoteId: quote.id,
-                            description: line.description,
-                            quantity: formatQuantityInput(line.quantity),
-                            unit: line.unit,
-                            unitPrice: formatEuroInput(cents(line.unitPriceCents)),
-                            vatRate: String(line.vatRate),
-                          }}
-                        />
-                        <ActionButton
-                          action={deleteQuoteLine}
-                          values={{ id: line.id }}
-                          label="Regel verwijderen"
-                          pendingLabel="Bezig…"
-                          className={dangerButtonClass}
-                          confirm="Deze regel verwijderen?"
-                        />
-                      </div>
-                    </details>
+                    <Disclosure variant="inline" summary="Aanpassen of verwijderen">
+                      <QuoteLineForm
+                        line={{
+                          id: line.id,
+                          quoteId: quote.id,
+                          description: line.description,
+                          quantity: formatQuantityInput(line.quantity),
+                          unit: line.unit,
+                          unitPrice: formatEuroInput(cents(line.unitPriceCents)),
+                          vatRate: String(line.vatRate),
+                        }}
+                      />
+                      <ActionButton
+                        action={deleteQuoteLine}
+                        values={{ id: line.id }}
+                        label="Regel verwijderen"
+                        pendingLabel="Bezig…"
+                        className={dangerButtonClass}
+                        confirm="Deze regel verwijderen?"
+                      />
+                    </Disclosure>
                   )}
                 </li>
               ))}

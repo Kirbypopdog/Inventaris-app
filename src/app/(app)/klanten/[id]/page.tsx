@@ -5,6 +5,7 @@ import { z } from "zod";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobList } from "@/components/job-list";
+import { Disclosure } from "@/components/disclosure";
 import {
   EmptyState,
   PageHeader,
@@ -117,14 +118,8 @@ export default async function CustomerPage({ params }: PageProps<"/klanten/[id]"
         </section>
       )}
 
-      <details className="group rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-950">
-        <summary className="flex min-h-12 cursor-pointer items-center justify-between text-lg font-semibold">
-          Gegevens bewerken
-          <span aria-hidden="true" className="text-stone-400 group-open:rotate-90">
-            ›
-          </span>
-        </summary>
-        <div className="mt-4 flex flex-col gap-4 md:max-w-2xl">
+      <Disclosure summary="Gegevens bewerken">
+        <div className="flex flex-col gap-4 md:max-w-2xl">
           <CustomerForm
             customer={{
               id: customer.id,
@@ -153,7 +148,7 @@ export default async function CustomerPage({ params }: PageProps<"/klanten/[id]"
             }
           />
         </div>
-      </details>
+      </Disclosure>
     </main>
   );
 }

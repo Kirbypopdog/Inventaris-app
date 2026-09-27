@@ -12,7 +12,8 @@ test("an admin adds a colleague, resets their password and removes them", async 
   await admin.getByRole("link", { name: "Gebruikers beheren" }).click();
   await expect(admin.getByRole("heading", { name: "Gebruikers", exact: true })).toBeVisible();
 
-  const addForm = admin.getByRole("main").locator("form").first();
+  await admin.getByText("Nieuwe gebruiker", { exact: true }).click();
+  const addForm = admin.locator("details", { hasText: "Nieuwe gebruiker" }).locator("form");
   await addForm.getByLabel("Naam").fill(users.colleague.displayName);
   await addForm.getByLabel("E-mailadres").fill(users.colleague.email);
   await addForm.getByLabel("Rol").selectOption({ label: "Eigenaar" });

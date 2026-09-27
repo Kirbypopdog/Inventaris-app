@@ -21,6 +21,10 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
 
   // An hourly rate, made the default.
   await page.goto("/instellingen/uurtarieven");
+  const newRate = page.locator("details", { hasText: "Nieuw uurtarief" });
+  if ((await newRate.getAttribute("open")) === null) {
+    await newRate.getByText("Nieuw uurtarief").click();
+  }
   await page.getByLabel("Naam").fill(rateName);
   await page.getByLabel("Bedrag per uur (excl. btw)").fill("45,00");
   await page.getByRole("button", { name: "Uurtarief toevoegen" }).click();
