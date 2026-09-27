@@ -82,12 +82,30 @@ select ok(
 );
 reset role;
 
+-- Een vergeten klok van een ander lid stoppen.
+insert into auth.users (id, email) values ('22222222-2222-2222-2222-222222222222', 'collega@example.com');
+select private.add_app_user('collega@example.com', 'owner', 'Collega');
+insert into public.time_entries (id, job_id, user_id, hourly_rate_cents, started_at)
+values ('dddddddd-0000-0000-0000-000000000001', 'bbbbbbbb-0000-0000-0000-000000000002',
+  '22222222-2222-2222-2222-222222222222', 4500, now() - interval '11 hours');
+set local role authenticated;
+set local request.jwt.claims to '{"sub": "11111111-1111-1111-1111-111111111111", "role": "authenticated"}';
+select ok(
+  (public.stop_time_entry('dddddddd-0000-0000-0000-000000000001')).ended_at is not null,
+  'een lid kan de lopende klok van een ander stoppen'
+);
+select throws_ok($$ select public.stop_time_entry('dddddddd-0000-0000-0000-000000000001') $$,
+  'TS002', null, 'een gestopte klok nog eens stoppen geeft een duidelijke fout');
+reset role;
+
 -- Niet-leden
 set local role authenticated;
 set local request.jwt.claims to '{"sub": "33333333-3333-3333-3333-333333333333", "role": "authenticated"}';
 select throws_ok($$ select public.clock_in('bbbbbbbb-0000-0000-0000-000000000002') $$, '42501', null,
   'een niet-lid kan niet inklokken');
 select throws_ok($$ select public.clock_out() $$, '42501', null, 'een niet-lid kan niet uitklokken');
+select throws_ok($$ select public.stop_time_entry('dddddddd-0000-0000-0000-000000000001') $$,
+  '42501', null, 'een niet-lid kan geen klok stoppen');
 select throws_ok($$ select public.set_default_hourly_rate('cccccccc-0000-0000-0000-000000000001') $$,
   '42501', null, 'een niet-lid kan geen tarieven wijzigen');
 reset role;

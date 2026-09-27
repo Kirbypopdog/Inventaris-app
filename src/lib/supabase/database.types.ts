@@ -325,6 +325,25 @@ isOneToOne: false
 "set_default_hourly_rate":
 { Args: { "rate_id": string }; Returns: undefined
                            },
+"stop_time_entry":
+{ Args: { "entry_id": string }; Returns: {
+              "created_at": string,
+"ended_at": string | null,
+"hourly_rate_cents": number,
+"hourly_rate_id": string | null,
+"id": string,
+"job_id": string,
+"note": string | null,
+"started_at": string,
+"updated_at": string,
+"user_id": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "time_entries"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "travel_terms":
 { Args: { "target_job_id": string }; Returns: {
               "method": Database["public"]['Enums']["travel_method"],"rate_cents": number

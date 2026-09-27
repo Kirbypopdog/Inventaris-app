@@ -54,6 +54,23 @@ export async function clockOut(_previous: FormState, _formData: FormData): Promi
   return { status: "success", message: "Uitgeklokt." };
 }
 
+/** Stops a running clock, also one of another member (for example a forgotten clock-out). */
+export async function stopTimeEntry(_previous: FormState, formData: FormData): Promise<FormState> {
+  await requireMember();
+  const id = idSchema.safeParse(field(formData, "id"));
+  if (!id.success) {
+    return { status: "error", message: "Onbekende registratie." };
+  }
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("stop_time_entry", { entry_id: id.data });
+  if (error) {
+    console.error("stop_time_entry failed", { code: error.code, message: error.message });
+    return { status: "error", message: saveErrorMessage(error) };
+  }
+  revalidateHours([data.job_id]);
+  return { status: "success", message: "Klok gestopt." };
+}
+
 /** Adds hours by hand (no id) or corrects an entry (with id). */
 export async function saveTimeEntry(_previous: FormState, formData: FormData): Promise<FormState> {
   const member = await requireMember();

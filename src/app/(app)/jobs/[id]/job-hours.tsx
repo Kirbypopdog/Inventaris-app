@@ -1,7 +1,7 @@
-import { clockIn, clockOut, deleteTimeEntry } from "@/app/(app)/uren/actions";
+import { clockIn, clockOut, deleteTimeEntry, stopTimeEntry } from "@/app/(app)/uren/actions";
 import { ActionButton } from "@/components/action-button";
 import { ElapsedTime } from "@/components/clock";
-import { dangerButtonClass } from "@/components/form";
+import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { EmptyState, cardClass } from "@/components/page";
 import { entryTotals, sumEntries } from "@/lib/hours/totals";
 import { cents, formatEuro } from "@/lib/money";
@@ -107,36 +107,41 @@ export function JobHours({
                     .filter(Boolean)
                     .join(" · ")}
                 </p>
-                {!running && (
-                  <details>
-                    <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
-                      Aanpassen of verwijderen
-                    </summary>
-                    <div className="mt-3 flex flex-col gap-3">
-                      <TimeEntryForm
-                        entry={{
-                          id: entry.id,
-                          jobId,
-                          date: toBrusselsDate(entry.startedAt),
-                          from: toBrusselsTime(entry.startedAt),
-                          until: entry.endedAt ? toBrusselsTime(entry.endedAt) : "",
-                          note: entry.note ?? "",
-                        }}
-                      />
-                      <ActionButton
-                        action={deleteTimeEntry}
-                        values={{ id: entry.id }}
-                        label="Verwijderen"
-                        pendingLabel="Bezig…"
-                        className={dangerButtonClass}
-                        confirm="Deze uren verwijderen?"
-                      />
-                    </div>
-                  </details>
-                )}
                 {running && entry.userId !== currentUserId && (
-                  <p className="text-sm text-zinc-500">Klok loopt nog.</p>
+                  <ActionButton
+                    action={stopTimeEntry}
+                    values={{ id: entry.id }}
+                    label={`Klok van ${entry.userName} stoppen`}
+                    pendingLabel="Bezig…"
+                    className={secondaryButtonClass}
+                    confirm={`De klok van ${entry.userName} nu stoppen? Je kan het einduur daarna nog aanpassen.`}
+                  />
                 )}
+                <details>
+                  <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
+                    {running ? "Einduur invullen" : "Aanpassen of verwijderen"}
+                  </summary>
+                  <div className="mt-3 flex flex-col gap-3">
+                    <TimeEntryForm
+                      entry={{
+                        id: entry.id,
+                        jobId,
+                        date: toBrusselsDate(entry.startedAt),
+                        from: toBrusselsTime(entry.startedAt),
+                        until: entry.endedAt ? toBrusselsTime(entry.endedAt) : "",
+                        note: entry.note ?? "",
+                      }}
+                    />
+                    <ActionButton
+                      action={deleteTimeEntry}
+                      values={{ id: entry.id }}
+                      label="Verwijderen"
+                      pendingLabel="Bezig…"
+                      className={dangerButtonClass}
+                      confirm="Deze uren verwijderen?"
+                    />
+                  </div>
+                </details>
               </li>
             );
           })}
