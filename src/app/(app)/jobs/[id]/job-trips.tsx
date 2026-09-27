@@ -2,7 +2,7 @@ import Link from "next/link";
 import { deleteTrip } from "@/app/(app)/ritten/actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass } from "@/components/form";
-import { EmptyState, cardClass } from "@/components/page";
+import { EmptyState, cardClass, textLinkClass } from "@/components/page";
 import { Disclosure } from "@/components/disclosure";
 import { formatDate } from "@/lib/dates";
 import { cents, formatEuro } from "@/lib/money";
@@ -47,7 +47,7 @@ export function JobTrips({
         {unpriced && canManageSettings && (
           <>
             {" "}
-            <Link href="/instellingen/verplaatsingen" className="underline">
+            <Link href="/instellingen/verplaatsingen" className={textLinkClass}>
               Bedrag instellen
             </Link>
           </>

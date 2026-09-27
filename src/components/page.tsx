@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ChevronLeftIcon } from "@/components/icons";
 
 /** Content width: narrow on a phone, wider on a laptop. */
 export const pageClass =
@@ -19,11 +20,9 @@ export function PageHeader({
   return (
     <div className="flex flex-col gap-2">
       {back && (
-        <Link
-          href={back.href}
-          className="self-start py-2 text-base text-stone-600 underline dark:text-stone-400"
-        >
-          ← {back.label}
+        <Link href={back.href} className={`${quietLinkClass} -ml-1 self-start`}>
+          <ChevronLeftIcon className="size-5" />
+          {back.label}
         </Link>
       )}
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -58,3 +57,15 @@ export function EmptyState({ children }: { children: ReactNode }) {
     </p>
   );
 }
+
+/** A link inside running text: the accent colour, underlined only on hover. */
+export const textLinkClass =
+  "font-medium text-brand-700 underline-offset-4 hover:underline dark:text-brand-300";
+
+/** A secondary link on its own line (back, archive): grey, a big tap target. */
+export const quietLinkClass =
+  "inline-flex min-h-11 items-center gap-1 text-base font-medium text-stone-600 " +
+  "hover:text-brand-700 dark:text-stone-400 dark:hover:text-brand-300";
+
+/** A title that opens something: stays dark, takes the accent colour on hover. */
+export const titleLinkClass = "hover:text-brand-700 dark:hover:text-brand-300";

@@ -7,6 +7,7 @@ import {
   PageHeader,
   linkButtonClass,
   pageClass,
+  quietLinkClass,
   secondaryLinkButtonClass,
 } from "@/components/page";
 import { addDays, formatDay, weekStart } from "@/lib/agenda";
@@ -102,7 +103,7 @@ export default async function StartPage() {
       <section className="flex flex-col gap-4" aria-label="Deze week">
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="text-xl font-semibold">Deze week</h2>
-          <Link href="/agenda" className="py-2 text-base underline">
+          <Link href="/agenda" className={quietLinkClass}>
             Agenda
           </Link>
         </div>

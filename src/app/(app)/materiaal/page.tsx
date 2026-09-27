@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import Link from "next/link";
-import { EmptyState, PageHeader, linkButtonClass, pageClass } from "@/components/page";
+import {
+  EmptyState,
+  PageHeader,
+  linkButtonClass,
+  pageClass,
+  quietLinkClass,
+} from "@/components/page";
 import { SearchForm } from "@/components/search-form";
 import { requireMember } from "@/lib/auth/session";
 import { describePrice } from "@/lib/materials/format";
@@ -76,9 +83,19 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
       )}
       <Link
         href={showArchived ? "/materiaal" : "/materiaal?archief=1"}
-        className="self-start py-2 text-base text-stone-600 underline dark:text-stone-400"
+        className={`${quietLinkClass} self-start`}
       >
-        {showArchived ? "← Terug naar het materiaal" : "Gearchiveerd materiaal bekijken"}
+        {showArchived ? (
+          <>
+            <ChevronLeftIcon className="size-5" />
+            Terug naar het materiaal
+          </>
+        ) : (
+          <>
+            Gearchiveerd materiaal bekijken
+            <ChevronRightIcon className="size-5" />
+          </>
+        )}
       </Link>
     </main>
   );

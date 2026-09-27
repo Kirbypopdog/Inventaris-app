@@ -51,4 +51,17 @@ test("the main menu is at the bottom on a phone and on the left on a laptop", as
       nav.getByRole("link", { name: onLaptop ? label : "Meer", exact: true }),
     ).toHaveAttribute("aria-current", "page");
   }
+
+  // On a laptop the sidebar folds to icons and stays that way; the links keep their names.
+  if (onLaptop) {
+    await nav.getByRole("button", { name: "Menu inklappen" }).click();
+    await expect(nav.getByRole("button", { name: "Menu uitklappen" })).toBeVisible();
+    expect((await nav.boundingBox())?.width).toBeLessThan(100);
+    await page.reload();
+    await expect(nav.getByRole("link", { name: "Projecten", exact: true })).toBeVisible();
+    expect((await nav.boundingBox())?.width).toBeLessThan(100);
+    await nav.getByRole("button", { name: "Menu uitklappen" }).click();
+    await expect(nav.getByRole("button", { name: "Menu inklappen" })).toBeVisible();
+    expect((await nav.boundingBox())?.width).toBeGreaterThan(200);
+  }
 });

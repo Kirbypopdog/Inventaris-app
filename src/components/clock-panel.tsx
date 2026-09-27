@@ -9,6 +9,7 @@ import {
   cardClass,
   linkButtonClass,
   secondaryLinkButtonClass,
+  titleLinkClass,
 } from "@/components/page";
 import { formatPeriod } from "@/lib/dates";
 import { jobTabHref } from "@/lib/jobs/tabs";
@@ -41,7 +42,10 @@ export function ClockPanel({
             <p className="text-base text-stone-600 dark:text-stone-400">
               Ingeklokt sinds {toBrusselsTime(running.startedAt)}
             </p>
-            <Link href={`/jobs/${running.jobId}`} className="text-2xl font-semibold underline">
+            <Link
+              href={`/jobs/${running.jobId}`}
+              className={`text-2xl font-semibold ${titleLinkClass}`}
+            >
               {running.jobTitle}
             </Link>
             <p className="text-4xl font-bold tabular-nums">

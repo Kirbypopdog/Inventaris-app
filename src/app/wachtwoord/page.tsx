@@ -5,6 +5,8 @@ import { secondaryButtonClass } from "@/components/form";
 import { signOut } from "@/lib/auth/actions";
 import { requireSession } from "@/lib/auth/session";
 import { PasswordForm } from "./password-form";
+import { ChevronLeftIcon } from "@/components/icons";
+import { quietLinkClass } from "@/components/page";
 
 export const metadata: Metadata = { title: "Wachtwoord · Schrijnwerk" };
 
@@ -19,11 +21,9 @@ export default async function PasswordPage() {
     <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-6 p-6">
       <div className="flex flex-col gap-2">
         {!mustChangePassword && (
-          <Link
-            href="/"
-            className="min-h-12 py-3 text-base text-stone-600 underline dark:text-stone-400"
-          >
-            ← Terug
+          <Link href="/" className={`${quietLinkClass} -ml-1 self-start`}>
+            <ChevronLeftIcon className="size-5" />
+            Terug
           </Link>
         )}
         <h1 className="text-3xl font-semibold">

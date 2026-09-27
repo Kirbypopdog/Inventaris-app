@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JobCalculationSummary } from "@/components/job-calculation";
-import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { EmptyState, PageHeader, cardClass, pageClass, titleLinkClass } from "@/components/page";
 import { StepNav } from "@/components/step-nav";
 import { jobCalculation, monthlyTotals } from "@/lib/analyses";
 import { loadAnalysisData } from "@/lib/analyses-queries";
@@ -134,7 +134,10 @@ export default async function AnalysesPage({ searchParams }: PageProps<"/analyse
           <ul className="grid gap-3 lg:grid-cols-2">
             {jobCalculations.map(({ job, calculation }) => (
               <li key={job.id} className={cardClass}>
-                <Link href={`/jobs/${job.id}`} className="text-lg font-semibold underline">
+                <Link
+                  href={`/jobs/${job.id}`}
+                  className={`text-lg font-semibold ${titleLinkClass}`}
+                >
                   {job.title}
                 </Link>
                 {job.customers && (

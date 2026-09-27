@@ -5,7 +5,7 @@ import { z } from "zod";
 import { ActionButton } from "@/components/action-button";
 import { DocumentTotals } from "@/components/document-totals";
 import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
-import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { EmptyState, PageHeader, cardClass, pageClass, textLinkClass } from "@/components/page";
 import { QuoteStatusBadge } from "@/components/quote-status-badge";
 import { Disclosure } from "@/components/disclosure";
 import { requireMember } from "@/lib/auth/session";
@@ -95,7 +95,7 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
             <span className="flex flex-wrap items-center gap-2">
               <QuoteStatusBadge status={quote.status} />
               {customer && (
-                <Link href={`/klanten/${customer.id}`} className="underline">
+                <Link href={`/klanten/${customer.id}`} className={textLinkClass}>
                   {customer.name}
                 </Link>
               )}

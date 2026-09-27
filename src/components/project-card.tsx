@@ -3,6 +3,7 @@ import { JobStatusBadge } from "@/components/job-list";
 import { formatPeriod } from "@/lib/dates";
 import { CUSTOMER_TYPE_LABELS, type CustomerType } from "@/lib/labels";
 import type { ProjectCard as Card, ProjectCustomer } from "@/lib/projects";
+import { textLinkClass, titleLinkClass } from "@/components/page";
 
 export type ProjectCustomerView = ProjectCustomer & {
   type: CustomerType;
@@ -40,7 +41,7 @@ export function ProjectCard({
         />
         <Link
           href={`/klanten/${customer.id}`}
-          className="text-lg font-semibold break-words hover:underline"
+          className={`text-lg font-semibold break-words ${titleLinkClass}`}
         >
           {customer.name}
         </Link>
@@ -84,7 +85,7 @@ export function ProjectCard({
             : null}
         {shownJobs.length === 0 && closedCount > 0 && " · "}
         {closedCount > 0 && (
-          <Link href={`/klanten/${customer.id}`} className="underline">
+          <Link href={`/klanten/${customer.id}`} className={textLinkClass}>
             {closedCount === 1 ? "1 afgesloten job" : `${closedCount} afgesloten jobs`}
           </Link>
         )}

@@ -6,7 +6,7 @@ export function JobTabs({ jobId, active }: { jobId: string; active: JobTab }) {
   return (
     <nav
       aria-label="Onderdelen van de job"
-      className="bg-background sticky top-0 z-[5] -mx-4 overflow-x-auto border-b border-stone-200 px-4 sm:mx-0 sm:px-0 dark:border-stone-800"
+      className="bg-background sticky top-0 z-[5] -mx-4 [scrollbar-width:none] overflow-x-auto overflow-y-hidden border-b border-stone-200 px-4 sm:mx-0 sm:px-0 dark:border-stone-800"
     >
       <ul className="flex w-max gap-1">
         {JOB_TABS.map((tab) => {
