@@ -9,7 +9,6 @@ import {
   type ProjectSection,
 } from "@/components/project-card";
 import { SearchForm } from "@/components/search-form";
-import { formatAddress } from "@/lib/address";
 import { requireMember } from "@/lib/auth/session";
 import { type ProjectCard as Card, groupProjects } from "@/lib/projects";
 import { cleanSearchTerm, ilikeAnyFilter } from "@/lib/search";
@@ -18,7 +17,7 @@ import { createClient } from "@/lib/supabase/server";
 export const metadata: Metadata = { title: "Projecten · Schrijnwerk" };
 
 const CUSTOMER_SELECT =
-  "id, name, type, city, phone, address_line, postal_code, jobs(id, title, status, starts_on, ends_on)" as const;
+  "id, name, type, city, jobs(id, title, status, starts_on, ends_on)" as const;
 
 function Section({
   title,
@@ -89,8 +88,6 @@ export default async function ProjectsPage({ searchParams }: PageProps<"/klanten
     name: row.name,
     type: row.type,
     city: row.city,
-    phone: row.phone,
-    address: formatAddress(row.address_line, row.postal_code, row.city),
     jobs: row.jobs.map((job) => ({
       id: job.id,
       title: job.title,
