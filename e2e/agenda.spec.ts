@@ -1,7 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { logIn, openFromMenu, sql, users } from "./support";
 
-test("the agenda shows a week with the planned jobs", async ({ page }, testInfo) => {
+test("the agenda shows the planned jobs as bars per week and per month", async ({
+  page,
+}, testInfo) => {
   const p = testInfo.project.name;
   const customer = `E2E Agendaklant ${p}`;
   const planned = `E2E Agenda keuken ${p}`;
@@ -28,28 +30,34 @@ test("the agenda shows a week with the planned jobs", async ({ page }, testInfo)
   await openFromMenu(page, "Agenda");
   await expect(page.getByRole("heading", { name: /^Week \d+$/ })).toBeVisible();
 
-  const days = page.getByRole("main").locator("ol > li");
-  await expect(days).toHaveCount(7);
-  await expect(days.nth(0)).not.toContainText(planned);
-  for (const index of [1, 2, 3]) {
-    await expect(days.nth(index)).toContainText(planned);
-  }
-  await expect(days.nth(4)).not.toContainText(planned);
-  await expect(page.getByRole("main")).not.toContainText(cancelled);
+  // One row per job, with a bar from Tuesday (column 2) to Thursday (column 4).
+  const main = page.getByRole("main");
+  const job = main.getByRole("link", { name: new RegExp(`^${planned}`) });
+  await expect(job).toBeVisible();
+  const bar = job.locator("[data-bar]");
+  await expect(bar).toHaveCSS("grid-column-start", "2");
+  await expect(bar).toHaveCSS("grid-column-end", "5");
+  await expect(main).not.toContainText(cancelled);
 
   const notPlanned = page.getByRole("region", { name: "Nog niet ingepland" });
   await expect(notPlanned).toContainText(unplanned);
 
   // Next week: the job is no longer there.
-  await page.getByRole("link", { name: "Volgende →" }).click();
-  await expect(page.getByRole("main").locator("ol > li").first()).toBeVisible();
-  await expect(page.getByRole("main").locator("ol")).not.toContainText(planned);
+  await page.getByRole("link", { name: "Volgende week" }).click();
+  await expect(main.getByText("Niets gepland deze week.")).toBeVisible();
+  await expect(job).toHaveCount(0);
 
-  // Back to this week, and the job links to its page.
-  await page.getByRole("link", { name: "Deze week" }).click();
-  await days
-    .nth(1)
-    .getByRole("link", { name: new RegExp(planned) })
-    .click();
+  // The month shows the job as well; from there, back to this week.
+  await page.getByRole("link", { name: "Vandaag" }).click();
+  await expect(job).toBeVisible();
+  await page.getByRole("link", { name: "Maand", exact: true }).click();
+  await expect(page.getByRole("heading", { level: 1, name: /^[A-Z][a-z]+ \d{4}$/ })).toBeVisible();
+  await expect(main.getByRole("link", { name: new RegExp(`^${planned}`) })).toBeVisible();
+  await expect(main).not.toContainText(cancelled);
+  await page.getByRole("link", { name: "Week", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /^Week \d+$/ })).toBeVisible();
+
+  // The job links to its page.
+  await job.click();
   await expect(page.getByRole("heading", { name: planned })).toBeVisible();
 });
