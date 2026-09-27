@@ -163,3 +163,34 @@ export function formatUnitPrice(packagePrice: Cents, unitsPerPackage: number): s
   }
   return unitPriceFormat.format(packagePrice / unitsPerPackage / 100);
 }
+
+/** Highest percentage the database allows (margin_bp up to 100000 = 1000%). */
+const MAX_BASIS_POINTS = 100_000;
+
+/**
+ * Parses a percentage as typed in a form field: "15", "12,5" or "12.25" (at most 2
+ * decimals), into basis points. Returns null for anything else, or above 1000%.
+ */
+export function parsePercentage(input: string): BasisPoints | null {
+  const match = /^(\d{1,4})(?:[,.](\d{1,2}))?%?$/.exec(input.replace(/\s/g, ""));
+  if (!match) {
+    return null;
+  }
+  const [, whole = "", fraction = ""] = match;
+  const value = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
+  return value <= MAX_BASIS_POINTS ? value : null;
+}
+
+/** Basis points as typed in a form field, e.g. 1250 → "12,5". {@link parsePercentage} reads it back. */
+export function formatPercentageInput(rate: BasisPoints): string {
+  const whole = Math.trunc(rate / 100);
+  const fraction = String(rate % 100)
+    .padStart(2, "0")
+    .replace(/0+$/, "");
+  return fraction ? `${whole},${fraction}` : String(whole);
+}
+
+/** Basis points for display, e.g. 1250 → "12,5%". */
+export function formatPercentage(rate: BasisPoints): string {
+  return `${formatPercentageInput(rate)}%`;
+}

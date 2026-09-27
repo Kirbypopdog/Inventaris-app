@@ -12,6 +12,7 @@ export type MaterialFormValues = {
   packagePrice: string;
   unitsPerPackage: string;
   supplier: string;
+  margin: string;
 };
 
 export const emptyMaterial: MaterialFormValues = {
@@ -20,6 +21,7 @@ export const emptyMaterial: MaterialFormValues = {
   packagePrice: "",
   unitsPerPackage: "1",
   supplier: "",
+  margin: "",
 };
 
 /** Units a carpenter often uses; any other unit can be typed. */
@@ -98,6 +100,20 @@ export function MaterialForm({ material }: { material: MaterialFormValues }) {
           autoComplete="off"
           className={inputClass}
         />
+      </label>
+      <label className="flex flex-col gap-2">
+        <span className="text-base font-medium">Marge (%)</span>
+        <input
+          name="margin"
+          inputMode="decimal"
+          defaultValue={values.margin}
+          placeholder="leeg"
+          autoComplete="off"
+          className={inputClass}
+        />
+        <span className="text-sm text-zinc-500">
+          Leeg = de algemene marge. Een marge op de job gaat hier nog voor.
+        </span>
       </label>
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>

@@ -55,6 +55,10 @@ export default async function NewJobPage({ searchParams }: PageProps<"/jobs/nieu
               startsOn: "",
               endsOn: "",
               hourlyRateId: "",
+              travelMethod: "",
+              kmRate: "",
+              tripFlat: "",
+              materialMargin: "",
             }}
           />
         </div>

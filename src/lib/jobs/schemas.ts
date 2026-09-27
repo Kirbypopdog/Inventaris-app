@@ -1,5 +1,11 @@
 import { z } from "zod";
 import { optionalText } from "@/lib/forms";
+import {
+  TRAVEL_OVERRIDE_FIELDS,
+  optionalMarginSchema,
+  travelOverrideRow,
+  travelOverrideShape,
+} from "@/lib/rates/overrides";
 import { Constants } from "@/lib/supabase/database.types";
 
 export const JOB_FIELDS = [
@@ -13,6 +19,8 @@ export const JOB_FIELDS = [
   "startsOn",
   "endsOn",
   "hourlyRateId",
+  ...TRAVEL_OVERRIDE_FIELDS,
+  "materialMargin",
 ] as const;
 
 function isRealDate(value: string): boolean {
@@ -57,6 +65,9 @@ export const jobSchema = z
     hourlyRateId: z
       .union([z.literal(""), z.uuid({ error: "Kies een geldig uurtarief." })])
       .transform((value) => (value === "" ? null : value)),
+    ...travelOverrideShape,
+    // Empty: the margin of the material, or else the general margin.
+    materialMargin: optionalMarginSchema,
   })
   .refine((job) => !job.startsOn || !job.endsOn || job.endsOn >= job.startsOn, {
     error: "De einddatum ligt vóór de startdatum.",
@@ -78,5 +89,7 @@ export function jobRow(input: JobInput) {
     starts_on: input.startsOn,
     ends_on: input.endsOn,
     hourly_rate_id: input.hourlyRateId,
+    ...travelOverrideRow(input),
+    material_margin_bp: input.materialMargin,
   };
 }

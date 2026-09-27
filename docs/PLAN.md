@@ -74,7 +74,8 @@ Belangrijke keuzes:
 - [x] Klanten (lijst, zoeken, bewerken, archiveren, btw-nummercontrole)
 - [x] Jobs (lijst, statusfilter, zoeken, bewerken, snelle statusknoppen)
 - [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
-- [ ] Tarieven per klant en per job instellen (samen met het instellingenscherm)
+- [x] Uitzonderingen op tarieven: verplaatsingen per klant en per job, marge op materiaal
+      per job en per materiaal, algemene marge (Account → Marge op materiaal)
 - [x] **Inklokknop**: in- en uitklokken vanop de startpagina, wisselen van job, uren per job
       bekijken en met de hand toevoegen of aanpassen
 - [x] Uurtarieven beheren (Account → Uurtarieven), één standaardtarief, tarief per job
@@ -83,8 +84,7 @@ Belangrijke keuzes:
       snelknop vanaf de klok op de startpagina
 - [x] Verplaatsingen per job (per km of vast bedrag per rit, afstand van de vorige rit
       voorgesteld) en de algemene instelling (Account → Verplaatsingen). De regels volgen
-      job > klant > algemeen; uitzonderingen per klant of job instellen komt met
-      "Tarieven per klant en per job instellen"
+      job > klant > algemeen
 
 ### Fase 2: Geld
 

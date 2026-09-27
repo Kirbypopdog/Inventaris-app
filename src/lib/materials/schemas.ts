@@ -2,6 +2,7 @@ import { z } from "zod";
 import { optionalText } from "@/lib/forms";
 import { parseEuro } from "@/lib/money";
 import { parseQuantity } from "@/lib/quantity";
+import { optionalMarginSchema } from "@/lib/rates/overrides";
 
 const nameSchema = (empty: string) =>
   z.string().trim().min(1, { error: empty }).max(200, { error: "De naam is te lang." });
@@ -40,6 +41,7 @@ export const MATERIAL_FIELDS = [
   "packagePrice",
   "unitsPerPackage",
   "supplier",
+  "margin",
 ] as const;
 
 /** A material in the catalogue: the price of a package and how many units are in it. */
@@ -49,6 +51,8 @@ export const materialSchema = z.object({
   packagePrice: priceSchema("Geef de prijs van de verpakking in, bv. 12,50."),
   unitsPerPackage: quantitySchema("Geef in hoeveel er in één verpakking zit, bv. 200 of 1."),
   supplier: optionalText(200, "De naam van de leverancier is te lang."),
+  // Empty: the general margin (a job can still override it).
+  margin: optionalMarginSchema,
 });
 
 export type MaterialInput = z.infer<typeof materialSchema>;
@@ -61,6 +65,7 @@ export function materialRow(input: MaterialInput) {
     package_price_cents: input.packagePrice,
     units_per_package: input.unitsPerPackage,
     supplier: input.supplier,
+    margin_bp: input.margin,
   };
 }
 

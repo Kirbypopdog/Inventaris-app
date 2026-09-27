@@ -10,6 +10,7 @@ import { requireMember } from "@/lib/auth/session";
 import { formatBelgianVatNumber } from "@/lib/belgium";
 import { jobsQuery, toJobListItem } from "@/lib/jobs/queries";
 import { CUSTOMER_TYPE_LABELS } from "@/lib/labels";
+import { travelOverrideFormValues } from "@/lib/rates/overrides";
 import { createClient } from "@/lib/supabase/server";
 import { setCustomerArchived } from "../actions";
 import { CustomerForm } from "../customer-form";
@@ -99,6 +100,7 @@ export default async function CustomerPage({ params }: PageProps<"/klanten/[id]"
                 postalCode: customer.postal_code ?? "",
                 city: customer.city ?? "",
                 notes: customer.notes ?? "",
+                ...travelOverrideFormValues(customer),
               }}
             />
           </div>

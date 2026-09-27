@@ -11,9 +11,23 @@ const empty = {
   postalCode: "",
   city: "",
   notes: "",
+  travelMethod: "",
+  kmRate: "",
+  tripFlat: "",
 };
 
 describe("customerSchema", () => {
+  it("keeps travel exceptions for this customer", () => {
+    const row = customerRow(
+      customerSchema.parse({ ...empty, travelMethod: "flat", tripFlat: "35,00" }),
+    );
+    expect(row).toMatchObject({
+      travel_method: "flat",
+      trip_flat_cents: 3500,
+      km_rate_cents: null,
+    });
+  });
+
   it("turns empty optional fields into null", () => {
     expect(customerRow(customerSchema.parse(empty))).toEqual({
       type: "private",
@@ -25,6 +39,9 @@ describe("customerSchema", () => {
       postal_code: null,
       city: null,
       notes: null,
+      travel_method: null,
+      km_rate_cents: null,
+      trip_flat_cents: null,
     });
   });
 

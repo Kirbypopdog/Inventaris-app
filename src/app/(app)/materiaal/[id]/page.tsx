@@ -10,6 +10,7 @@ import { formatDate } from "@/lib/dates";
 import { describePrice } from "@/lib/materials/format";
 import { cents, formatEuroInput } from "@/lib/money";
 import { formatQuantity, formatQuantityInput } from "@/lib/quantity";
+import { marginFormValue } from "@/lib/rates/overrides";
 import { createClient } from "@/lib/supabase/server";
 import { setMaterialArchived } from "../actions";
 import { MaterialForm } from "../material-form";
@@ -75,6 +76,7 @@ export default async function MaterialPage({ params }: PageProps<"/materiaal/[id
                 packagePrice: formatEuroInput(cents(material.package_price_cents)),
                 unitsPerPackage: formatQuantityInput(material.units_per_package),
                 supplier: material.supplier ?? "",
+                margin: marginFormValue(material.margin_bp),
               }}
             />
           </div>
