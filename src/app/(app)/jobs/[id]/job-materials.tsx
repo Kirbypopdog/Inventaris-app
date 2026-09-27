@@ -74,7 +74,7 @@ export function JobMaterials({
                 <span className="text-lg font-semibold break-words">{usage.description}</span>
                 <span className="text-lg tabular-nums">{formatEuro(usageCost(usage))}</span>
               </div>
-              <p className="text-base text-zinc-600 dark:text-zinc-400">
+              <p className="text-base text-stone-600 dark:text-stone-400">
                 {formatQuantity(usage.quantity)} {usage.unit} · {formatDate(usage.usedOn)}
               </p>
               <details>

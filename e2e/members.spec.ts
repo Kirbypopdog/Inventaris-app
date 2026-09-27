@@ -7,7 +7,7 @@ test("an admin adds a colleague, resets their password and removes them", async 
   await logIn(admin, users.admin.email, users.admin.password);
   await admin
     .getByRole("navigation", { name: "Hoofdmenu" })
-    .getByRole("link", { name: "Account" })
+    .getByRole("link", { name: "Meer" })
     .click();
   await admin.getByRole("link", { name: "Gebruikers beheren" }).click();
   await expect(admin.getByRole("heading", { name: "Gebruikers", exact: true })).toBeVisible();

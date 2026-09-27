@@ -56,7 +56,7 @@ export function AddMemberForm() {
           spellCheck={false}
           className={inputClass}
         />
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-stone-500">
           Minstens {MIN_PASSWORD_LENGTH} tekens. Geef het persoonlijk door; bij het eerste aanmelden
           kiest de nieuwe gebruiker een eigen wachtwoord.
         </span>

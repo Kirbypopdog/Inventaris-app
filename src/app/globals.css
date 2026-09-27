@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
+/*
+ * Huisstijl: warm hout als accent (brand), warme grijstinten (stone), een crèmekleurige
+ * achtergrond. Kleuren enkel via deze tokens, zodat de stijl op één plek verandert.
+ */
+@theme {
+  --color-brand-50: #fbf6ef;
+  --color-brand-100: #f5e9d8;
+  --color-brand-200: #ebd1ae;
+  --color-brand-300: #deb27e;
+  --color-brand-400: #cf8f4f;
+  --color-brand-500: #b8732f;
+  --color-brand-600: #9c5b20;
+  --color-brand-700: #7f471a;
+  --color-brand-800: #633817;
+  --color-brand-900: #4a2a12;
+  --color-brand-950: #2b180a;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf7f2;
+  --foreground: #1c1917;
 }
 
 @theme inline {
@@ -12,8 +30,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #141110;
+    --foreground: #f0ebe4;
   }
 }
 

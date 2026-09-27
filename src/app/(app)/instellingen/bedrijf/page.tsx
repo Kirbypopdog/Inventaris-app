@@ -25,7 +25,7 @@ export default async function CompanyPage() {
     <main className={pageClass}>
       <PageHeader
         title="Bedrijfsgegevens"
-        back={{ href: "/account", label: "Account" }}
+        back={{ href: "/account", label: "Meer" }}
         description="Deze gegevens komen op offertes en facturen."
       />
       <div className={`${cardClass} md:max-w-2xl`}>

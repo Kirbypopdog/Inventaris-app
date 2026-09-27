@@ -51,10 +51,10 @@ export default async function CustomersPage({ searchParams }: PageProps<"/klante
             <li key={customer.id}>
               <Link
                 href={`/klanten/${customer.id}`}
-                className="flex min-h-16 flex-col gap-1 rounded-2xl border border-zinc-200 bg-white p-4 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+                className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
               >
                 <span className="text-lg font-semibold break-words">{customer.name}</span>
-                <span className="text-base text-zinc-600 dark:text-zinc-400">
+                <span className="text-base text-stone-600 dark:text-stone-400">
                   {[CUSTOMER_TYPE_LABELS[customer.type], customer.city, customer.phone]
                     .filter(Boolean)
                     .join(" · ")}
@@ -70,7 +70,7 @@ export default async function CustomersPage({ searchParams }: PageProps<"/klante
       )}
       <Link
         href={showArchived ? "/klanten" : "/klanten?archief=1"}
-        className="self-start py-2 text-base text-zinc-600 underline dark:text-zinc-400"
+        className="self-start py-2 text-base text-stone-600 underline dark:text-stone-400"
       >
         {showArchived ? "← Terug naar de klanten" : "Gearchiveerde klanten bekijken"}
       </Link>

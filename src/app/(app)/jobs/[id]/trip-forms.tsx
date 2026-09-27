@@ -58,7 +58,7 @@ export function TripForm({ trip, perKm }: { trip: TripFormValues; perKm: boolean
           <input type="hidden" name="distance" value="" />
         )}
       </div>
-      {perKm && <p className="-mt-1 text-sm text-zinc-500">Heen en terug samen.</p>}
+      {perKm && <p className="-mt-1 text-sm text-stone-500">Heen en terug samen.</p>}
       <label className="flex flex-col gap-2">
         <span className="text-base font-medium">Notitie</span>
         <input name="note" defaultValue={values.note} autoComplete="off" className={inputClass} />

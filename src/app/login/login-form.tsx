@@ -37,7 +37,7 @@ export function LoginForm() {
       <button type="submit" disabled={pending} className={primaryButtonClass}>
         {pending ? "Bezig met aanmelden…" : "Aanmelden"}
       </button>
-      <p className="text-base text-zinc-600 dark:text-zinc-400">
+      <p className="text-base text-stone-600 dark:text-stone-400">
         Wachtwoord vergeten? Vraag de beheerder om een nieuw tijdelijk wachtwoord.
       </p>
     </form>

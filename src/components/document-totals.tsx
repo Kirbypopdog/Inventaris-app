@@ -8,18 +8,18 @@ export function DocumentTotals({ totals }: { totals: VatBreakdown }) {
       <dd className="text-right tabular-nums">{formatEuro(totals.totalNet)}</dd>
       {totals.perRate.map((rate) => (
         <div key={rate.vatRate} className="contents">
-          <dt className="text-zinc-600 dark:text-zinc-400">
+          <dt className="text-stone-600 dark:text-stone-400">
             Btw {rate.vatRate}% op {formatEuro(rate.net)}
           </dt>
-          <dd className="text-right text-zinc-600 tabular-nums dark:text-zinc-400">
+          <dd className="text-right text-stone-600 tabular-nums dark:text-stone-400">
             {formatEuro(rate.vat)}
           </dd>
         </div>
       ))}
-      <dt className="border-t border-zinc-300 pt-2 font-semibold dark:border-zinc-700">
+      <dt className="border-t border-stone-300 pt-2 font-semibold dark:border-stone-700">
         Totaal incl. btw
       </dt>
-      <dd className="border-t border-zinc-300 pt-2 text-right font-semibold tabular-nums dark:border-zinc-700">
+      <dd className="border-t border-stone-300 pt-2 text-right font-semibold tabular-nums dark:border-stone-700">
         {formatEuro(totals.totalGross)}
       </dd>
     </dl>

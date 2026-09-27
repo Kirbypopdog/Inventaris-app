@@ -22,7 +22,7 @@ export default async function TravelSettingsPage() {
     <main className={pageClass}>
       <PageHeader
         title="Verplaatsingen"
-        back={{ href: "/account", label: "Account" }}
+        back={{ href: "/account", label: "Meer" }}
         description="Geldt voor alle jobs. Ritten die al toegevoegd zijn, houden hun tarief."
       />
       <div className={`${cardClass} md:max-w-2xl`}>

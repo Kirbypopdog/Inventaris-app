@@ -40,7 +40,7 @@ function TextField({
         className={inputClass}
         {...props}
       />
-      {hint && <span className="text-sm text-zinc-500">{hint}</span>}
+      {hint && <span className="text-sm text-stone-500">{hint}</span>}
     </label>
   );
 }
@@ -120,7 +120,7 @@ export function CompanyForm({ company }: { company: CompanyFormValues }) {
             </option>
           ))}
         </select>
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-stone-500">
           Voor nieuwe offerteregels, tenzij de job een ander tarief heeft.
         </span>
       </label>

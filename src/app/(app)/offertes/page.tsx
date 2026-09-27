@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { FilterChips } from "@/components/filter-chips";
 import { EmptyState, PageHeader, pageClass } from "@/components/page";
 import { QuoteList } from "@/components/quote-list";
 import { requireMember } from "@/lib/auth/session";
@@ -40,25 +40,14 @@ export default async function QuotesPage({ searchParams }: PageProps<"/offertes"
   return (
     <main className={pageClass}>
       <PageHeader title="Offertes" description="Een nieuwe offerte maak je vanop de job." />
-      <nav aria-label="Filter op status" className="flex flex-wrap gap-2">
-        {chips.map((chip) => {
-          const active = chip.status === status;
-          return (
-            <Link
-              key={chip.label}
-              href={chip.status ? `/offertes?status=${chip.status}` : "/offertes"}
-              aria-current={active ? "true" : undefined}
-              className={`flex min-h-12 items-center rounded-full border px-4 text-base ${
-                active
-                  ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-50 dark:bg-zinc-50 dark:text-zinc-900"
-                  : "border-zinc-300 dark:border-zinc-700"
-              }`}
-            >
-              {chip.label}
-            </Link>
-          );
-        })}
-      </nav>
+      <FilterChips
+        label="Filter op status"
+        chips={chips.map((chip) => ({
+          label: chip.label,
+          href: chip.status ? `/offertes?status=${chip.status}` : "/offertes",
+          active: chip.status === status,
+        }))}
+      />
       {quotes.length > 0 ? (
         <QuoteList quotes={quotes} showJob />
       ) : (

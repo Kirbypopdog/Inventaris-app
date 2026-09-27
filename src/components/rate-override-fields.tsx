@@ -26,13 +26,13 @@ export function RateOverrideFields({
   return (
     <details
       open={hasException}
-      className="rounded-xl border border-zinc-200 p-4 dark:border-zinc-800"
+      className="rounded-xl border border-stone-200 p-4 dark:border-stone-800"
     >
       <summary className="flex min-h-12 cursor-pointer items-center text-base font-medium">
         Uitzonderingen op tarieven
       </summary>
       <div className="mt-3 flex flex-col gap-4">
-        <p className="text-sm text-zinc-500">Leeg = {fallback}.</p>
+        <p className="text-sm text-stone-500">Leeg = {fallback}.</p>
         <label className="flex flex-col gap-2">
           <span className="text-base font-medium">Verplaatsingen</span>
           <select name="travelMethod" defaultValue={values.travelMethod} className={inputClass}>
@@ -81,7 +81,7 @@ export function RateOverrideFields({
             />
           </label>
         )}
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-stone-500">
           Bedragen excl. btw. Wat al geregistreerd is, houdt zijn tarief.
         </p>
       </div>

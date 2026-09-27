@@ -21,7 +21,7 @@ export default async function PasswordPage() {
         {!mustChangePassword && (
           <Link
             href="/"
-            className="min-h-12 py-3 text-base text-zinc-600 underline dark:text-zinc-400"
+            className="min-h-12 py-3 text-base text-stone-600 underline dark:text-stone-400"
           >
             ← Terug
           </Link>
@@ -30,7 +30,7 @@ export default async function PasswordPage() {
           {mustChangePassword ? "Kies je eigen wachtwoord" : "Wachtwoord wijzigen"}
         </h1>
         {mustChangePassword && (
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+          <p className="text-lg text-stone-600 dark:text-stone-400">
             Je meldde aan met een tijdelijk wachtwoord. Kies een eigen wachtwoord dat alleen jij
             kent.
           </p>

@@ -12,7 +12,7 @@ export default async function ExportPage() {
     <main className={pageClass}>
       <PageHeader
         title="Gegevens exporteren"
-        back={{ href: "/account", label: "Account" }}
+        back={{ href: "/account", label: "Meer" }}
         description="Download je gegevens als bestand voor Excel (csv). Bedragen zijn in euro."
       />
       <ul className="grid gap-3 md:grid-cols-2">
@@ -22,10 +22,10 @@ export default async function ExportPage() {
             <a
               href={`/export/${key}`}
               download
-              className="flex min-h-16 flex-col gap-1 rounded-2xl border border-zinc-200 bg-white p-4 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-600"
+              className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
             >
               <span className="text-lg font-semibold">{dataset.label}</span>
-              <span className="text-base text-zinc-600 dark:text-zinc-400">
+              <span className="text-base text-stone-600 dark:text-stone-400">
                 {dataset.description}
               </span>
             </a>

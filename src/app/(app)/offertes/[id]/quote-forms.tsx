@@ -151,7 +151,7 @@ export function QuoteLineForm({ line }: { line: QuoteLineValues }) {
           <option key={unit} value={unit} />
         ))}
       </datalist>
-      <p className="-mt-1 text-sm text-zinc-500">Prijs excl. btw.</p>
+      <p className="-mt-1 text-sm text-stone-500">Prijs excl. btw.</p>
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button
         type="submit"

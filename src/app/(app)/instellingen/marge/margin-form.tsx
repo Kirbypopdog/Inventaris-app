@@ -22,7 +22,7 @@ export function MarginForm({ margin }: { margin: string }) {
           autoComplete="off"
           className={inputClass}
         />
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-stone-500">
           Komt bovenop de aankoopprijs op offertes en facturen. 0 = geen marge.
         </span>
       </label>

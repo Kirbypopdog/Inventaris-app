@@ -20,7 +20,7 @@ export function saveErrorMessage(error: DatabaseErrorLike): string {
     case "23505":
       return "Dit bestaat al.";
     case "TS001":
-      return "Stel eerst een standaard-uurtarief in (Account → Uurtarieven).";
+      return "Stel eerst een standaard-uurtarief in (Meer → Uurtarieven).";
     case "TS002":
       return "Je bent niet ingeklokt.";
     case "TS003":

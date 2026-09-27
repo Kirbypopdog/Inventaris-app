@@ -72,7 +72,7 @@ export function MaterialForm({ material }: { material: MaterialFormValues }) {
           />
         </label>
       </div>
-      <p className="-mt-2 text-sm text-zinc-500">
+      <p className="-mt-2 text-sm text-stone-500">
         Prijs excl. btw. Bv. een doos van 200 vijzen voor 12,50. Koop je per stuk, laat dan 1 staan.
       </p>
       <label className="flex flex-col gap-2">
@@ -90,7 +90,7 @@ export function MaterialForm({ material }: { material: MaterialFormValues }) {
             <option key={unit} value={unit} />
           ))}
         </datalist>
-        <span className="text-sm text-zinc-500">Waarin je telt: stuk, m, plaat, …</span>
+        <span className="text-sm text-stone-500">Waarin je telt: stuk, m, plaat, …</span>
       </label>
       <label className="flex flex-col gap-2">
         <span className="text-base font-medium">Leverancier</span>
@@ -111,7 +111,7 @@ export function MaterialForm({ material }: { material: MaterialFormValues }) {
           autoComplete="off"
           className={inputClass}
         />
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-stone-500">
           Leeg = de algemene marge. Een marge op de job gaat hier nog voor.
         </span>
       </label>

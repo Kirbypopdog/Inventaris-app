@@ -81,3 +81,15 @@ export async function logOut(page: Page): Promise<void> {
   await page.getByRole("button", { name: "Afmelden" }).click();
   await expect(page).toHaveURL(/\/login$/);
 }
+
+/** Opens a page from the main menu. On a phone the less used pages sit behind "Meer". */
+export async function openFromMenu(page: Page, label: string): Promise<void> {
+  const nav = page.getByRole("navigation", { name: "Hoofdmenu" });
+  const direct = nav.getByRole("link", { name: label, exact: true });
+  if (await direct.isVisible()) {
+    await direct.click();
+    return;
+  }
+  await nav.getByRole("link", { name: "Meer", exact: true }).click();
+  await page.getByRole("main").getByRole("link", { name: label, exact: true }).click();
+}
