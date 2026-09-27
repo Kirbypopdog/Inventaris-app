@@ -5,13 +5,16 @@ export function SearchForm({
   label,
   defaultValue,
   hidden,
+  action,
 }: {
   label: string;
   defaultValue: string;
   hidden?: Record<string, string>;
+  /** Where to search; the current page by default. */
+  action?: string;
 }) {
   return (
-    <form role="search" className="flex gap-3">
+    <form role="search" action={action} className="flex gap-3">
       {Object.entries(hidden ?? {}).map(([name, value]) => (
         <input key={name} type="hidden" name={name} value={value} />
       ))}
