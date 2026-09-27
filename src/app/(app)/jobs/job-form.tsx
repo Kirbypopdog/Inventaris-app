@@ -24,6 +24,7 @@ export type JobFormValues = {
   kmRate: string;
   tripFlat: string;
   materialMargin: string;
+  vatRate: string;
 };
 
 export type CustomerOption = { id: string; name: string };
@@ -150,6 +151,20 @@ export function JobForm({
         </select>
         <span className="text-sm text-zinc-500">
           Geldt voor nieuwe uren. Uren die al geregistreerd zijn, houden hun tarief.
+        </span>
+      </label>
+
+      <label className="flex flex-col gap-2">
+        <span className="text-base font-medium">Btw-tarief</span>
+        <select name="vatRate" defaultValue={values.vatRate} className={inputClass}>
+          <option value="">Algemene instelling</option>
+          <option value="21">21%</option>
+          <option value="6">6% (renovatie woning ouder dan 10 jaar, particulier)</option>
+          <option value="12">12%</option>
+          <option value="0">0%</option>
+        </select>
+        <span className="text-sm text-zinc-500">
+          Standaard voor nieuwe offerteregels. Per regel aanpasbaar.
         </span>
       </label>
 

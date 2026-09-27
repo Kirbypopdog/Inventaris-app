@@ -259,6 +259,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                 hourlyRateId: job.hourly_rate_id ?? "",
                 ...travelOverrideFormValues(job),
                 materialMargin: marginFormValue(job.material_margin_bp),
+                vatRate: job.vat_rate === null ? "" : String(job.vat_rate),
               }}
             />
           </div>

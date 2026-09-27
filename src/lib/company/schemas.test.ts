@@ -11,6 +11,7 @@ const valid = {
   phone: "050 12 34 56",
   iban: "be68 5390 0754 7034",
   quoteValidityDays: "30",
+  vatRate: "21",
 };
 
 describe("companySchema", () => {
@@ -25,6 +26,7 @@ describe("companySchema", () => {
       phone: "050 12 34 56",
       iban: "BE68539007547034",
       quote_validity_days: 30,
+      vat_rate: 21,
     });
   });
 
@@ -40,6 +42,7 @@ describe("companySchema", () => {
         phone: "",
         iban: "",
         quoteValidityDays: "14",
+        vatRate: "6",
       }),
     );
     expect(row.vat_number).toBeNull();

@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { optionalText } from "@/lib/forms";
-import { parseEuro, type VatRate } from "@/lib/money";
+import { parseEuro } from "@/lib/money";
 import { parseQuantity } from "@/lib/quantity";
-import { isVatRate } from "./totals";
+import { vatRateSchema } from "@/lib/vat";
 
 const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, { error: "Geef een datum in." });
 
@@ -70,16 +70,7 @@ export const quoteLineSchema = z.object({
     }
     return amount;
   }),
-  // Read strictly: an empty field must not silently become 0%.
-  vatRate: z
-    .enum(["0", "6", "12", "21"], { error: "Kies een btw-tarief: 0, 6, 12 of 21%." })
-    .transform((value): VatRate => {
-      const rate = Number(value);
-      if (!isVatRate(rate)) {
-        throw new RangeError(`Onbekend btw-tarief: ${value}`);
-      }
-      return rate;
-    }),
+  vatRate: vatRateSchema,
 });
 
 export type QuoteLineInput = z.infer<typeof quoteLineSchema>;
