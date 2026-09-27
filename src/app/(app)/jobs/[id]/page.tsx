@@ -83,6 +83,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     tasksResult,
     notesResult,
     settingsResult,
+    measurementsResult,
   ] = await Promise.all([
     supabase
       .from("time_entries")
@@ -116,6 +117,11 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
       .eq("job_id", job.id)
       .order("created_at", { ascending: false }),
     supabase.from("settings").select("budget_warning_percent").single(),
+    supabase
+      .from("job_measurements")
+      .select("id, label, width_mm, height_mm, depth_mm, note")
+      .eq("job_id", job.id)
+      .order("created_at"),
   ]);
   if (
     entriesResult.error ||
@@ -125,7 +131,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     quotesResult.error ||
     tasksResult.error ||
     notesResult.error ||
-    settingsResult.error
+    settingsResult.error ||
+    measurementsResult.error
   ) {
     const loadError =
       entriesResult.error ??
@@ -135,7 +142,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
       quotesResult.error ??
       tasksResult.error ??
       notesResult.error ??
-      settingsResult.error;
+      settingsResult.error ??
+      measurementsResult.error;
     throw new Error(`Could not load job details: ${loadError?.message}`);
   }
   const quotes = quotesResult.data.map(toQuoteListItem);
@@ -179,6 +187,14 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     body: note.body,
     authorName: names.get(note.created_by) ?? "Oud-lid",
     createdAt: note.created_at,
+  }));
+  const measurements = measurementsResult.data.map((measurement) => ({
+    id: measurement.id,
+    label: measurement.label,
+    widthMm: measurement.width_mm,
+    heightMm: measurement.height_mm,
+    depthMm: measurement.depth_mm,
+    note: measurement.note,
   }));
   const today = toBrusselsDate(new Date().toISOString());
   const runningHere = entries.some(
@@ -284,7 +300,9 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
         />
       )}
 
-      {tab === "notities" && <JobNotes jobId={job.id} tasks={tasks} notes={notes} />}
+      {tab === "notities" && (
+        <JobNotes jobId={job.id} tasks={tasks} measurements={measurements} notes={notes} />
+      )}
 
       {tab === "uren" && (
         <JobHours
