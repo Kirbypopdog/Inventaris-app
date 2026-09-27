@@ -16,6 +16,7 @@ export type CompanyFormValues = {
   iban: string;
   quoteValidityDays: string;
   vatRate: string;
+  budgetWarningPercent: string;
 };
 
 function TextField({
@@ -124,6 +125,14 @@ export function CompanyForm({ company }: { company: CompanyFormValues }) {
           Voor nieuwe offerteregels, tenzij de job een ander tarief heeft.
         </span>
       </label>
+      <TextField
+        label="Budgetwaarschuwing (%)"
+        name="budgetWarningPercent"
+        inputMode="numeric"
+        defaultValue={values.budgetWarningPercent}
+        required
+        hint="Een job met een aanvaarde offerte krijgt een waarschuwing zodra dit deel van de offerte gepresteerd is."
+      />
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>
         {pending ? "Bezig met opslaan…" : "Opslaan"}

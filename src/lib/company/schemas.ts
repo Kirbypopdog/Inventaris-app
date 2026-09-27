@@ -15,6 +15,7 @@ export const COMPANY_FIELDS = [
   "iban",
   "quoteValidityDays",
   "vatRate",
+  "budgetWarningPercent",
 ] as const;
 
 const ibanSchema = z
@@ -51,6 +52,14 @@ export const companySchema = z.object({
       error: "Een offerte is 1 tot 365 dagen geldig.",
     }),
   vatRate: vatRateSchema,
+  budgetWarningPercent: z
+    .string()
+    .trim()
+    .regex(/^\d{1,3}$/, { error: "Geef een percentage in voor de budgetwaarschuwing, bv. 80." })
+    .transform(Number)
+    .refine((percent) => percent >= 1 && percent <= 100, {
+      error: "De budgetwaarschuwing ligt tussen 1 en 100%.",
+    }),
 });
 
 export type CompanyInput = z.infer<typeof companySchema>;
@@ -68,5 +77,6 @@ export function companyRow(input: CompanyInput) {
     iban: input.iban,
     quote_validity_days: input.quoteValidityDays,
     vat_rate: input.vatRate,
+    budget_warning_percent: input.budgetWarningPercent,
   };
 }

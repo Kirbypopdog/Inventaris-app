@@ -10,6 +10,7 @@ import { MapPinIcon } from "@/components/icons";
 import { JobTabs } from "@/components/job-tabs";
 import { QuoteList } from "@/components/quote-list";
 import { jobCalculation } from "@/lib/analyses";
+import { jobBudget } from "@/lib/budget";
 import { loadAnalysisData } from "@/lib/analyses-queries";
 import { isManagerRole } from "@/lib/auth/roles";
 import { formatAddress, mapsUrl } from "@/lib/address";
@@ -81,6 +82,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     analysis,
     tasksResult,
     notesResult,
+    settingsResult,
   ] = await Promise.all([
     supabase
       .from("time_entries")
@@ -113,6 +115,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
       .select("id, body, created_by, created_at")
       .eq("job_id", job.id)
       .order("created_at", { ascending: false }),
+    supabase.from("settings").select("budget_warning_percent").single(),
   ]);
   if (
     entriesResult.error ||
@@ -121,7 +124,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     materialsResult.error ||
     quotesResult.error ||
     tasksResult.error ||
-    notesResult.error
+    notesResult.error ||
+    settingsResult.error
   ) {
     const loadError =
       entriesResult.error ??
@@ -130,7 +134,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
       materialsResult.error ??
       quotesResult.error ??
       tasksResult.error ??
-      notesResult.error;
+      notesResult.error ??
+      settingsResult.error;
     throw new Error(`Could not load job details: ${loadError?.message}`);
   }
   const quotes = quotesResult.data.map(toQuoteListItem);
@@ -194,6 +199,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
   const period = formatPeriod(job.starts_on, job.ends_on);
   const jobIsOpen = job.status === "planned" || job.status === "active";
 
+  const calculation = jobCalculation(analysis);
   const hours = sumEntries(entries);
   const tripCount = travel.trips.length;
   const latestQuote = quotes[0];
@@ -273,7 +279,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
           description={job.description}
           tiles={tiles}
           openTasks={tasks.filter((task) => !task.done)}
-          calculation={jobCalculation(analysis)}
+          calculation={calculation}
+          budget={jobBudget(calculation, settingsResult.data.budget_warning_percent)}
         />
       )}
 

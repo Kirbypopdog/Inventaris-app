@@ -14,7 +14,7 @@ export default async function CompanyPage() {
   const { data: settings, error } = await supabase
     .from("settings")
     .select(
-      "company_name, vat_number, address_line, postal_code, city, email, phone, iban, quote_validity_days, vat_rate",
+      "company_name, vat_number, address_line, postal_code, city, email, phone, iban, quote_validity_days, vat_rate, budget_warning_percent",
     )
     .single();
   if (error) {
@@ -26,7 +26,7 @@ export default async function CompanyPage() {
       <PageHeader
         title="Bedrijfsgegevens"
         back={{ href: "/account", label: "Meer" }}
-        description="Deze gegevens komen op offertes en facturen."
+        description="Je gegevens voor offertes en facturen, en de standaarden voor offertes en budget."
       />
       <div className={`${cardClass} md:max-w-2xl`}>
         <CompanyForm
@@ -41,6 +41,7 @@ export default async function CompanyPage() {
             iban: settings.iban ? formatIban(settings.iban) : "",
             quoteValidityDays: String(settings.quote_validity_days),
             vatRate: String(settings.vat_rate),
+            budgetWarningPercent: String(settings.budget_warning_percent),
           }}
         />
       </div>

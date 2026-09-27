@@ -12,6 +12,7 @@ const valid = {
   iban: "be68 5390 0754 7034",
   quoteValidityDays: "30",
   vatRate: "21",
+  budgetWarningPercent: "80",
 };
 
 describe("companySchema", () => {
@@ -27,6 +28,7 @@ describe("companySchema", () => {
       iban: "BE68539007547034",
       quote_validity_days: 30,
       vat_rate: 21,
+      budget_warning_percent: 80,
     });
   });
 
@@ -43,6 +45,7 @@ describe("companySchema", () => {
         iban: "",
         quoteValidityDays: "14",
         vatRate: "6",
+        budgetWarningPercent: "90",
       }),
     );
     expect(row.vat_number).toBeNull();
@@ -57,6 +60,9 @@ describe("companySchema", () => {
     [{ email: "info@" }, "e-mailadres"],
     [{ quoteValidityDays: "0" }, "1 tot 365"],
     [{ quoteValidityDays: "" }, "aantal dagen"],
+    [{ budgetWarningPercent: "0" }, "tussen 1 en 100"],
+    [{ budgetWarningPercent: "101" }, "tussen 1 en 100"],
+    [{ budgetWarningPercent: "80%" }, "budgetwaarschuwing"],
   ])("refuses %j", (change, message) => {
     const result = companySchema.safeParse({ ...valid, ...change });
     expect(result.success).toBe(false);

@@ -11,8 +11,17 @@ function Row({ label, value, strong = false }: { label: string; value: string; s
   );
 }
 
-/** Post-calculation of a job, all amounts excl. VAT. */
-export function JobCalculationSummary({ calculation }: { calculation: JobCalculation }) {
+/**
+ * Post-calculation of a job, all amounts excl. VAT. The job page leaves out the verdict on
+ * the quote (`showDifference`), because its budget bar already says it.
+ */
+export function JobCalculationSummary({
+  calculation,
+  showDifference = true,
+}: {
+  calculation: JobCalculation;
+  showDifference?: boolean;
+}) {
   const { difference } = calculation;
   return (
     <div className="flex flex-col gap-3">
@@ -29,7 +38,7 @@ export function JobCalculationSummary({ calculation }: { calculation: JobCalcula
           <Row label="Aanvaarde offerte" value={formatEuro(calculation.quoteNet)} />
         )}
       </dl>
-      {difference !== null && (
+      {showDifference && difference !== null && (
         <p
           className={`rounded-xl p-3 text-base ${
             difference >= 0
