@@ -88,6 +88,8 @@ Belangrijke keuzes:
 
 ### Fase 2: Geld
 
+- [x] Bedrijfsgegevens (Account → Bedrijfsgegevens): naam, btw-nummer, adres, contact en
+      IBAN, met controle op tikfouten in btw- en rekeningnummer
 - [ ] Offertes (pdf)
 - [ ] Facturen (pdf + UBL), doorlopende nummering, creditnota's
 - [ ] Btw-logica (6%/21%) en marge op materiaal

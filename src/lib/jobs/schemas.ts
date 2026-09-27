@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { postalCodeSchema } from "@/lib/contact-fields";
 import { optionalText } from "@/lib/forms";
 import {
   TRAVEL_OVERRIDE_FIELDS,
@@ -50,13 +51,7 @@ export const jobSchema = z
       .max(200, { error: "De naam is te lang." }),
     description: optionalText(5000, "De omschrijving is te lang (maximaal 5000 tekens)."),
     addressLine: optionalText(200, "Het adres is te lang."),
-    postalCode: z
-      .string()
-      .trim()
-      .refine((value) => value === "" || /^\d{4}$/.test(value), {
-        error: "Een Belgische postcode heeft 4 cijfers.",
-      })
-      .transform((value) => (value === "" ? null : value)),
+    postalCode: postalCodeSchema,
     city: optionalText(100, "De gemeente is te lang."),
     status: jobStatusSchema,
     startsOn: optionalDate,

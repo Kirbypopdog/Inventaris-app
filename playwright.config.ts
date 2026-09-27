@@ -35,6 +35,7 @@ export default defineConfig({
         "trips.spec.ts",
         "rate-overrides.spec.ts",
         "forgotten-clock.spec.ts",
+        "company.spec.ts",
       ],
       use: {
         ...devices["Desktop Chrome"],

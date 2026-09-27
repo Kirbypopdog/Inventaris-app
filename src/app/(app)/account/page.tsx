@@ -35,6 +35,9 @@ export default async function AccountPage() {
             <Link href="/gebruikers" className={secondaryLinkButtonClass}>
               Gebruikers beheren
             </Link>
+            <Link href="/instellingen/bedrijf" className={secondaryLinkButtonClass}>
+              Bedrijfsgegevens
+            </Link>
             <Link href="/instellingen/uurtarieven" className={secondaryLinkButtonClass}>
               Uurtarieven
             </Link>
