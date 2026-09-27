@@ -61,7 +61,7 @@ function WeekRow({
     <li
       aria-label={`Week van ${formatDay(monday)} tot ${formatDay(addDays(monday, 6))}`}
       className={`relative grid grid-cols-7 content-start gap-y-1 border-b border-stone-200 pb-2 last:border-b-0 dark:border-stone-800 ${
-        large ? "min-h-48 md:min-h-64" : "min-h-20 md:min-h-28"
+        large ? "min-h-32 md:min-h-40" : "min-h-20 md:min-h-28"
       }`}
     >
       <span aria-hidden="true" className="absolute inset-0 grid grid-cols-7">

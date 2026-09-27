@@ -2,16 +2,14 @@ import Link from "next/link";
 import { ElapsedTime } from "@/components/clock";
 import { WeekCalendar } from "@/components/agenda-grid";
 import { ClockPanel } from "@/components/clock-panel";
-import { JobList } from "@/components/job-list";
 import { SearchForm } from "@/components/search-form";
 import {
-  EmptyState,
   PageHeader,
   linkButtonClass,
   pageClass,
   secondaryLinkButtonClass,
 } from "@/components/page";
-import { addDays, weekStart } from "@/lib/agenda";
+import { addDays, formatDay, weekStart } from "@/lib/agenda";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
 import { getOtherRunningEntries, getRunningEntry } from "@/lib/hours/queries";
@@ -51,7 +49,7 @@ export default async function StartPage() {
       .select("id", { count: "exact", head: true })
       .eq("is_default", true)
       .is("archived_at", null),
-    plannedJobsQuery(supabase, today, sunday),
+    plannedJobsQuery(supabase, weekStart(today), sunday),
   ]);
   if (openJobs.error || defaultRate.error || thisWeek.error) {
     const loadError = openJobs.error ?? defaultRate.error ?? thisWeek.error;
@@ -62,7 +60,10 @@ export default async function StartPage() {
 
   return (
     <main className={pageClass}>
-      <PageHeader title={`Dag ${session.member.displayName}`} />
+      <PageHeader
+        title={`Dag ${session.member.displayName}`}
+        description={formatDay(today).replace(/^./, (letter) => letter.toUpperCase())}
+      />
       <SearchForm
         label="Zoek in vorige jobs, klanten, offertes…"
         defaultValue=""
@@ -70,7 +71,7 @@ export default async function StartPage() {
       />
       <ClockPanel
         running={running}
-        jobs={jobs.map((job) => ({ id: job.id, title: job.title, customerName: job.customerName }))}
+        jobs={jobs}
         hasDefaultRate={(defaultRate.count ?? 0) > 0}
         canManageRates={isManagerRole(session.member.role)}
       />
@@ -106,22 +107,14 @@ export default async function StartPage() {
         </div>
         <WeekCalendar monday={weekStart(today)} jobs={weekJobs} today={today} />
       </section>
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">Lopende jobs</h2>
-        {jobs.length > 0 ? (
-          <JobList jobs={jobs} />
-        ) : (
-          <EmptyState>Geen geplande of lopende jobs.</EmptyState>
-        )}
-        <div className="grid gap-3 md:grid-cols-2">
-          <Link href="/jobs/nieuw" className={linkButtonClass}>
-            Nieuwe job
-          </Link>
-          <Link href="/klanten/nieuw" className={secondaryLinkButtonClass}>
-            Nieuwe klant
-          </Link>
-        </div>
-      </section>
+      <div className="grid gap-3 md:grid-cols-2">
+        <Link href="/jobs/nieuw" className={linkButtonClass}>
+          Nieuwe job
+        </Link>
+        <Link href="/klanten/nieuw" className={secondaryLinkButtonClass}>
+          Nieuwe klant
+        </Link>
+      </div>
     </main>
   );
 }

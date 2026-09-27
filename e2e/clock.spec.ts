@@ -35,7 +35,8 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
   // One tap on a job clocks in; a planned job becomes active.
   await page.goto("/");
   const clock = page.getByRole("region", { name: "Klok" });
-  await clock.getByRole("button", { name: `${jobA} · ${customer}` }).click();
+  const jobRow = (title: string) => clock.getByRole("listitem").filter({ hasText: title });
+  await jobRow(jobA).getByRole("button", { name: "Inklokken" }).click();
   await expect(clock).toContainText("Ingeklokt sinds");
   await expect(clock.getByRole("link", { name: jobA })).toBeVisible();
   await expect(clock.getByRole("link", { name: "Materiaal toevoegen" })).toHaveAttribute(
@@ -44,12 +45,11 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
   );
 
   // Switch to another job in one go.
-  await clock.getByText("Wissel van job").click();
-  await clock.getByRole("button", { name: `${jobB} · ${customer}` }).click();
+  await jobRow(jobB).getByRole("button", { name: "Wissel naar deze job" }).click();
   await expect(clock.getByRole("link", { name: jobB })).toBeVisible();
 
   await clock.getByRole("button", { name: "Uitklokken" }).click();
-  await expect(clock.getByRole("heading", { name: "Inklokken op" })).toBeVisible();
+  await expect(clock.getByRole("heading", { name: "Mijn jobs" })).toBeVisible();
 
   // Job A: active now, one short entry at the default rate.
   await openJob(page, jobA);
