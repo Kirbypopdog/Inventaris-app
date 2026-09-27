@@ -347,6 +347,32 @@ export const EXPORT_DATASETS = {
       };
     },
   },
+  bestellijst: {
+    label: "Bestellijst",
+    description: "Alles op de bestellijst, besteld en nog te bestellen.",
+    async load(supabase) {
+      const rows = await fetchAll((from, to) =>
+        supabase
+          .from("order_items")
+          .select("*, jobs(title)")
+          .order("created_at")
+          .order("id")
+          .range(from, to),
+      );
+      return {
+        headers: ["Leverancier", "Wat", "Aantal", "Eenheid", "Job", "Op de lijst", "Besteld"],
+        rows: rows.map((row) => [
+          row.supplier,
+          row.description,
+          row.quantity,
+          row.unit,
+          row.jobs?.title ?? null,
+          toBrusselsDate(row.created_at),
+          row.ordered_at ? toBrusselsDate(row.ordered_at) : null,
+        ]),
+      };
+    },
+  },
   offertes: {
     label: "Offertes",
     description: "Alle offertes met status en totalen.",

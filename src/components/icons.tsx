@@ -56,6 +56,14 @@ export const MaterialsIcon = (props: IconProps) => (
   </Icon>
 );
 
+export const OrderListIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M9 4h6v3H9z" />
+    <path d="M9 5.5H6.5A1.5 1.5 0 0 0 5 7v12.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V7a1.5 1.5 0 0 0-1.5-1.5H15" />
+    <path d="m8.5 12 1.5 1.5 2.5-2.5M8.5 17h7" />
+  </Icon>
+);
+
 export const AnalysesIcon = (props: IconProps) => (
   <Icon {...props}>
     <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />

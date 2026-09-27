@@ -100,7 +100,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
       .order("created_at", { ascending: false }),
     supabase
       .from("materials")
-      .select("id, name, unit, package_price_cents, units_per_package")
+      .select("id, name, unit, package_price_cents, units_per_package, supplier")
       .is("archived_at", null)
       .order("name"),
     getJobTrips(supabase, job.id),
@@ -314,7 +314,18 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
       )}
 
       {tab === "materiaal" && (
-        <JobMaterials jobId={job.id} usages={usages} materials={materials} today={today} />
+        <JobMaterials
+          jobId={job.id}
+          usages={usages}
+          materials={materials}
+          orderMaterials={materialsResult.data.map((material) => ({
+            id: material.id,
+            name: material.name,
+            unit: material.unit,
+            supplier: material.supplier,
+          }))}
+          today={today}
+        />
       )}
 
       {tab === "ritten" && (

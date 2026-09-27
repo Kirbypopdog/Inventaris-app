@@ -42,7 +42,13 @@ const QUOTES: NavItem = {
 };
 /** Everything that is not in the phone's bottom bar is reached via "Meer" there. */
 const SECONDARY: NavItem[] = [
-  { href: "/materiaal", label: "Materiaal", icon: <MaterialsIcon />, prefixes: ["/materiaal"] },
+  {
+    href: "/materiaal",
+    label: "Materiaal",
+    icon: <MaterialsIcon />,
+    // The order list belongs with the materials.
+    prefixes: ["/materiaal", "/bestellijst"],
+  },
   { href: "/analyses", label: "Analyses", icon: <AnalysesIcon />, prefixes: ["/analyses"] },
   { href: "/zoeken", label: "Zoeken", icon: <SearchIcon />, prefixes: ["/zoeken"] },
 ];
