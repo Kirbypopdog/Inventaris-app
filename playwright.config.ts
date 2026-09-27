@@ -39,6 +39,7 @@ export default defineConfig({
         "quotes.spec.ts",
         "export.spec.ts",
         "search.spec.ts",
+        "agenda.spec.ts",
       ],
       use: {
         ...devices["Desktop Chrome"],

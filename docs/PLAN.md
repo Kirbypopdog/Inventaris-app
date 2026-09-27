@@ -100,7 +100,8 @@ Belangrijke keuzes:
 
 ### Fase 3: Overzicht
 
-- [ ] Agenda
+- [x] Agenda (/agenda): week per week, jobs volgens start- en einddatum, jobs zonder datum,
+      "Deze week" op de startpagina
 - [x] Zoeken in alles (startpagina en /zoeken): jobs (ook via gebruikt materiaal en notities),
       klanten, offertes (ook via regels) en materiaal, met Nederlandse woordstammen
 - [ ] Analyses: winst per job, uren per maand, materiaalkosten
