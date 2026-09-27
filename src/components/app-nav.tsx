@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
-import { toggleSidebar } from "@/lib/sidebar-actions";
+import { sidebarCookie } from "@/lib/sidebar";
 import type { ReactNode } from "react";
 import {
   AgendaIcon,
@@ -80,8 +81,16 @@ function isActive(item: NavItem, pathname: string): boolean {
  * The sidebar folds to icons; the labels stay for screen readers and as a tooltip.
  * Only one of the two lists is displayed, so the other is hidden from screen readers too.
  */
-export function AppNav({ collapsed }: { collapsed: boolean }) {
+export function AppNav({ collapsed: initiallyCollapsed }: { collapsed: boolean }) {
   const pathname = usePathname();
+  // Folding happens right away in the browser; the cookie lets the server render it the same
+  // way on the next page load.
+  const [collapsed, setCollapsed] = useState(initiallyCollapsed);
+  function toggle() {
+    const next = !collapsed;
+    setCollapsed(next);
+    document.cookie = sidebarCookie(next);
+  }
 
   return (
     <nav
@@ -147,20 +156,19 @@ export function AppNav({ collapsed }: { collapsed: boolean }) {
           );
         })}
       </ul>
-      <form action={toggleSidebar} className="mt-auto hidden px-3 md:block">
+      <div
+        className={`mt-auto hidden px-3 md:flex ${collapsed ? "justify-center" : "justify-end"}`}
+      >
         <button
-          type="submit"
-          title={collapsed ? "Menu uitklappen" : undefined}
-          className={`hover:bg-wood-800 flex min-h-12 w-full items-center gap-3 rounded-xl text-base text-stone-400 hover:text-white ${
-            collapsed ? "justify-center px-0" : "px-3"
-          }`}
+          type="button"
+          onClick={toggle}
+          aria-label={collapsed ? "Menu uitklappen" : "Menu inklappen"}
+          title={collapsed ? "Menu uitklappen" : "Menu inklappen"}
+          className="hover:bg-wood-800 flex size-11 items-center justify-center rounded-xl text-stone-400 hover:text-white"
         >
           {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          <span className={collapsed ? "sr-only" : undefined}>
-            {collapsed ? "Menu uitklappen" : "Menu inklappen"}
-          </span>
         </button>
-      </form>
+      </div>
     </nav>
   );
 }
