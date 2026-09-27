@@ -15,6 +15,10 @@ export type BasisPoints = number;
 export const VAT_RATES = [0, 6, 12, 21] as const;
 export type VatRate = (typeof VAT_RATES)[number];
 
+export function isVatRate(rate: number): rate is VatRate {
+  return (VAT_RATES as readonly number[]).includes(rate);
+}
+
 export function cents(value: number): Cents {
   if (!Number.isSafeInteger(value)) {
     throw new RangeError(`Bedrag moet een geheel aantal cent zijn, kreeg ${value}`);

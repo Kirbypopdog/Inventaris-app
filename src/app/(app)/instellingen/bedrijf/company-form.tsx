@@ -15,6 +15,7 @@ export type CompanyFormValues = {
   phone: string;
   iban: string;
   quoteValidityDays: string;
+  vatRate: string;
 };
 
 function TextField({
@@ -110,6 +111,19 @@ export function CompanyForm({ company }: { company: CompanyFormValues }) {
         required
         hint="Een nieuwe offerte is standaard zo lang geldig. Per offerte aanpasbaar."
       />
+      <label className="flex flex-col gap-2">
+        <span className="text-base font-medium">Standaard btw-tarief</span>
+        <select name="vatRate" defaultValue={values.vatRate} className={inputClass}>
+          {["21", "6", "12", "0"].map((rate) => (
+            <option key={rate} value={rate}>
+              {rate}%
+            </option>
+          ))}
+        </select>
+        <span className="text-sm text-zinc-500">
+          Voor nieuwe offerteregels, tenzij de job een ander tarief heeft.
+        </span>
+      </label>
       {state.status !== "idle" && <FormMessage status={state.status} message={state.message} />}
       <button type="submit" disabled={pending} className={primaryButtonClass}>
         {pending ? "Bezig met opslaan…" : "Opslaan"}

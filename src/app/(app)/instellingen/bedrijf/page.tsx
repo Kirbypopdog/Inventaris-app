@@ -14,7 +14,7 @@ export default async function CompanyPage() {
   const { data: settings, error } = await supabase
     .from("settings")
     .select(
-      "company_name, vat_number, address_line, postal_code, city, email, phone, iban, quote_validity_days",
+      "company_name, vat_number, address_line, postal_code, city, email, phone, iban, quote_validity_days, vat_rate",
     )
     .single();
   if (error) {
@@ -40,6 +40,7 @@ export default async function CompanyPage() {
             phone: settings.phone ?? "",
             iban: settings.iban ? formatIban(settings.iban) : "",
             quoteValidityDays: String(settings.quote_validity_days),
+            vatRate: String(settings.vat_rate),
           }}
         />
       </div>

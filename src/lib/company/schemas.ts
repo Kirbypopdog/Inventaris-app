@@ -2,6 +2,7 @@ import { z } from "zod";
 import { emailSchema, postalCodeSchema, vatNumberSchema } from "@/lib/contact-fields";
 import { optionalText } from "@/lib/forms";
 import { isValidIban, normalizeIban } from "@/lib/iban";
+import { vatRateSchema } from "@/lib/vat";
 
 export const COMPANY_FIELDS = [
   "companyName",
@@ -13,6 +14,7 @@ export const COMPANY_FIELDS = [
   "phone",
   "iban",
   "quoteValidityDays",
+  "vatRate",
 ] as const;
 
 const ibanSchema = z
@@ -48,6 +50,7 @@ export const companySchema = z.object({
     .refine((days) => days >= 1 && days <= 365, {
       error: "Een offerte is 1 tot 365 dagen geldig.",
     }),
+  vatRate: vatRateSchema,
 });
 
 export type CompanyInput = z.infer<typeof companySchema>;
@@ -64,5 +67,6 @@ export function companyRow(input: CompanyInput) {
     phone: input.phone,
     iban: input.iban,
     quote_validity_days: input.quoteValidityDays,
+    vat_rate: input.vatRate,
   };
 }

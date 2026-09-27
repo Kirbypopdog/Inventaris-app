@@ -16,6 +16,7 @@ const valid = {
   kmRate: "",
   tripFlat: "",
   materialMargin: "",
+  vatRate: "",
 };
 
 describe("jobSchema", () => {
@@ -35,6 +36,7 @@ describe("jobSchema", () => {
       km_rate_cents: null,
       trip_flat_cents: null,
       material_margin_bp: null,
+      vat_rate: null,
     });
   });
 
@@ -43,6 +45,7 @@ describe("jobSchema", () => {
       jobSchema.parse({ ...valid, travelMethod: "included", materialMargin: "12,5" }),
     );
     expect(row).toMatchObject({ travel_method: "included", material_margin_bp: 1250 });
+    expect(jobRow(jobSchema.parse({ ...valid, vatRate: "6" })).vat_rate).toBe(6);
   });
 
   it("accepts a period", () => {

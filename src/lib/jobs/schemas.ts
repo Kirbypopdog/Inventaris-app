@@ -8,6 +8,7 @@ import {
   travelOverrideShape,
 } from "@/lib/rates/overrides";
 import { Constants } from "@/lib/supabase/database.types";
+import { optionalVatRateSchema } from "@/lib/vat";
 
 export const JOB_FIELDS = [
   "customerId",
@@ -22,6 +23,7 @@ export const JOB_FIELDS = [
   "hourlyRateId",
   ...TRAVEL_OVERRIDE_FIELDS,
   "materialMargin",
+  "vatRate",
 ] as const;
 
 function isRealDate(value: string): boolean {
@@ -63,6 +65,8 @@ export const jobSchema = z
     ...travelOverrideShape,
     // Empty: the margin of the material, or else the general margin.
     materialMargin: optionalMarginSchema,
+    // Empty: the general VAT rate.
+    vatRate: optionalVatRateSchema,
   })
   .refine((job) => !job.startsOn || !job.endsOn || job.endsOn >= job.startsOn, {
     error: "De einddatum ligt vóór de startdatum.",
@@ -86,5 +90,6 @@ export function jobRow(input: JobInput) {
     hourly_rate_id: input.hourlyRateId,
     ...travelOverrideRow(input),
     material_margin_bp: input.materialMargin,
+    vat_rate: input.vatRate,
   };
 }

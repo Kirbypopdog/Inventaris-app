@@ -93,7 +93,8 @@ Belangrijke keuzes:
 - [x] Offertes: per job, nummer per jaar (OFF-2026-001), regels met btw per regel, totalen
       per btw-tarief, status (ontwerp, verzonden, aanvaard, geweigerd); na verzenden vergrendeld
 - [ ] Offerte als pdf
-- [ ] Btw-tarief per job instellen (standaard voor nieuwe regels) en btw verlegd
+- [x] Btw-tarief per job en standaard btw-tarief (standaard voor nieuwe offerteregels)
+- [ ] Btw verlegd (medecontractant), zie `docs/VRAGEN.md`
 - [ ] Facturen (pdf + UBL), doorlopende nummering, creditnota's
 - [ ] Btw-logica (6%/21%) en marge op materiaal
 

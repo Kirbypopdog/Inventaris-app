@@ -1,18 +1,14 @@
 import {
   cents,
   multiply,
+  isVatRate,
   vatBreakdown,
-  VAT_RATES,
   type Cents,
   type VatBreakdown,
   type VatRate,
 } from "@/lib/money";
 
 export type PricedLine = { quantity: number; unitPriceCents: number; vatRate: number };
-
-export function isVatRate(rate: number): rate is VatRate {
-  return (VAT_RATES as readonly number[]).includes(rate);
-}
 
 function toVatRate(rate: number): VatRate {
   if (!isVatRate(rate)) {

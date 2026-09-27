@@ -68,3 +68,26 @@ test("a quote: lines, VAT per rate, send, back to draft, delete", async ({ page 
   await expect(page.getByRole("heading", { name: job })).toBeVisible();
   await expect(page.getByRole("main")).toContainText("Nog geen offertes voor deze job.");
 });
+
+test("a job at 6% gives new quote lines 6% VAT", async ({ page }, testInfo) => {
+  const p = testInfo.project.name;
+  const customer = `E2E Renovatieklant ${p}`;
+  const job = `E2E Renovatie ${p}`;
+  sql(`update public.settings set vat_rate = 21`);
+  sql(`insert into public.customers (type, name) values ('private', '${customer}')`);
+  sql(
+    `insert into public.jobs (customer_id, title)
+     select id, '${job}' from public.customers where name = '${customer}'`,
+  );
+
+  await logIn(page, users.owner.email, users.owner.password);
+  await page.goto("/jobs");
+  await page.getByRole("link", { name: new RegExp(`^${job}`) }).click();
+  await page.getByRole("combobox", { name: "Btw-tarief" }).selectOption("6");
+  await page.getByRole("button", { name: "Opslaan" }).click();
+  await expect(page.getByRole("main").getByRole("status")).toContainText("opgeslagen");
+
+  await page.getByRole("button", { name: "Nieuwe offerte" }).click();
+  const addForm = page.getByRole("region", { name: "Regel toevoegen" });
+  await expect(addForm.getByRole("combobox", { name: "Btw" })).toHaveValue("6");
+});

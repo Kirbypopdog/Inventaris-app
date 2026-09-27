@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { documentTotals, isVatRate, lineNet } from "./totals";
+import { isVatRate } from "@/lib/money";
+import { documentTotals, lineNet } from "./totals";
 
 describe("lineNet", () => {
   it("multiplies quantity by unit price, rounded once", () => {
