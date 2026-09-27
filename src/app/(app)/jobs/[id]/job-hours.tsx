@@ -1,7 +1,12 @@
 import { clockIn, clockOut, deleteTimeEntry, stopTimeEntry } from "@/app/(app)/uren/actions";
 import { ActionButton } from "@/components/action-button";
 import { ElapsedTime } from "@/components/clock";
-import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
+import {
+  clockInButtonClass,
+  clockOutButtonClass,
+  dangerButtonClass,
+  secondaryButtonClass,
+} from "@/components/form";
 import { EmptyState, cardClass } from "@/components/page";
 import { entryTotals, sumEntries } from "@/lib/hours/totals";
 import { cents, formatEuro } from "@/lib/money";
@@ -18,9 +23,6 @@ export type JobHoursEntry = {
   hourlyRateCents: number;
   note: string | null;
 };
-
-const clockButtonClass =
-  "min-h-16 w-full rounded-2xl px-4 text-lg font-semibold text-white disabled:opacity-60";
 
 /** Clock button for this job, the list of hours, totals and manual entry. */
 export function JobHours({
@@ -57,7 +59,7 @@ export function JobHours({
           values={{}}
           label="Uitklokken"
           pendingLabel="Bezig met uitklokken…"
-          className={`${clockButtonClass} bg-red-700 dark:bg-red-600`}
+          className={clockOutButtonClass}
         />
       ) : (
         jobIsOpen && (
@@ -66,7 +68,7 @@ export function JobHours({
             values={{ jobId }}
             label="Inklokken op deze job"
             pendingLabel="Bezig met inklokken…"
-            className={`${clockButtonClass} bg-green-700 dark:bg-green-600`}
+            className={clockInButtonClass}
           />
         )
       )}

@@ -22,6 +22,15 @@ export const choiceClass =
   "dark:border-stone-700 dark:bg-stone-900 dark:has-[:checked]:border-brand-400 " +
   "dark:has-[:checked]:bg-brand-950";
 
+/** Clocking in and out: big enough to hit with work gloves on. */
+export const clockInButtonClass =
+  "min-h-14 w-full rounded-xl bg-brand-700 px-4 text-lg font-semibold text-white " +
+  "hover:bg-brand-800 disabled:opacity-60 dark:bg-brand-400 dark:text-brand-950";
+
+export const clockOutButtonClass =
+  "min-h-14 w-full rounded-xl bg-red-700 px-4 text-lg font-semibold text-white " +
+  "hover:bg-red-800 disabled:opacity-60 dark:bg-red-600";
+
 export const dangerButtonClass =
   "min-h-14 w-full rounded-xl border border-red-300 px-4 text-lg font-medium text-red-700 " +
   "disabled:opacity-60 dark:border-red-800 dark:text-red-300";
