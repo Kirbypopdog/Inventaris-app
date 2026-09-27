@@ -101,7 +101,8 @@ Belangrijke keuzes:
 ### Fase 3: Overzicht
 
 - [ ] Agenda
-- [ ] Zoeken in vorige jobs
+- [x] Zoeken in alles (startpagina en /zoeken): jobs (ook via gebruikt materiaal en notities),
+      klanten, offertes (ook via regels) en materiaal, met Nederlandse woordstammen
 - [ ] Analyses: winst per job, uren per maand, materiaalkosten
 - [x] Export naar csv voor Excel (Account → Gegevens exporteren): klanten, jobs, uren,
       materiaal, verplaatsingen, offertes en offerteregels

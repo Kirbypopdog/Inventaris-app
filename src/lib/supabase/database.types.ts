@@ -393,6 +393,11 @@ isOneToOne: false
 "require_password_change":
 { Args: { "target_user_id": string }; Returns: undefined
                            },
+"search_all":
+{ Args: { "search_term": string }; Returns: {
+              "detail": string,"id": string,"kind": string,"rank": number,"title": string
+            }[]
+                           },
 "set_default_hourly_rate":
 { Args: { "rate_id": string }; Returns: undefined
                            },

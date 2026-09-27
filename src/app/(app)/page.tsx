@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ElapsedTime } from "@/components/clock";
 import { ClockPanel } from "@/components/clock-panel";
 import { JobList } from "@/components/job-list";
+import { SearchForm } from "@/components/search-form";
 import {
   EmptyState,
   PageHeader,
@@ -55,6 +56,11 @@ export default async function StartPage() {
   return (
     <main className={pageClass}>
       <PageHeader title={`Dag ${session.member.displayName}`} />
+      <SearchForm
+        label="Zoek in vorige jobs, klanten, offertes…"
+        defaultValue=""
+        action="/zoeken"
+      />
       <ClockPanel
         running={running}
         jobs={jobs.map((job) => ({ id: job.id, title: job.title, customerName: job.customerName }))}
