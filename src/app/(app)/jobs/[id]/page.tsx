@@ -5,7 +5,8 @@ import { z } from "zod";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobStatusBadge } from "@/components/job-list";
-import { PageHeader, cardClass, pageClass } from "@/components/page";
+import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { QuoteList } from "@/components/quote-list";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireMember } from "@/lib/auth/session";
 import { marginFormValue, travelOverrideFormValues } from "@/lib/rates/overrides";
@@ -15,6 +16,8 @@ import { describePrice } from "@/lib/materials/format";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
 import { getJobTrips } from "@/lib/trips/queries";
+import { quotesQuery, toQuoteListItem } from "@/lib/quotes/queries";
+import { createQuote } from "@/app/(app)/offertes/actions";
 import { toBrusselsDate } from "@/lib/time";
 import { setJobStatus } from "../actions";
 import { JobForm } from "../job-form";
@@ -56,7 +59,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   if (customersError) {
     throw new Error(`Could not load customers: ${customersError.message}`);
   }
-  const [entriesResult, membersResult, rates, usagesResult, materialsResult, travel] =
+  const [entriesResult, membersResult, rates, usagesResult, materialsResult, travel, quotesResult] =
     await Promise.all([
       supabase
         .from("time_entries")
@@ -77,12 +80,24 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         .is("archived_at", null)
         .order("name"),
       getJobTrips(supabase, job.id),
+      quotesQuery(supabase).eq("job_id", job.id),
     ]);
-  if (entriesResult.error || membersResult.error || usagesResult.error || materialsResult.error) {
+  if (
+    entriesResult.error ||
+    membersResult.error ||
+    usagesResult.error ||
+    materialsResult.error ||
+    quotesResult.error
+  ) {
     const loadError =
-      entriesResult.error ?? membersResult.error ?? usagesResult.error ?? materialsResult.error;
+      entriesResult.error ??
+      membersResult.error ??
+      usagesResult.error ??
+      materialsResult.error ??
+      quotesResult.error;
     throw new Error(`Could not load job details: ${loadError?.message}`);
   }
+  const quotes = quotesResult.data.map(toQuoteListItem);
   const usages = usagesResult.data.map((usage) => ({
     id: usage.id,
     description: usage.description,
@@ -186,6 +201,24 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
         today={today}
         canManageSettings={isManagerRole(member.role)}
       />
+
+      <section className="flex flex-col gap-4">
+        <h2 className="text-xl font-semibold">Offertes</h2>
+        {quotes.length > 0 ? (
+          <QuoteList quotes={quotes} showJob={false} />
+        ) : (
+          <EmptyState>Nog geen offertes voor deze job.</EmptyState>
+        )}
+        <div className="md:max-w-xs">
+          <ActionButton
+            action={createQuote}
+            values={{ jobId: job.id }}
+            label="Nieuwe offerte"
+            pendingLabel="Bezig…"
+            className={secondaryButtonClass}
+          />
+        </div>
+      </section>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">
         <section className="flex flex-col gap-4 lg:order-2">

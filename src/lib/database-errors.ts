@@ -27,6 +27,8 @@ export function saveErrorMessage(error: DatabaseErrorLike): string {
       return "Deze job is afgewerkt of geannuleerd. Zet de status eerst terug op Bezig.";
     case "TS004":
       return "Verplaatsingen zijn inbegrepen voor deze job. Er worden geen ritten aangerekend.";
+    case "TS006":
+      return "Deze offerte is niet meer in ontwerp. Zet ze eerst terug op Ontwerp om ze aan te passen.";
     case "TS005":
       return "Geef de afstand in km in, bv. 42 of 42,5.";
   }

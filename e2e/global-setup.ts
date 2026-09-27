@@ -9,6 +9,13 @@ export default async function globalSetup() {
   sql(
     `delete from public.material_usages where job_id in (select id from public.jobs where title like 'E2E %')`,
   );
+  // Only drafts can be deleted: put E2E quotes back to draft first.
+  sql(
+    `update public.quotes set status = 'draft' where job_id in (select id from public.jobs where title like 'E2E %')`,
+  );
+  sql(
+    `delete from public.quotes where job_id in (select id from public.jobs where title like 'E2E %')`,
+  );
   sql(`delete from public.materials where name like 'E2E %'`);
   sql(
     `delete from public.trips where job_id in (select id from public.jobs where title like 'E2E %')`,
