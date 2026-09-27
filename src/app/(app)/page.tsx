@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ElapsedTime } from "@/components/clock";
-import { AgendaWeek } from "@/components/agenda-week";
+import { WeekBars } from "@/components/agenda-grid";
 import { ClockPanel } from "@/components/clock-panel";
 import { JobList } from "@/components/job-list";
 import { SearchForm } from "@/components/search-form";
@@ -11,7 +11,7 @@ import {
   pageClass,
   secondaryLinkButtonClass,
 } from "@/components/page";
-import { addDays, weekDays, weekStart } from "@/lib/agenda";
+import { addDays, weekStart } from "@/lib/agenda";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
 import { getOtherRunningEntries, getRunningEntry } from "@/lib/hours/queries";
@@ -104,16 +104,7 @@ export default async function StartPage() {
             Agenda
           </Link>
         </div>
-        {weekJobs.length > 0 ? (
-          <AgendaWeek
-            days={weekDays(weekStart(today)).filter((day) => day >= today)}
-            jobs={weekJobs}
-            today={today}
-            hideEmptyDays
-          />
-        ) : (
-          <EmptyState>Niets meer gepland deze week.</EmptyState>
-        )}
+        <WeekBars monday={weekStart(today)} jobs={weekJobs} today={today} />
       </section>
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">Lopende jobs</h2>
