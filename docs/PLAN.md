@@ -103,7 +103,8 @@ Belangrijke keuzes:
 - [ ] Agenda
 - [ ] Zoeken in vorige jobs
 - [ ] Analyses: winst per job, uren per maand, materiaalkosten
-- [ ] Export naar csv/Excel
+- [x] Export naar csv voor Excel (Account → Gegevens exporteren): klanten, jobs, uren,
+      materiaal, verplaatsingen, offertes en offerteregels
 
 ### Fase 4: Afwerking
 

@@ -37,6 +37,7 @@ export default defineConfig({
         "forgotten-clock.spec.ts",
         "company.spec.ts",
         "quotes.spec.ts",
+        "export.spec.ts",
       ],
       use: {
         ...devices["Desktop Chrome"],
