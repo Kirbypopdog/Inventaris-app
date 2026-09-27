@@ -114,7 +114,7 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
         </p>
       )}
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">
+      <div className="grid gap-8 lg:grid-cols-[1fr_24rem] lg:items-start">
         <section className="flex flex-col gap-4" aria-label="Regels">
           <h2 className="text-xl font-semibold">Regels</h2>
           {lines.length > 0 ? (
