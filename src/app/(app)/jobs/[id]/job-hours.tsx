@@ -1,12 +1,7 @@
-import { clockIn, clockOut, deleteTimeEntry, stopTimeEntry } from "@/app/(app)/uren/actions";
+import { deleteTimeEntry, stopTimeEntry } from "@/app/(app)/uren/actions";
 import { ActionButton } from "@/components/action-button";
 import { ElapsedTime } from "@/components/clock";
-import {
-  clockInButtonClass,
-  clockOutButtonClass,
-  dangerButtonClass,
-  secondaryButtonClass,
-} from "@/components/form";
+import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { EmptyState, cardClass } from "@/components/page";
 import { entryTotals, sumEntries } from "@/lib/hours/totals";
 import { cents, formatEuro } from "@/lib/money";
@@ -24,20 +19,16 @@ export type JobHoursEntry = {
   note: string | null;
 };
 
-/** Clock button for this job, the list of hours, totals and manual entry. */
+/** The hours on a job: totals, the list, and manual entry. Clocking is at the top of the page. */
 export function JobHours({
   jobId,
-  jobIsOpen,
   entries,
   currentUserId,
-  runningHere,
   showNames,
 }: {
   jobId: string;
-  jobIsOpen: boolean;
   entries: JobHoursEntry[];
   currentUserId: string;
-  runningHere: boolean;
   showNames: boolean;
 }) {
   const totals = sumEntries(
@@ -50,28 +41,8 @@ export function JobHours({
   const today = toBrusselsDate(new Date().toISOString());
 
   return (
-    <section className="flex flex-col gap-4">
+    <section aria-label="Uren" className="flex flex-col gap-4">
       <h2 className="text-xl font-semibold">Uren</h2>
-
-      {runningHere ? (
-        <ActionButton
-          action={clockOut}
-          values={{}}
-          label="Uitklokken"
-          pendingLabel="Bezig met uitklokken…"
-          className={clockOutButtonClass}
-        />
-      ) : (
-        jobIsOpen && (
-          <ActionButton
-            action={clockIn}
-            values={{ jobId }}
-            label="Inklokken op deze job"
-            pendingLabel="Bezig met inklokken…"
-            className={clockInButtonClass}
-          />
-        )
-      )}
 
       <p className="text-lg">
         Totaal: <strong>{formatDuration(totals.minutes)}</strong> ·{" "}

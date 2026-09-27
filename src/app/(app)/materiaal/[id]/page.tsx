@@ -6,6 +6,7 @@ import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
 import { requireMember } from "@/lib/auth/session";
+import { jobTabHref } from "@/lib/jobs/tabs";
 import { formatDate } from "@/lib/dates";
 import { describePrice } from "@/lib/materials/format";
 import { cents, formatEuroInput } from "@/lib/money";
@@ -104,7 +105,7 @@ export default async function MaterialPage({ params }: PageProps<"/materiaal/[id
                   {usage.jobs && (
                     <>
                       {" · "}
-                      <Link href={`/jobs/${usage.jobs.id}`} className="underline">
+                      <Link href={jobTabHref(usage.jobs.id, "materiaal")} className="underline">
                         {usage.jobs.title}
                       </Link>
                     </>

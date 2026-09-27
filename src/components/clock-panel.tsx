@@ -11,6 +11,7 @@ import {
   secondaryLinkButtonClass,
 } from "@/components/page";
 import { formatPeriod } from "@/lib/dates";
+import { jobTabHref } from "@/lib/jobs/tabs";
 import type { RunningEntry } from "@/lib/hours/queries";
 import { toBrusselsTime } from "@/lib/time";
 
@@ -55,7 +56,10 @@ export function ClockPanel({
               pendingLabel="Bezig met uitklokken…"
               className={clockOutButtonClass}
             />
-            <Link href={`/jobs/${running.jobId}#materiaal`} className={secondaryLinkButtonClass}>
+            <Link
+              href={jobTabHref(running.jobId, "materiaal")}
+              className={secondaryLinkButtonClass}
+            >
               Materiaal toevoegen
             </Link>
           </div>

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, openJob, sql, users } from "./support";
+import { logIn, openJob, openJobTab, sql, users } from "./support";
 
 test("a quote: lines, VAT per rate, send, back to draft, delete", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -14,6 +14,7 @@ test("a quote: lines, VAT per rate, send, back to draft, delete", async ({ page 
 
   await logIn(page, users.owner.email, users.owner.password);
   await openJob(page, job);
+  await openJobTab(page, "Offertes");
   await page.getByRole("button", { name: "Nieuwe offerte" }).click();
   await expect(page.getByRole("heading", { name: /^Offerte OFF-\d{4}-\d{3,}$/ })).toBeVisible();
   await expect(page.getByRole("main")).toContainText("Ontwerp");
@@ -81,10 +82,12 @@ test("a job at 6% gives new quote lines 6% VAT", async ({ page }, testInfo) => {
 
   await logIn(page, users.owner.email, users.owner.password);
   await openJob(page, job);
+  await openJobTab(page, "Gegevens");
   await page.getByRole("combobox", { name: "Btw-tarief" }).selectOption("6");
   await page.getByRole("button", { name: "Opslaan" }).click();
   await expect(page.getByRole("main").getByRole("status")).toContainText("opgeslagen");
 
+  await openJobTab(page, "Offertes");
   await page.getByRole("button", { name: "Nieuwe offerte" }).click();
   const addForm = page.getByRole("region", { name: "Regel toevoegen" });
   await expect(addForm.getByRole("combobox", { name: "Btw" })).toHaveValue("6");

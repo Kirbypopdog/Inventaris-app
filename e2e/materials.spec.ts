@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, openFromMenu, openJob, sql, users } from "./support";
+import { logIn, openFromMenu, openJob, openJobTab, sql, users } from "./support";
 
 test("catalogue, material on a job, correct and delete", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -34,6 +34,7 @@ test("catalogue, material on a job, correct and delete", async ({ page }, testIn
 
   // On the job: 35 screws, then 2 boxes.
   await openJob(page, job);
+  await openJobTab(page, "Materiaal");
   const section = page.locator("#materiaal");
   await section.getByRole("combobox", { name: /^Materiaal/ }).selectOption({ label: screws });
   await section.getByLabel("Aantal").first().fill("35");
