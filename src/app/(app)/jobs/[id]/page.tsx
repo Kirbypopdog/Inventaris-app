@@ -35,6 +35,7 @@ import { parseJobTab } from "@/lib/jobs/tabs";
 import { formatEuro } from "@/lib/money";
 import { formatDuration } from "@/lib/time";
 import { JobMaterials } from "./job-materials";
+import { JobNotes } from "./job-notes";
 import { JobTrips } from "./job-trips";
 
 export const metadata: Metadata = { title: "Job · Schrijnwerk" };
@@ -78,6 +79,8 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     travel,
     quotesResult,
     analysis,
+    tasksResult,
+    notesResult,
   ] = await Promise.all([
     supabase
       .from("time_entries")
@@ -100,20 +103,34 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     getJobTrips(supabase, job.id),
     quotesQuery(supabase).eq("job_id", job.id),
     loadAnalysisData(supabase, job.id),
+    supabase
+      .from("job_tasks")
+      .select("id, title, done_at")
+      .eq("job_id", job.id)
+      .order("created_at"),
+    supabase
+      .from("job_notes")
+      .select("id, body, created_by, created_at")
+      .eq("job_id", job.id)
+      .order("created_at", { ascending: false }),
   ]);
   if (
     entriesResult.error ||
     membersResult.error ||
     usagesResult.error ||
     materialsResult.error ||
-    quotesResult.error
+    quotesResult.error ||
+    tasksResult.error ||
+    notesResult.error
   ) {
     const loadError =
       entriesResult.error ??
       membersResult.error ??
       usagesResult.error ??
       materialsResult.error ??
-      quotesResult.error;
+      quotesResult.error ??
+      tasksResult.error ??
+      notesResult.error;
     throw new Error(`Could not load job details: ${loadError?.message}`);
   }
   const quotes = quotesResult.data.map(toQuoteListItem);
@@ -146,6 +163,17 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
     endedAt: entry.ended_at,
     hourlyRateCents: entry.hourly_rate_cents,
     note: entry.note,
+  }));
+  const tasks = tasksResult.data.map((task) => ({
+    id: task.id,
+    title: task.title,
+    done: task.done_at !== null,
+  }));
+  const notes = notesResult.data.map((note) => ({
+    id: note.id,
+    body: note.body,
+    authorName: names.get(note.created_by) ?? "Oud-lid",
+    createdAt: note.created_at,
   }));
   const today = toBrusselsDate(new Date().toISOString());
   const runningHere = entries.some(
@@ -244,9 +272,12 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
           status={job.status}
           description={job.description}
           tiles={tiles}
+          openTasks={tasks.filter((task) => !task.done)}
           calculation={jobCalculation(analysis)}
         />
       )}
+
+      {tab === "notities" && <JobNotes jobId={job.id} tasks={tasks} notes={notes} />}
 
       {tab === "uren" && (
         <JobHours

@@ -88,6 +88,44 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"job_notes": {
+                  Row: {
+                    "body": string,"created_at": string,"created_by": string,"id": string,"job_id": string,"updated_at": string
+                  }
+                  Insert: {
+                    "body": string,"created_at"?: string,"created_by"?: string,"id"?: string,"job_id": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "body"?: string,"created_at"?: string,"created_by"?: string,"id"?: string,"job_id"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "job_notes_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "jobs"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"job_tasks": {
+                  Row: {
+                    "created_at": string,"created_by": string,"done_at": string | null,"id": string,"job_id": string,"title": string,"updated_at": string
+                  }
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string,"done_at"?: string | null,"id"?: string,"job_id": string,"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string,"done_at"?: string | null,"id"?: string,"job_id"?: string,"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "job_tasks_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "jobs"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"jobs": {
                   Row: {
                     "address_line": string | null,"city": string | null,"created_at": string,"customer_id": string,"description": string | null,"ends_on": string | null,"hourly_rate_id": string | null,"id": string,"km_rate_cents": number | null,"material_margin_bp": number | null,"postal_code": string | null,"starts_on": string | null,"status": Database["public"]['Enums']["job_status"],"title": string,"travel_method": Database["public"]['Enums']["travel_method"] | null,"trip_flat_cents": number | null,"updated_at": string,"vat_rate": number | null

@@ -104,7 +104,7 @@ export async function openJob(page: Page, title: string): Promise<void> {
   await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
 }
 
-/** Opens a tab on a job page (Uren, Materiaal, Ritten, Offertes, Gegevens, Overzicht). */
+/** Opens a tab on a job page (Overzicht, Notities, Uren, Materiaal, Ritten, Offertes, Gegevens). */
 export async function openJobTab(page: Page, label: string): Promise<void> {
   await page
     .getByRole("navigation", { name: "Onderdelen van de job" })
