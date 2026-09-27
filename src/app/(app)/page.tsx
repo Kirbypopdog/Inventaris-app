@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ElapsedTime } from "@/components/clock";
 import { ClockPanel } from "@/components/clock-panel";
 import { JobList } from "@/components/job-list";
 import {
@@ -10,10 +11,11 @@ import {
 } from "@/components/page";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
-import { getRunningEntry } from "@/lib/hours/queries";
+import { getOtherRunningEntries, getRunningEntry } from "@/lib/hours/queries";
 import { jobsQuery, toJobListItem } from "@/lib/jobs/queries";
 import { OPEN_JOB_STATUSES } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
+import { toBrusselsTime } from "@/lib/time";
 
 export default async function StartPage() {
   const session = await requireSession();
@@ -35,9 +37,10 @@ export default async function StartPage() {
   }
 
   const supabase = await createClient();
-  const [openJobs, running, defaultRate] = await Promise.all([
+  const [openJobs, running, othersRunning, defaultRate] = await Promise.all([
     jobsQuery(supabase).in("status", [...OPEN_JOB_STATUSES]),
     getRunningEntry(supabase, session.member.userId),
+    getOtherRunningEntries(supabase, session.member.userId),
     supabase
       .from("hourly_rates")
       .select("id", { count: "exact", head: true })
@@ -58,6 +61,29 @@ export default async function StartPage() {
         hasDefaultRate={(defaultRate.count ?? 0) > 0}
         canManageRates={isManagerRole(session.member.role)}
       />
+      {othersRunning.length > 0 && (
+        <section aria-label="Klokken van anderen" className="flex flex-col gap-2">
+          <h2 className="text-lg font-semibold">Klok loopt ook bij</h2>
+          <ul className="flex flex-col gap-2">
+            {othersRunning.map((entry) => (
+              <li key={entry.id}>
+                <Link
+                  href={`/jobs/${entry.jobId}`}
+                  className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 text-base dark:border-amber-800 dark:bg-amber-950"
+                >
+                  <span>
+                    <strong>{entry.userName}</strong> · {entry.jobTitle} · sinds{" "}
+                    {toBrusselsTime(entry.startedAt)}
+                  </span>
+                  <span className="tabular-nums">
+                    <ElapsedTime startedAt={entry.startedAt} />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">Lopende jobs</h2>
         {jobs.length > 0 ? (
