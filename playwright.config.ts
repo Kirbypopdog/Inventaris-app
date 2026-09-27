@@ -40,6 +40,7 @@ export default defineConfig({
         "export.spec.ts",
         "search.spec.ts",
         "agenda.spec.ts",
+        "analyses.spec.ts",
       ],
       use: {
         ...devices["Desktop Chrome"],

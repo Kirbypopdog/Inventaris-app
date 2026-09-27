@@ -104,7 +104,8 @@ Belangrijke keuzes:
       "Deze week" op de startpagina
 - [x] Zoeken in alles (startpagina en /zoeken): jobs (ook via gebruikt materiaal en notities),
       klanten, offertes (ook via regels) en materiaal, met Nederlandse woordstammen
-- [ ] Analyses: winst per job, uren per maand, materiaalkosten
+- [x] Analyses (/analyses en op elke job): nacalculatie per job (uren, materiaal met marge,
+      verplaatsingen) tegenover de aanvaarde offerte, en per maand uren, materiaal en ritten
 - [x] Export naar csv voor Excel (Account → Gegevens exporteren): klanten, jobs, uren,
       materiaal, verplaatsingen, offertes en offerteregels
 
