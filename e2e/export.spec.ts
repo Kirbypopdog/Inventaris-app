@@ -27,7 +27,10 @@ test("data can be downloaded as a CSV file for Excel", async ({ page }, testInfo
   const download = async (name: string) => {
     const [file] = await Promise.all([
       page.waitForEvent("download"),
-      page.getByRole("main").getByRole("link", { name: new RegExp(`^${name}`) }).click(),
+      page
+        .getByRole("main")
+        .getByRole("link", { name: new RegExp(`^${name}`) })
+        .click(),
     ]);
     expect(file.suggestedFilename()).toMatch(/^schrijnwerk-.+-\d{4}-\d{2}-\d{2}\.csv$/);
     const path = await file.path();
