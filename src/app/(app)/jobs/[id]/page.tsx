@@ -6,7 +6,7 @@ import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobStatusBadge } from "@/components/job-list";
 import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
-import { JobCalculationSummary } from "@/components/job-calculation";
+import { JobTabs } from "@/components/job-tabs";
 import { QuoteList } from "@/components/quote-list";
 import { jobCalculation } from "@/lib/analyses";
 import { loadAnalysisData } from "@/lib/analyses-queries";
@@ -17,26 +17,35 @@ import { marginFormValue, travelOverrideFormValues } from "@/lib/rates/overrides
 import { getRateOptions } from "@/lib/rates/queries";
 import { formatPeriod } from "@/lib/dates";
 import { describePrice } from "@/lib/materials/format";
-import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
+import { QUOTE_STATUS_LABELS } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
 import { getJobTrips } from "@/lib/trips/queries";
 import { quotesQuery, toQuoteListItem } from "@/lib/quotes/queries";
 import { createQuote } from "@/app/(app)/offertes/actions";
 import { toBrusselsDate } from "@/lib/time";
-import { setJobStatus } from "../actions";
 import { JobForm } from "../job-form";
+import { JobClock } from "./job-clock";
 import { JobHours } from "./job-hours";
+import { JobOverview, type OverviewTile } from "./job-overview";
+import { sumEntries } from "@/lib/hours/totals";
+import { sumUsages } from "@/lib/materials/totals";
+import { sumTrips } from "@/lib/trips/totals";
+import { parseJobTab } from "@/lib/jobs/tabs";
+import { formatEuro } from "@/lib/money";
+import { formatDuration } from "@/lib/time";
 import { JobMaterials } from "./job-materials";
 import { JobTrips } from "./job-trips";
 
 export const metadata: Metadata = { title: "Job · Schrijnwerk" };
 
-export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
+export default async function JobPage({ params, searchParams }: PageProps<"/jobs/[id]">) {
   const member = await requireMember();
   const id = z.uuid().safeParse((await params).id);
   if (!id.success) {
     notFound();
   }
+
+  const tab = parseJobTab((await searchParams).tab);
 
   const supabase = await createClient();
   const { data: job, error } = await supabase
@@ -154,9 +163,41 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     ownAddress ||
     (customer ? formatAddress(customer.address_line, customer.postal_code, customer.city) : "");
   const period = formatPeriod(job.starts_on, job.ends_on);
-  const otherStatuses = (Object.keys(JOB_STATUS_LABELS) as JobStatus[]).filter(
-    (status) => status !== job.status,
-  );
+  const jobIsOpen = job.status === "planned" || job.status === "active";
+
+  const hours = sumEntries(entries);
+  const tripCount = travel.trips.length;
+  const latestQuote = quotes[0];
+  const tiles: OverviewTile[] = [
+    {
+      tab: "uren",
+      label: "Uren",
+      value: formatDuration(hours.minutes),
+      detail: formatEuro(hours.amount),
+    },
+    {
+      tab: "materiaal",
+      label: "Materiaal",
+      value: formatEuro(sumUsages(usages)),
+      detail: usages.length === 1 ? "1 regel" : `${usages.length} regels`,
+    },
+    travel.terms.method === "included"
+      ? { tab: "ritten", label: "Ritten", value: "Inbegrepen", detail: "Geen ritten nodig" }
+      : {
+          tab: "ritten",
+          label: "Ritten",
+          value: formatEuro(sumTrips(travel.trips)),
+          detail: tripCount === 1 ? "1 rit" : `${tripCount} ritten`,
+        },
+    {
+      tab: "offertes",
+      label: "Offertes",
+      value: String(quotes.length),
+      detail: latestQuote
+        ? `${latestQuote.number} · ${QUOTE_STATUS_LABELS[latestQuote.status]}`
+        : "Nog geen offerte",
+    },
+  ];
 
   return (
     <main className={pageClass}>
@@ -176,83 +217,75 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
                   {customer.name}
                 </Link>
               )}
+              {period && <span>· {period}</span>}
             </span>
             {address && (
               <a href={mapsUrl(address)} target="_blank" rel="noreferrer" className="underline">
                 {address}
               </a>
             )}
-            {period && <span>{period}</span>}
           </span>
         }
+        action={<JobClock jobId={job.id} jobIsOpen={jobIsOpen} runningHere={runningHere} />}
       />
 
-      {job.description && (
-        <p className="text-lg whitespace-pre-line md:max-w-3xl">{job.description}</p>
+      <JobTabs jobId={job.id} active={tab} />
+
+      {tab === "overzicht" && (
+        <JobOverview
+          jobId={job.id}
+          status={job.status}
+          description={job.description}
+          tiles={tiles}
+          calculation={jobCalculation(analysis)}
+        />
       )}
 
-      <JobHours
-        jobId={job.id}
-        jobIsOpen={job.status === "planned" || job.status === "active"}
-        entries={entries}
-        currentUserId={member.userId}
-        runningHere={runningHere}
-        showNames={new Set(entries.map((entry) => entry.userId)).size > 1}
-      />
+      {tab === "uren" && (
+        <JobHours
+          jobId={job.id}
+          entries={entries}
+          currentUserId={member.userId}
+          showNames={new Set(entries.map((entry) => entry.userId)).size > 1}
+        />
+      )}
 
-      <JobMaterials jobId={job.id} usages={usages} materials={materials} today={today} />
+      {tab === "materiaal" && (
+        <JobMaterials jobId={job.id} usages={usages} materials={materials} today={today} />
+      )}
 
-      <JobTrips
-        jobId={job.id}
-        terms={travel.terms}
-        trips={travel.trips}
-        today={today}
-        canManageSettings={isManagerRole(member.role)}
-      />
+      {tab === "ritten" && (
+        <JobTrips
+          jobId={job.id}
+          terms={travel.terms}
+          trips={travel.trips}
+          today={today}
+          canManageSettings={isManagerRole(member.role)}
+        />
+      )}
 
-      <section className="flex flex-col gap-4 md:max-w-2xl" aria-label="Nacalculatie">
-        <h2 className="text-xl font-semibold">Nacalculatie</h2>
-        <div className={cardClass}>
-          <JobCalculationSummary calculation={jobCalculation(analysis)} />
-        </div>
-      </section>
-
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold">Offertes</h2>
-        {quotes.length > 0 ? (
-          <QuoteList quotes={quotes} showJob={false} />
-        ) : (
-          <EmptyState>Nog geen offertes voor deze job.</EmptyState>
-        )}
-        <div className="md:max-w-xs">
-          <ActionButton
-            action={createQuote}
-            values={{ jobId: job.id }}
-            label="Nieuwe offerte"
-            pendingLabel="Bezig…"
-            className={secondaryButtonClass}
-          />
-        </div>
-      </section>
-
-      <div className="grid gap-8 lg:grid-cols-[1fr_20rem] lg:items-start">
-        <section className="flex flex-col gap-4 lg:order-2">
-          <h2 className="text-xl font-semibold">Status wijzigen</h2>
-          <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
-            {otherStatuses.map((status) => (
-              <ActionButton
-                key={status}
-                action={setJobStatus}
-                values={{ id: job.id, status }}
-                label={JOB_STATUS_LABELS[status]}
-                pendingLabel="Bezig…"
-                className={secondaryButtonClass}
-              />
-            ))}
+      {tab === "offertes" && (
+        <section className="flex flex-col gap-4">
+          <h2 className="text-xl font-semibold">Offertes</h2>
+          {quotes.length > 0 ? (
+            <QuoteList quotes={quotes} showJob={false} />
+          ) : (
+            <EmptyState>Nog geen offertes voor deze job.</EmptyState>
+          )}
+          <div className="md:max-w-xs">
+            <ActionButton
+              action={createQuote}
+              values={{ jobId: job.id }}
+              label="Nieuwe offerte"
+              pendingLabel="Bezig…"
+              className={secondaryButtonClass}
+            />
           </div>
         </section>
+      )}
 
-        <section className="flex flex-col gap-4 lg:order-1">
+      {tab === "gegevens" && (
+        <section className="flex flex-col gap-4 md:max-w-3xl">
           <h2 className="text-xl font-semibold">Gegevens bewerken</h2>
           <div className={cardClass}>
             {/* Re-mount when the status changes via the buttons, so the form never saves a stale status. */}
@@ -279,7 +312,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
             />
           </div>
         </section>
-      </div>
+      )}
     </main>
   );
 }

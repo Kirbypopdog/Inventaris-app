@@ -103,3 +103,16 @@ export async function openJob(page: Page, title: string): Promise<void> {
     .click();
   await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
 }
+
+/** Opens a tab on a job page (Uren, Materiaal, Ritten, Offertes, Gegevens, Overzicht). */
+export async function openJobTab(page: Page, label: string): Promise<void> {
+  await page
+    .getByRole("navigation", { name: "Onderdelen van de job" })
+    .getByRole("link", { name: label, exact: true })
+    .click();
+  await expect(
+    page
+      .getByRole("navigation", { name: "Onderdelen van de job" })
+      .getByRole("link", { name: label, exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+}

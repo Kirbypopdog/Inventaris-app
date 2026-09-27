@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireMember } from "@/lib/auth/session";
+import { jobTabHref } from "@/lib/jobs/tabs";
 import { saveErrorMessage } from "@/lib/database-errors";
 import { field, firstIssue, formValues, type FormState } from "@/lib/forms";
 import {
@@ -113,7 +114,7 @@ export async function deleteQuote(_previous: FormState, formData: FormData): Pro
     return { status: "error", message: saveErrorMessage(error) };
   }
   revalidateQuote(id.data, data.job_id);
-  redirect(`/jobs/${data.job_id}`);
+  redirect(jobTabHref(data.job_id, "offertes"));
 }
 
 /** Adds a line (no id) or updates one (with id). */

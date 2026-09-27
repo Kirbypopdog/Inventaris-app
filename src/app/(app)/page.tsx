@@ -14,6 +14,7 @@ import { isManagerRole } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
 import { getOtherRunningEntries, getRunningEntry } from "@/lib/hours/queries";
 import { jobsQuery, plannedJobsQuery, toJobListItem } from "@/lib/jobs/queries";
+import { jobTabHref } from "@/lib/jobs/tabs";
 import { OPEN_JOB_STATUSES } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
 import { toBrusselsDate, toBrusselsTime } from "@/lib/time";
@@ -82,7 +83,7 @@ export default async function StartPage() {
             {othersRunning.map((entry) => (
               <li key={entry.id}>
                 <Link
-                  href={`/jobs/${entry.jobId}`}
+                  href={jobTabHref(entry.jobId, "uren")}
                   className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 text-base dark:border-amber-800 dark:bg-amber-950"
                 >
                   <span>

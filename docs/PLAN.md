@@ -74,7 +74,8 @@ Belangrijke keuzes:
 - [x] Klanten (lijst, zoeken, bewerken, archiveren, btw-nummercontrole)
 - [x] Projecten (/klanten): een kaart per klant met zijn lopende en geplande jobs, gegroepeerd in
       Lopend, Gepland en Overige klanten; zoeken vindt ook jobs. Vervangt de aparte jobslijst.
-- [x] Jobs (bewerken, snelle statusknoppen; de lijst per klant staat in Projecten)
+- [x] Jobs (tabbladen Overzicht, Uren, Materiaal, Ritten, Offertes, Gegevens; klokknop bovenaan;
+      snelle statusknoppen; de lijst per klant staat in Projecten)
 - [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
 - [x] Uitzonderingen op tarieven: verplaatsingen per klant en per job, marge op materiaal
       per job en per materiaal, algemene marge (Account → Marge op materiaal)

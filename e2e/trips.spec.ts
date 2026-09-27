@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, openJob, sql, users } from "./support";
+import { logIn, openJob, openJobTab, sql, users } from "./support";
 
 test("travel settings and trips per job", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -36,6 +36,7 @@ test("travel settings and trips per job", async ({ page }, testInfo) => {
 
   // A job with the general settings: trips per km.
   await openJob(page, kmJob);
+  await openJobTab(page, "Ritten");
   const section = page.locator("#ritten");
   await expect(section).toContainText(/Per km: €\s0,43 per km/);
   const addForm = section.locator("form").first();
@@ -65,6 +66,7 @@ test("travel settings and trips per job", async ({ page }, testInfo) => {
 
   // A customer with a fixed amount per trip: no distance needed.
   await openJob(page, flatJob);
+  await openJobTab(page, "Ritten");
   await expect(section).toContainText("Vast bedrag per rit");
   await expect(section.getByLabel("Afstand (km)")).toHaveCount(0);
   await section.getByRole("button", { name: "Rit toevoegen" }).click();
@@ -73,6 +75,7 @@ test("travel settings and trips per job", async ({ page }, testInfo) => {
 
   // Travel included: nothing to add.
   await openJob(page, includedJob);
+  await openJobTab(page, "Ritten");
   await expect(section).toContainText("inbegrepen");
   await expect(section.getByRole("button", { name: "Rit toevoegen" })).toHaveCount(0);
 });

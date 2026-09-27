@@ -8,6 +8,7 @@ import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
 import { QuoteStatusBadge } from "@/components/quote-status-badge";
 import { requireMember } from "@/lib/auth/session";
+import { jobTabHref } from "@/lib/jobs/tabs";
 import { formatDate } from "@/lib/dates";
 import { QUOTE_STATUS_LABELS, type QuoteStatus } from "@/lib/labels";
 import { cents, formatEuro, formatEuroInput } from "@/lib/money";
@@ -85,7 +86,7 @@ export default async function QuotePage({ params }: PageProps<"/offertes/[id]">)
         title={`Offerte ${quote.number}`}
         back={
           job
-            ? { href: `/jobs/${job.id}`, label: job.title }
+            ? { href: jobTabHref(job.id, "offertes"), label: job.title }
             : { href: "/offertes", label: "Offertes" }
         }
         description={

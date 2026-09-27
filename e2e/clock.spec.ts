@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, openJob, sql, users } from "./support";
+import { logIn, openJob, openJobTab, sql, users } from "./support";
 
 test("clock in, switch job, clock out, and correct hours by hand", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -41,7 +41,7 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
   await expect(clock.getByRole("link", { name: jobA })).toBeVisible();
   await expect(clock.getByRole("link", { name: "Materiaal toevoegen" })).toHaveAttribute(
     "href",
-    /#materiaal$/,
+    /\?tab=materiaal$/,
   );
 
   // Switch to another job in one go.
@@ -53,8 +53,9 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
 
   // Job A: active now, one short entry at the default rate.
   await openJob(page, jobA);
+  await openJobTab(page, "Uren");
   await expect(page.getByRole("main")).toContainText("Bezig");
-  const hours = page.getByRole("main").getByRole("listitem");
+  const hours = page.getByRole("region", { name: "Uren" }).getByRole("listitem");
   await expect(hours).toHaveCount(1);
   await expect(hours.first()).toContainText("45,00/u");
 
@@ -86,7 +87,9 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
   await expect(hours.filter({ hasText: "Opmeten" })).toHaveCount(0);
 
   // A finished job has no clock-in button.
+  await openJobTab(page, "Overzicht");
   await page.getByRole("button", { name: "Afgewerkt" }).click();
+  await openJobTab(page, "Gegevens");
   await expect(page.getByLabel("Status")).toHaveValue("done");
   await expect(page.getByRole("button", { name: "Inklokken op deze job" })).toHaveCount(0);
 });

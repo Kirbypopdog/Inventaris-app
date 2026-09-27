@@ -27,12 +27,13 @@ test("a forgotten clock of a colleague is found and stopped", async ({ page }, t
   await link.click();
 
   // On the job page, the clock can be stopped.
-  const running = page.getByRole("main").getByRole("listitem").filter({ hasText: "nu" });
+  const hours = page.getByRole("region", { name: "Uren" }).getByRole("listitem");
+  const running = hours.filter({ hasText: "nu" });
   page.once("dialog", (dialog) => dialog.accept());
   await running
     .getByRole("button", { name: `Klok van ${users.admin.displayName} stoppen` })
     .click();
-  await expect(page.getByRole("main").getByRole("listitem").first()).toContainText("3u 00m");
+  await expect(hours.first()).toContainText("3u 00m");
   await page.goto("/");
   await expect(page.getByRole("region", { name: "Klokken van anderen" })).toHaveCount(0);
 });

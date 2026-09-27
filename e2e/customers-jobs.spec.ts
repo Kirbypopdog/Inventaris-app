@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, users } from "./support";
+import { logIn, openJobTab, users } from "./support";
 
 test("a customer with a job: create, search, follow up and archive", async ({ page }, testInfo) => {
   // Each project (phone, laptop) uses its own names, so their data never collides.
@@ -65,6 +65,7 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
   // Status follow-up: the job is on the start page while it is open.
   await page.getByRole("button", { name: "Bezig" }).click();
   await expect(page.getByRole("main").getByText("Bezig", { exact: true }).first()).toBeVisible();
+  await openJobTab(page, "Gegevens");
   await expect(page.getByLabel("Status")).toHaveValue("active");
 
   await page
@@ -75,6 +76,7 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
 
   await exactLink(jobTitle).click();
   await page.getByRole("button", { name: "Afgewerkt" }).click();
+  await openJobTab(page, "Gegevens");
   await expect(page.getByLabel("Status")).toHaveValue("done");
   await page.goto("/");
   await expect(exactLink(jobTitle)).toHaveCount(0);
