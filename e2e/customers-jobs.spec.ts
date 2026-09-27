@@ -31,6 +31,12 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
   await expect(page.getByRole("heading", { name: customerName })).toBeVisible();
   await expect(page.getByRole("main")).toContainText("BE 0123.456.749");
   await expect(page.getByRole("main")).toContainText("Markt 1, 8000 Brugge");
+  // Call and route in one tap from the customer page.
+  await expect(page.getByRole("link", { name: "Bellen" })).toHaveAttribute("href", /^tel:/);
+  await expect(page.getByRole("link", { name: "Route" })).toHaveAttribute(
+    "href",
+    /google\.com\/maps/,
+  );
   const customerUrl = page.url();
 
   // The customer can be found.
@@ -83,6 +89,8 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
 
   // Archive the customer: gone from the list, still in the archive, job kept.
   await page.goto(customerUrl);
+  await expect(page.getByRole("main")).toContainText("Afgesloten jobs");
+  await page.getByText("Gegevens bewerken").click();
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Archiveren" }).click();
   await expect(page.getByRole("main").getByRole("status")).toContainText("gearchiveerd");
