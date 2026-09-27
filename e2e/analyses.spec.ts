@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, sql, users } from "./support";
+import { logIn, openJob, sql, users } from "./support";
 
 test("post-calculation of a job and the monthly overview", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -42,8 +42,7 @@ test("post-calculation of a job and the monthly overview", async ({ page }, test
   await logIn(page, users.owner.email, users.owner.password);
 
   // On the job page: €180 + €148,35 + €17,20 = €345,55; the quote covers €54,45 more.
-  await page.goto("/jobs?status=done");
-  await page.getByRole("link", { name: new RegExp(`^${job}`) }).click();
+  await openJob(page, job);
   const calculation = page.getByRole("region", { name: "Nacalculatie" });
   await expect(calculation).toContainText(/Uren \(4u 00m\)\s*€\s180,00/);
   await expect(calculation).toContainText(/Materiaal \(kostprijs\)\s*€\s129,00/);

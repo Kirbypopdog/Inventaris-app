@@ -9,7 +9,7 @@ export default async function NewCustomerPage() {
   await requireMember();
   return (
     <main className={pageClass}>
-      <PageHeader title="Nieuwe klant" back={{ href: "/klanten", label: "Klanten" }} />
+      <PageHeader title="Nieuwe klant" back={{ href: "/klanten", label: "Projecten" }} />
       <div className={`${cardClass} md:max-w-2xl`}>
         <CustomerForm customer={emptyCustomer} />
       </div>

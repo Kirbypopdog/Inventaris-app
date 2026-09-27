@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, openFromMenu, sql, users } from "./support";
+import { logIn, openFromMenu, openJob, sql, users } from "./support";
 
 test("catalogue, material on a job, correct and delete", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -33,8 +33,7 @@ test("catalogue, material on a job, correct and delete", async ({ page }, testIn
   await page.getByLabel("Aantal per verpakking").fill("200");
 
   // On the job: 35 screws, then 2 boxes.
-  await page.goto("/jobs");
-  await page.getByRole("link", { name: new RegExp(`^${job}`) }).click();
+  await openJob(page, job);
   const section = page.locator("#materiaal");
   await section.getByRole("combobox", { name: /^Materiaal/ }).selectOption({ label: screws });
   await section.getByLabel("Aantal").first().fill("35");

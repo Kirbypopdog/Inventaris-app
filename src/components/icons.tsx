@@ -42,14 +42,6 @@ export const AgendaIcon = (props: IconProps) => (
   </Icon>
 );
 
-export const CustomersIcon = (props: IconProps) => (
-  <Icon {...props}>
-    <circle cx="9" cy="8" r="3.5" />
-    <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
-    <path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5" />
-  </Icon>
-);
-
 export const QuotesIcon = (props: IconProps) => (
   <Icon {...props}>
     <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />

@@ -13,7 +13,7 @@ const idSchema = z.uuid();
 
 function revalidateJob(id: string, customerId: string) {
   revalidatePath("/");
-  revalidatePath("/jobs");
+  revalidatePath("/klanten");
   revalidatePath(`/jobs/${id}`);
   revalidatePath(`/klanten/${customerId}`);
 }

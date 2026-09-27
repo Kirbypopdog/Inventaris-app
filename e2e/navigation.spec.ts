@@ -22,12 +22,12 @@ test("the main menu is at the bottom on a phone and on the left on a laptop", as
   }
 
   // A phone shows the five daily items; the rest sits behind "Meer".
-  await expect(nav.getByRole("link")).toHaveCount(onLaptop ? 9 : 5);
+  await expect(nav.getByRole("link")).toHaveCount(onLaptop ? 8 : 5);
 
   for (const [label, heading] of [
-    ["Jobs", "Jobs"],
+    ["Projecten", "Projecten"],
     ["Agenda", /^Week \d+$/],
-    ["Klanten", "Klanten"],
+    ["Offertes", "Offertes"],
     ["Meer", "Meer"],
     ["Start", null],
   ] as const) {
@@ -41,8 +41,8 @@ test("the main menu is at the bottom on a phone and on the left on a laptop", as
     );
   }
 
-  // Offertes, Materiaal and Analyses: in the sidebar on a laptop, under "Meer" on a phone.
-  for (const label of ["Offertes", "Materiaal", "Analyses"]) {
+  // Materiaal and Analyses: in the sidebar on a laptop, under "Meer" on a phone.
+  for (const label of ["Materiaal", "Analyses"]) {
     await openFromMenu(page, label);
     await expect(
       page.getByRole("heading", { level: 1, name: new RegExp(`^${label}`) }),
