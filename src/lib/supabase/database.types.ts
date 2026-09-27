@@ -208,6 +208,31 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"order_items": {
+                  Row: {
+                    "created_at": string,"created_by": string,"description": string,"id": string,"job_id": string | null,"material_id": string | null,"ordered_at": string | null,"quantity": number,"supplier": string | null,"unit": string,"updated_at": string
+                  }
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string,"description": string,"id"?: string,"job_id"?: string | null,"material_id"?: string | null,"ordered_at"?: string | null,"quantity": number,"supplier"?: string | null,"unit": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string,"description"?: string,"id"?: string,"job_id"?: string | null,"material_id"?: string | null,"ordered_at"?: string | null,"quantity"?: number,"supplier"?: string | null,"unit"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "order_items_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "jobs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "order_items_material_id_fkey"
+      columns: ["material_id"]
+isOneToOne: false
+      referencedRelation: "materials"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"quote_lines": {
                   Row: {
                     "created_at": string,"description": string,"id": string,"quantity": number,"quote_id": string,"unit": string,"unit_price_cents": number,"updated_at": string,"vat_rate": number

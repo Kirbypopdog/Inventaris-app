@@ -9,6 +9,7 @@ import {
   ExportIcon,
   KeyIcon,
   MaterialsIcon,
+  OrderListIcon,
   SearchIcon,
   SettingsIcon,
   UsersIcon,
@@ -70,6 +71,7 @@ export default async function MorePage() {
             title="Werk"
             links={[
               { href: "/materiaal", label: "Materiaal", icon: <MaterialsIcon /> },
+              { href: "/bestellijst", label: "Bestellijst", icon: <OrderListIcon /> },
               { href: "/analyses", label: "Analyses", icon: <AnalysesIcon /> },
               { href: "/zoeken", label: "Zoeken", icon: <SearchIcon /> },
               { href: "/export", label: "Gegevens exporteren", icon: <ExportIcon /> },

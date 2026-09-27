@@ -1,5 +1,5 @@
 import { deleteMeasurement } from "../measurement-actions";
-import { clearDoneTasks, deleteNote } from "../notes-actions";
+import { clearDoneTasks, deleteNote, setTaskDone } from "../notes-actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { Disclosure } from "@/components/disclosure";
@@ -9,7 +9,7 @@ import { type Dimensions, formatDimensions } from "@/lib/measurements/format";
 import { toBrusselsDate } from "@/lib/time";
 import { MeasurementForm } from "./measurement-form";
 import { NoteForm, TaskAddForm } from "./note-forms";
-import { TaskChecklist, type TaskItem } from "./task-list";
+import { Checklist, type ChecklistItem } from "@/components/checklist";
 
 export type JobNote = { id: string; body: string; authorName: string; createdAt: string };
 
@@ -27,7 +27,7 @@ export function JobNotes({
   notes,
 }: {
   jobId: string;
-  tasks: TaskItem[];
+  tasks: ChecklistItem[];
   measurements: JobMeasurement[];
   notes: JobNote[];
 }) {
@@ -41,7 +41,7 @@ export function JobNotes({
           <h2 className="text-xl font-semibold">Te doen</h2>
           <TaskAddForm jobId={jobId} />
           {open.length > 0 ? (
-            <TaskChecklist tasks={open} label="Open taken" />
+            <Checklist items={open} label="Open taken" toggle={setTaskDone} />
           ) : (
             <EmptyState>
               {done.length > 0 ? "Alles is afgewerkt." : "Nog geen taken voor deze job."}
@@ -49,7 +49,7 @@ export function JobNotes({
           )}
           {done.length > 0 && (
             <Disclosure summary={`Afgewerkt (${done.length})`}>
-              <TaskChecklist tasks={done} label="Afgewerkte taken" />
+              <Checklist items={done} label="Afgewerkte taken" toggle={setTaskDone} />
               <ActionButton
                 action={clearDoneTasks}
                 values={{ jobId }}

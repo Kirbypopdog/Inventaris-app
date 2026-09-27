@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { setJobStatus } from "../actions";
+import { setTaskDone } from "../notes-actions";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { BudgetBar } from "@/components/budget-bar";
@@ -9,7 +10,7 @@ import type { JobCalculation } from "@/lib/analyses";
 import type { Budget } from "@/lib/budget";
 import { type JobTab, jobTabHref } from "@/lib/jobs/tabs";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
-import { TaskChecklist, type TaskItem } from "./task-list";
+import { Checklist, type ChecklistItem } from "@/components/checklist";
 
 /** The overview shows only the first open tasks; the rest is one tap away. */
 const OVERVIEW_TASK_LIMIT = 5;
@@ -33,7 +34,7 @@ export function JobOverview({
   status: JobStatus;
   description: string | null;
   tiles: OverviewTile[];
-  openTasks: TaskItem[];
+  openTasks: ChecklistItem[];
   calculation: JobCalculation;
   budget: Budget | null;
 }) {
@@ -50,7 +51,11 @@ export function JobOverview({
       {openTasks.length > 0 && (
         <section className="flex flex-col gap-3 md:max-w-3xl">
           <h2 className="text-xl font-semibold">Nog te doen</h2>
-          <TaskChecklist tasks={openTasks.slice(0, OVERVIEW_TASK_LIMIT)} label="Nog te doen" />
+          <Checklist
+            items={openTasks.slice(0, OVERVIEW_TASK_LIMIT)}
+            label="Nog te doen"
+            toggle={setTaskDone}
+          />
           <Link href={jobTabHref(jobId, "notities")} className={`${quietLinkClass} self-start`}>
             {openTasks.length > OVERVIEW_TASK_LIMIT
               ? `Alle ${openTasks.length} taken en de notities`

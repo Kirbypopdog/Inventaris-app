@@ -3,7 +3,9 @@ import { deleteUsage } from "@/app/(app)/materiaal/usage-actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass } from "@/components/form";
 import { Disclosure } from "@/components/disclosure";
-import { EmptyState, cardClass, textLinkClass } from "@/components/page";
+import { EmptyState, cardClass, quietLinkClass, textLinkClass } from "@/components/page";
+import { ChevronRightIcon } from "@/components/icons";
+import { OrderItemForm, type OrderMaterialOption } from "@/app/(app)/bestellijst/order-item-form";
 import { formatDate } from "@/lib/dates";
 import { sumUsages, usageCost } from "@/lib/materials/totals";
 import { formatEuro } from "@/lib/money";
@@ -25,16 +27,21 @@ export type JobMaterialUsage = {
   usedOn: string;
 };
 
-/** Material used on a job: total cost, add from the catalogue, correct or delete. */
+/**
+ * Material used on a job: total cost, add from the catalogue, correct or delete. What is
+ * missing goes on the order list from here too.
+ */
 export function JobMaterials({
   jobId,
   usages,
   materials,
+  orderMaterials,
   today,
 }: {
   jobId: string;
   usages: JobMaterialUsage[];
   materials: MaterialOption[];
+  orderMaterials: OrderMaterialOption[];
   today: string;
 }) {
   return (
@@ -57,6 +64,14 @@ export function JobMaterials({
           <OtherUsageForm jobId={jobId} today={today} />
         </Disclosure>
       </div>
+
+      <Disclosure summary="+ Op de bestellijst">
+        <OrderItemForm materials={orderMaterials} jobId={jobId} />
+        <Link href="/bestellijst" className={`${quietLinkClass} self-start`}>
+          Naar de bestellijst
+          <ChevronRightIcon className="size-5" />
+        </Link>
+      </Disclosure>
 
       <p className="text-lg">
         Totaal materiaal (kostprijs): <strong>{formatEuro(sumUsages(usages))}</strong>

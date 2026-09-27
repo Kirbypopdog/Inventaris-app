@@ -32,10 +32,17 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
   if (filter) {
     query = query.or(filter);
   }
-  const { data: materials, error } = await query;
-  if (error) {
-    throw new Error(`Could not load materials: ${error.message}`);
+  const [{ data: materials, error }, openOrders] = await Promise.all([
+    query,
+    supabase
+      .from("order_items")
+      .select("id", { count: "exact", head: true })
+      .is("ordered_at", null),
+  ]);
+  if (error || openOrders.error) {
+    throw new Error(`Could not load materials: ${(error ?? openOrders.error)?.message}`);
   }
+  const openOrderCount = openOrders.count ?? 0;
 
   return (
     <main className={pageClass}>
@@ -48,6 +55,12 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
           </Link>
         }
       />
+      {!showArchived && (
+        <Link href="/bestellijst" className={`${quietLinkClass} -mt-3 self-start`}>
+          Bestellijst{openOrderCount > 0 ? ` (${openOrderCount} te bestellen)` : ""}
+          <ChevronRightIcon className="size-5" />
+        </Link>
+      )}
       <SearchForm
         label="Zoek op naam of leverancier"
         defaultValue={term}

@@ -38,6 +38,7 @@ export default defineConfig({
         "company.spec.ts",
         "notes.spec.ts",
         "budget.spec.ts",
+        "orders.spec.ts",
         "quotes.spec.ts",
         "export.spec.ts",
         "search.spec.ts",

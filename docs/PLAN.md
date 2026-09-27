@@ -80,6 +80,10 @@ Belangrijke keuzes:
       "Nog te doen"), afgewerkte taken wissen; notities met datum en auteur; opmetingen (wat,
       breedte × hoogte × diepte in mm, notitie). Doorzoekbaar en exporteerbaar
 - [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
+- [x] Bestellijst (/bestellijst, via Materiaal of Meer): per leverancier wat nog besteld moet
+      worden, uit de catalogus of vrij, eventueel voor een job (ook toe te voegen vanop het
+      tabblad Materiaal van een job). Afvinken als besteld, lijst per leverancier kopiëren,
+      bestelde regels wissen, exporteerbaar
 - [x] Uitzonderingen op tarieven: verplaatsingen per klant en per job, marge op materiaal
       per job en per materiaal, algemene marge (Account → Marge op materiaal)
 - [x] **Inklokknop**: in- en uitklokken vanop de startpagina, wisselen van job, uren per job
@@ -117,7 +121,7 @@ Belangrijke keuzes:
       offerte dat gepresteerd is; vanaf de budgetwaarschuwing (instelling, standaard 80%) of
       boven de offerte een melding, ook op de kaart van de job op de startpagina
 - [x] Export naar csv voor Excel (Account → Gegevens exporteren): klanten, jobs, uren,
-      materiaal, verplaatsingen, taken, notities, opmetingen, offertes en offerteregels
+      materiaal, verplaatsingen, taken, notities, opmetingen, bestellijst, offertes en offerteregels
 
 ### Fase 4: Afwerking
 
