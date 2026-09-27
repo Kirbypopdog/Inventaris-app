@@ -1,7 +1,7 @@
 export const inputClass =
   "w-full rounded-xl border border-stone-300 bg-white px-4 py-4 text-lg text-stone-900 " +
   "focus:border-brand-600 focus:ring-2 focus:ring-brand-200 focus:outline-none " +
-  "disabled:bg-stone-100 disabled:text-stone-500 dark:border-stone-700 dark:bg-stone-900 " +
+  "disabled:bg-stone-100 disabled:text-stone-500 dark:border-stone-700 dark:bg-stone-950 " +
   "dark:text-stone-50 dark:focus:border-brand-400 dark:focus:ring-brand-900 dark:disabled:bg-stone-800";
 
 export const primaryButtonClass =
@@ -19,7 +19,7 @@ export const secondaryButtonClass =
 export const choiceClass =
   "flex min-h-14 items-center gap-3 rounded-xl border border-stone-300 bg-white px-4 text-lg " +
   "accent-brand-700 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-50 " +
-  "dark:border-stone-700 dark:bg-stone-900 dark:has-[:checked]:border-brand-400 " +
+  "dark:border-stone-700 dark:bg-stone-950 dark:has-[:checked]:border-brand-400 " +
   "dark:has-[:checked]:bg-brand-950";
 
 /** Clocking in and out: big enough to hit with work gloves on. */

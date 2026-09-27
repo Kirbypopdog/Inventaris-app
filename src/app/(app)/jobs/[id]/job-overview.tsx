@@ -37,7 +37,7 @@ export function JobOverview({
           <li key={tile.tab}>
             <Link
               href={jobTabHref(jobId, tile.tab)}
-              className="flex h-full min-h-24 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
+              className="flex h-full min-h-24 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-600"
             >
               <span className="text-sm font-medium text-stone-500">{tile.label}</span>
               <span className="text-xl font-semibold tabular-nums">{tile.value}</span>

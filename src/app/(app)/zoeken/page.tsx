@@ -42,7 +42,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/zoeken">)
               <li key={`${result.kind}-${result.id}`}>
                 <Link
                   href={searchResultHref(result)}
-                  className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
+                  className="flex min-h-16 flex-col gap-1 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-600"
                 >
                   <span className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-stone-100 px-3 py-1 text-sm font-medium dark:bg-stone-800">

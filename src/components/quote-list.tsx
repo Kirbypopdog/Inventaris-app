@@ -11,7 +11,7 @@ export function QuoteList({ quotes, showJob }: { quotes: QuoteListItem[]; showJo
         <li key={quote.id}>
           <Link
             href={`/offertes/${quote.id}`}
-            className="flex min-h-16 flex-col gap-2 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-950 dark:hover:border-stone-600"
+            className="flex min-h-16 flex-col gap-2 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-600"
           >
             <span className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-lg font-semibold">{quote.number}</span>

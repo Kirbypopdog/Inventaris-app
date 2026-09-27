@@ -105,6 +105,7 @@ Belangrijke keuzes:
 
 - [x] Agenda (/agenda): week of maand, jobs als balken volgens start- en einddatum, jobs zonder
       datum, "Deze week" op de startpagina
+- [x] Weergave (Meer): automatisch (volgt het toestel), licht of donker; onthouden per toestel
 - [x] Zoeken in alles (startpagina en /zoeken): jobs (ook via gebruikt materiaal en notities),
       klanten, offertes (ook via regels) en materiaal, met Nederlandse woordstammen
 - [x] Analyses (/analyses en op elke job): nacalculatie per job (uren, materiaal met marge,

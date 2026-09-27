@@ -266,7 +266,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
 
       {tab === "offertes" && (
         <section className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">Offertes</h2>
+          <h2 className="sr-only">Offertes</h2>
           {quotes.length > 0 ? (
             <QuoteList quotes={quotes} showJob={false} />
           ) : (
@@ -286,7 +286,7 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
 
       {tab === "gegevens" && (
         <section className="flex flex-col gap-4 md:max-w-3xl">
-          <h2 className="text-xl font-semibold">Gegevens bewerken</h2>
+          <h2 className="sr-only">Gegevens bewerken</h2>
           <div className={cardClass}>
             {/* Re-mount when the status changes via the buttons, so the form never saves a stale status. */}
             <JobForm

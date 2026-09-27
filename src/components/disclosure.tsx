@@ -3,7 +3,7 @@ import { ChevronRightIcon } from "@/components/icons";
 
 const BOX_CLASSES = {
   /** A block of its own, like a form to add something. */
-  card: "rounded-2xl border border-stone-200 bg-white px-4 dark:border-stone-800 dark:bg-stone-950",
+  card: "rounded-2xl border border-stone-200 bg-white px-4 dark:border-stone-800 dark:bg-stone-900",
   /** A block inside a form, like the exceptions on rates. */
   nested: "rounded-xl border border-stone-200 px-4 dark:border-stone-800",
   /** A fold-out inside a card, like "Aanpassen of verwijderen". */

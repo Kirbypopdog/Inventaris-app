@@ -40,7 +40,7 @@ export function PageHeader({
 }
 
 export const cardClass =
-  "flex flex-col gap-4 rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-950";
+  "flex flex-col gap-4 rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900";
 
 export const linkButtonClass =
   "flex min-h-14 w-full items-center justify-center rounded-xl bg-brand-700 px-4 text-lg " +

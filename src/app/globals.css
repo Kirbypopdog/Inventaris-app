@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
 /*
+ * Dark mode follows the device, unless a look is chosen under "Meer": then <html> carries
+ * data-theme="light" or "dark" and that wins.
+ */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
+/*
  * Huisstijl: warm hout als accent (brand), warme grijstinten (stone), een crèmekleurige
  * achtergrond. Kleuren enkel via deze tokens, zodat de stijl op één plek verandert.
  */
@@ -19,6 +34,8 @@
 }
 
 :root {
+  /* Native controls (date picker, select arrow, scrollbars) follow the look as well. */
+  color-scheme: light;
   --background: #faf7f2;
   --foreground: #1c1917;
 }
@@ -28,9 +45,16 @@
   --color-foreground: var(--foreground);
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0f0d0c;
+  --foreground: #f0ebe4;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #141110;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --background: #0f0d0c;
     --foreground: #f0ebe4;
   }
 }

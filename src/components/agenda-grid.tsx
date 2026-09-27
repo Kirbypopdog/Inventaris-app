@@ -68,8 +68,8 @@ function WeekRow({
         {days.map((day) => (
           <span
             key={day}
-            className={`border-l border-stone-100 first:border-l-0 dark:border-stone-900 ${
-              isWeekend(day) ? "bg-stone-50 dark:bg-stone-900/40" : ""
+            className={`border-l border-stone-100 first:border-l-0 dark:border-stone-800 ${
+              isWeekend(day) ? "bg-stone-50 dark:bg-stone-800/50" : ""
             }`}
           />
         ))}
@@ -137,7 +137,7 @@ function WeekdayHeader({ monday }: { monday: string }) {
 }
 
 const calendarClass =
-  "overflow-hidden rounded-2xl border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-950";
+  "overflow-hidden rounded-2xl border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900";
 
 /** A week as a calendar row with room for the title and customer on each bar. */
 export function WeekCalendar({
