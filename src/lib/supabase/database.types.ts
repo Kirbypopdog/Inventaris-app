@@ -88,6 +88,25 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"job_measurements": {
+                  Row: {
+                    "created_at": string,"created_by": string,"depth_mm": number | null,"height_mm": number | null,"id": string,"job_id": string,"label": string,"note": string | null,"updated_at": string,"width_mm": number | null
+                  }
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string,"depth_mm"?: number | null,"height_mm"?: number | null,"id"?: string,"job_id": string,"label": string,"note"?: string | null,"updated_at"?: string,"width_mm"?: number | null
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string,"depth_mm"?: number | null,"height_mm"?: number | null,"id"?: string,"job_id"?: string,"label"?: string,"note"?: string | null,"updated_at"?: string,"width_mm"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "job_measurements_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "jobs"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"job_notes": {
                   Row: {
                     "body": string,"created_at": string,"created_by": string,"id": string,"job_id": string,"updated_at": string

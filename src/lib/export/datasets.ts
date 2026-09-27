@@ -321,6 +321,32 @@ export const EXPORT_DATASETS = {
       };
     },
   },
+  opmetingen: {
+    label: "Opmetingen",
+    description: "Alle opmetingen per job, in mm.",
+    async load(supabase) {
+      const rows = await fetchAll((from, to) =>
+        supabase
+          .from("job_measurements")
+          .select("*, jobs(title)")
+          .order("created_at")
+          .order("id")
+          .range(from, to),
+      );
+      return {
+        headers: ["Job", "Wat", "Breedte (mm)", "Hoogte (mm)", "Diepte (mm)", "Notitie", "Datum"],
+        rows: rows.map((row) => [
+          row.jobs?.title ?? null,
+          row.label,
+          row.width_mm,
+          row.height_mm,
+          row.depth_mm,
+          row.note,
+          toBrusselsDate(row.created_at),
+        ]),
+      };
+    },
+  },
   offertes: {
     label: "Offertes",
     description: "Alle offertes met status en totalen.",

@@ -20,7 +20,7 @@ export function Disclosure({
   open,
   children,
 }: {
-  summary: string;
+  summary: ReactNode;
   variant?: keyof typeof BOX_CLASSES;
   open?: boolean;
   children: ReactNode;

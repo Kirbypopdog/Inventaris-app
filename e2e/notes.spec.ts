@@ -64,7 +64,8 @@ test("notes per job", async ({ page }, testInfo) => {
   await openNewJob(page, `E2E Notitiejob ${testInfo.project.name}`);
   await openJobTab(page, "Notities");
 
-  // A note: the form is open while there are none.
+  // A note: the form opens from "+ Nieuwe notitie".
+  await page.getByText("+ Nieuwe notitie").click();
   await page
     .getByLabel("Nieuwe notitie")
     .fill("Klant wil de deur links draaiend.\nSleutel bij de buren.");
@@ -90,5 +91,51 @@ test("notes per job", async ({ page }, testInfo) => {
   page.once("dialog", (dialog) => dialog.accept());
   await notes.getByRole("button", { name: "Verwijderen" }).click();
   await expect(notes).toHaveCount(0);
-  await expect(page.getByRole("textbox", { name: "Nieuwe notitie" })).toBeVisible();
+});
+
+test("measurements per job", async ({ page }, testInfo) => {
+  await openNewJob(page, `E2E Opmeetjob ${testInfo.project.name}`);
+  await openJobTab(page, "Notities");
+
+  // At least one size, in whole mm.
+  await page.getByText("+ Nieuwe opmeting").click();
+  const form = page.locator("form").filter({ hasText: "Opmeting bewaren" });
+  await form.getByLabel("Wat").fill("Kast hal");
+  await form.getByRole("button", { name: "Opmeting bewaren" }).click();
+  await expect(form.getByRole("alert")).toContainText("Vul minstens één maat in.");
+  await form.getByLabel("Breedte").fill("12,5");
+  await form.getByRole("button", { name: "Opmeting bewaren" }).click();
+  await expect(form.getByRole("alert")).toContainText("hele millimeter");
+
+  await form.getByLabel("Breedte").fill("1 200");
+  await form.getByLabel("Hoogte").fill("2400");
+  await form.getByLabel("Diepte").fill("600");
+  await form.getByLabel("Notitie").fill("Plafond loopt af");
+  await form.getByRole("button", { name: "Opmeting bewaren" }).click();
+  const list = page.getByRole("list", { name: "Opmetingen" });
+  const item = list.getByRole("listitem").filter({ hasText: "Kast hal" });
+  await expect(item).toContainText("B 1200 × H 2400 × D 600 mm");
+  await expect(item).toContainText("Plafond loopt af");
+
+  // Correct it (tap the measurement): only the width.
+  await item.getByText("Kast hal").click();
+  await item.getByLabel("Hoogte").fill("");
+  await item.getByLabel("Diepte").fill("");
+  await item.getByLabel("Breedte").fill("5320");
+  await item.getByRole("button", { name: "Aanpassing opslaan" }).click();
+  await expect(item).toContainText("B 5320 mm");
+  await expect(item).not.toContainText("H 2400");
+
+  // Found in search and part of the export.
+  await page.goto("/zoeken?q=plafond");
+  await expect(page.getByRole("main")).toContainText("Opmeting: Kast hal");
+  const response = await page.request.get("/export/opmetingen");
+  expect(await response.text()).toContain(";Kast hal;5320;;;Plafond loopt af;");
+
+  // Delete it.
+  await page.goBack();
+  await item.getByText("Kast hal").click();
+  page.once("dialog", (dialog) => dialog.accept());
+  await item.getByRole("button", { name: "Verwijderen" }).click();
+  await expect(list).toHaveCount(0);
 });
