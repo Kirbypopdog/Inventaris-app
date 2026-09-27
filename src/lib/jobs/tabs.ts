@@ -3,6 +3,7 @@ import { z } from "zod";
 /** The tabs of a job page, in order. The first one is shown without `?tab=`. */
 export const JOB_TABS = [
   { key: "overzicht", label: "Overzicht" },
+  { key: "notities", label: "Notities" },
   { key: "uren", label: "Uren" },
   { key: "materiaal", label: "Materiaal" },
   { key: "ritten", label: "Ritten" },

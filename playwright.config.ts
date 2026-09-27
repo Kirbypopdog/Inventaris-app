@@ -36,6 +36,7 @@ export default defineConfig({
         "rate-overrides.spec.ts",
         "forgotten-clock.spec.ts",
         "company.spec.ts",
+        "notes.spec.ts",
         "quotes.spec.ts",
         "export.spec.ts",
         "search.spec.ts",

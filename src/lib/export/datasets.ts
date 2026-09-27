@@ -272,6 +272,55 @@ export const EXPORT_DATASETS = {
       };
     },
   },
+  taken: {
+    label: "Taken",
+    description: "Alle taken per job, open en afgewerkt.",
+    async load(supabase) {
+      const rows = await fetchAll((from, to) =>
+        supabase
+          .from("job_tasks")
+          .select("*, jobs(title)")
+          .order("created_at")
+          .order("id")
+          .range(from, to),
+      );
+      return {
+        headers: ["Job", "Taak", "Aangemaakt", "Afgewerkt"],
+        rows: rows.map((row) => [
+          row.jobs?.title ?? null,
+          row.title,
+          toBrusselsDate(row.created_at),
+          row.done_at ? toBrusselsDate(row.done_at) : null,
+        ]),
+      };
+    },
+  },
+  notities: {
+    label: "Notities",
+    description: "Alle notities per job, met datum en wie ze schreef.",
+    async load(supabase) {
+      const [names, rows] = await Promise.all([
+        memberNames(supabase),
+        fetchAll((from, to) =>
+          supabase
+            .from("job_notes")
+            .select("*, jobs(title)")
+            .order("created_at")
+            .order("id")
+            .range(from, to),
+        ),
+      ]);
+      return {
+        headers: ["Datum", "Job", "Door", "Notitie"],
+        rows: rows.map((row) => [
+          toBrusselsDate(row.created_at),
+          row.jobs?.title ?? null,
+          names.get(row.created_by) ?? null,
+          row.body,
+        ]),
+      };
+    },
+  },
   offertes: {
     label: "Offertes",
     description: "Alle offertes met status en totalen.",

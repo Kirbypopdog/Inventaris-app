@@ -74,8 +74,11 @@ Belangrijke keuzes:
 - [x] Klanten (lijst, zoeken, bewerken, archiveren, btw-nummercontrole)
 - [x] Projecten (/klanten): een kaart per klant met zijn lopende en geplande jobs, gegroepeerd in
       Lopend, Gepland en Overige klanten; zoeken vindt ook jobs. Vervangt de aparte jobslijst.
-- [x] Jobs (tabbladen Overzicht, Uren, Materiaal, Ritten, Offertes, Gegevens; klokknop bovenaan;
-      snelle statusknoppen; de lijst per klant staat in Projecten)
+- [x] Jobs (tabbladen Overzicht, Notities, Uren, Materiaal, Ritten, Offertes, Gegevens; klokknop
+      bovenaan; snelle statusknoppen; de lijst per klant staat in Projecten)
+- [x] Taken en notities per job (tabblad Notities): taken afvinken (ook op het overzicht,
+      "Nog te doen"), afgewerkte taken wissen; notities met datum en auteur. Doorzoekbaar en
+      exporteerbaar
 - [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
 - [x] Uitzonderingen op tarieven: verplaatsingen per klant en per job, marge op materiaal
       per job en per materiaal, algemene marge (Account → Marge op materiaal)
@@ -106,12 +109,12 @@ Belangrijke keuzes:
 - [x] Agenda (/agenda): week of maand, jobs als balken volgens start- en einddatum, jobs zonder
       datum, "Deze week" op de startpagina
 - [x] Weergave (Meer): automatisch (volgt het toestel), licht of donker; onthouden per toestel
-- [x] Zoeken in alles (startpagina en /zoeken): jobs (ook via gebruikt materiaal en notities),
+- [x] Zoeken in alles (startpagina en /zoeken): jobs (ook via gebruikt materiaal, notities en taken),
       klanten, offertes (ook via regels) en materiaal, met Nederlandse woordstammen
 - [x] Analyses (/analyses en op elke job): nacalculatie per job (uren, materiaal met marge,
       verplaatsingen) tegenover de aanvaarde offerte, en per maand uren, materiaal en ritten
 - [x] Export naar csv voor Excel (Account → Gegevens exporteren): klanten, jobs, uren,
-      materiaal, verplaatsingen, offertes en offerteregels
+      materiaal, verplaatsingen, taken, notities, offertes en offerteregels
 
 ### Fase 4: Afwerking
 

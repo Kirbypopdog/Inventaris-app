@@ -3,25 +3,34 @@ import { setJobStatus } from "../actions";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobCalculationSummary } from "@/components/job-calculation";
-import { cardClass } from "@/components/page";
+import { cardClass, quietLinkClass } from "@/components/page";
 import type { JobCalculation } from "@/lib/analyses";
 import { type JobTab, jobTabHref } from "@/lib/jobs/tabs";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
+import { TaskChecklist, type TaskItem } from "./task-list";
+
+/** The overview shows only the first open tasks; the rest is one tap away. */
+const OVERVIEW_TASK_LIMIT = 5;
 
 export type OverviewTile = { tab: JobTab; label: string; value: string; detail: string };
 
-/** The first tab of a job: what is going on at a glance, the post-calculation and the status. */
+/**
+ * The first tab of a job: what is going on at a glance (open tasks, totals), the
+ * post-calculation and the status.
+ */
 export function JobOverview({
   jobId,
   status,
   description,
   tiles,
+  openTasks,
   calculation,
 }: {
   jobId: string;
   status: JobStatus;
   description: string | null;
   tiles: OverviewTile[];
+  openTasks: TaskItem[];
   calculation: JobCalculation;
 }) {
   const otherStatuses = (Object.keys(JOB_STATUS_LABELS) as JobStatus[]).filter(
@@ -31,6 +40,18 @@ export function JobOverview({
   return (
     <div className="flex flex-col gap-6">
       {description && <p className="text-lg whitespace-pre-line md:max-w-3xl">{description}</p>}
+
+      {openTasks.length > 0 && (
+        <section className="flex flex-col gap-3 md:max-w-3xl">
+          <h2 className="text-xl font-semibold">Nog te doen</h2>
+          <TaskChecklist tasks={openTasks.slice(0, OVERVIEW_TASK_LIMIT)} label="Nog te doen" />
+          <Link href={jobTabHref(jobId, "notities")} className={`${quietLinkClass} self-start`}>
+            {openTasks.length > OVERVIEW_TASK_LIMIT
+              ? `Alle ${openTasks.length} taken en de notities`
+              : "Taken en notities"}
+          </Link>
+        </section>
+      )}
 
       <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {tiles.map((tile) => (
