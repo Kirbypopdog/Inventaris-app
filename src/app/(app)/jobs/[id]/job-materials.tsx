@@ -2,6 +2,7 @@ import Link from "next/link";
 import { deleteUsage } from "@/app/(app)/materiaal/usage-actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass } from "@/components/form";
+import { Disclosure } from "@/components/disclosure";
 import { EmptyState, cardClass } from "@/components/page";
 import { formatDate } from "@/lib/dates";
 import { sumUsages, usageCost } from "@/lib/materials/totals";
@@ -52,14 +53,9 @@ export function JobMaterials({
             , of gebruik &quot;Iets anders toevoegen&quot;.
           </p>
         )}
-        <details>
-          <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
-            Iets anders toevoegen (niet uit de catalogus)
-          </summary>
-          <div className="mt-3">
-            <OtherUsageForm jobId={jobId} today={today} />
-          </div>
-        </details>
+        <Disclosure variant="inline" summary="Iets anders toevoegen (niet uit de catalogus)">
+          <OtherUsageForm jobId={jobId} today={today} />
+        </Disclosure>
       </div>
 
       <p className="text-lg">
@@ -77,27 +73,22 @@ export function JobMaterials({
               <p className="text-base text-stone-600 dark:text-stone-400">
                 {formatQuantity(usage.quantity)} {usage.unit} · {formatDate(usage.usedOn)}
               </p>
-              <details>
-                <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
-                  Aanpassen of verwijderen
-                </summary>
-                <div className="mt-3 flex flex-col gap-3">
-                  <UsageUpdateForm
-                    id={usage.id}
-                    quantity={formatQuantityInput(usage.quantity)}
-                    unit={usage.unit}
-                    usedOn={usage.usedOn}
-                  />
-                  <ActionButton
-                    action={deleteUsage}
-                    values={{ id: usage.id }}
-                    label="Verwijderen"
-                    pendingLabel="Bezig…"
-                    className={dangerButtonClass}
-                    confirm={`${usage.description} verwijderen van deze job?`}
-                  />
-                </div>
-              </details>
+              <Disclosure variant="inline" summary="Aanpassen of verwijderen">
+                <UsageUpdateForm
+                  id={usage.id}
+                  quantity={formatQuantityInput(usage.quantity)}
+                  unit={usage.unit}
+                  usedOn={usage.usedOn}
+                />
+                <ActionButton
+                  action={deleteUsage}
+                  values={{ id: usage.id }}
+                  label="Verwijderen"
+                  pendingLabel="Bezig…"
+                  className={dangerButtonClass}
+                  confirm={`${usage.description} verwijderen van deze job?`}
+                />
+              </Disclosure>
             </li>
           ))}
         </ul>

@@ -3,6 +3,7 @@ import { deleteTrip } from "@/app/(app)/ritten/actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass } from "@/components/form";
 import { EmptyState, cardClass } from "@/components/page";
+import { Disclosure } from "@/components/disclosure";
 import { formatDate } from "@/lib/dates";
 import { cents, formatEuro } from "@/lib/money";
 import { formatQuantity, formatQuantityInput } from "@/lib/quantity";
@@ -95,32 +96,26 @@ export function JobTrips({
                   .filter(Boolean)
                   .join(" · ")}
               </p>
-              <details>
-                <summary className="flex min-h-12 cursor-pointer items-center text-base underline">
-                  Aanpassen of verwijderen
-                </summary>
-                <div className="mt-3 flex flex-col gap-3">
-                  <TripForm
-                    perKm={trip.method === "per_km"}
-                    trip={{
-                      id: trip.id,
-                      jobId,
-                      tripDate: trip.tripDate,
-                      distance:
-                        trip.distanceKm === null ? "" : formatQuantityInput(trip.distanceKm),
-                      note: trip.note ?? "",
-                    }}
-                  />
-                  <ActionButton
-                    action={deleteTrip}
-                    values={{ id: trip.id }}
-                    label="Verwijderen"
-                    pendingLabel="Bezig…"
-                    className={dangerButtonClass}
-                    confirm="Deze rit verwijderen?"
-                  />
-                </div>
-              </details>
+              <Disclosure variant="inline" summary="Aanpassen of verwijderen">
+                <TripForm
+                  perKm={trip.method === "per_km"}
+                  trip={{
+                    id: trip.id,
+                    jobId,
+                    tripDate: trip.tripDate,
+                    distance: trip.distanceKm === null ? "" : formatQuantityInput(trip.distanceKm),
+                    note: trip.note ?? "",
+                  }}
+                />
+                <ActionButton
+                  action={deleteTrip}
+                  values={{ id: trip.id }}
+                  label="Verwijderen"
+                  pendingLabel="Bezig…"
+                  className={dangerButtonClass}
+                  confirm="Deze rit verwijderen?"
+                />
+              </Disclosure>
             </li>
           ))}
         </ul>
