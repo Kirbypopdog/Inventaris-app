@@ -54,6 +54,11 @@ export default async function JobsPage({ searchParams }: PageProps<"/jobs">) {
     <main className={pageClass}>
       <PageHeader
         title="Jobs"
+        description={
+          <Link href="/agenda" className="underline">
+            Naar de agenda
+          </Link>
+        }
         action={
           <Link href="/jobs/nieuw" className={linkButtonClass}>
             Nieuwe job
