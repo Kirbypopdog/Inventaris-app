@@ -49,6 +49,7 @@ test("the agenda shows the planned jobs as bars per week and per month", async (
 
   // The month shows the job as well; from there, back to this week.
   await page.getByRole("link", { name: "Vandaag" }).click();
+  await expect(job).toBeVisible();
   await page.getByRole("link", { name: "Maand", exact: true }).click();
   await expect(page.getByRole("heading", { level: 1, name: /^[A-Z][a-z]+ \d{4}$/ })).toBeVisible();
   await expect(main.getByRole("link", { name: new RegExp(`^${planned}`) })).toBeVisible();
