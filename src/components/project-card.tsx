@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { JobStatusBadge } from "@/components/job-list";
-import { mapsUrl } from "@/lib/address";
 import { formatPeriod } from "@/lib/dates";
 import { CUSTOMER_TYPE_LABELS, type CustomerType } from "@/lib/labels";
 import type { ProjectCard as Card, ProjectCustomer } from "@/lib/projects";
@@ -8,8 +7,6 @@ import type { ProjectCard as Card, ProjectCustomer } from "@/lib/projects";
 export type ProjectCustomerView = ProjectCustomer & {
   type: CustomerType;
   city: string | null;
-  phone: string | null;
-  address: string;
 };
 
 export type ProjectSection = "active" | "planned" | "others";
@@ -19,10 +16,6 @@ const DOT_CLASSES: Record<ProjectSection, string> = {
   planned: "bg-sky-500",
   others: "bg-stone-300 dark:bg-stone-600",
 };
-
-const actionClass =
-  "flex min-h-11 flex-1 items-center justify-center rounded-xl border border-stone-200 px-3 " +
-  "text-base font-medium hover:border-stone-400 dark:border-stone-700";
 
 /** One customer with its open jobs, in the style of a concept card. */
 export function ProjectCard({
@@ -96,31 +89,6 @@ export function ProjectCard({
           </Link>
         )}
       </p>
-
-      <div className="mt-auto flex gap-2 border-t border-stone-100 pt-3 dark:border-stone-800">
-        {customer.phone && (
-          <a href={`tel:${customer.phone}`} className={actionClass}>
-            Bellen
-          </a>
-        )}
-        {customer.address && (
-          <a
-            href={mapsUrl(customer.address)}
-            target="_blank"
-            rel="noreferrer"
-            className={actionClass}
-          >
-            Route
-          </a>
-        )}
-        <Link
-          href={`/jobs/nieuw?klant=${customer.id}`}
-          aria-label={`Nieuwe job voor ${customer.name}`}
-          className={actionClass}
-        >
-          + Job
-        </Link>
-      </div>
     </article>
   );
 }
