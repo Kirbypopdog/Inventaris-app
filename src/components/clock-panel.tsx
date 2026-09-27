@@ -11,6 +11,7 @@ import {
   secondaryLinkButtonClass,
   titleLinkClass,
 } from "@/components/page";
+import { type Budget, budgetMessage } from "@/lib/budget";
 import { formatPeriod } from "@/lib/dates";
 import { jobTabHref } from "@/lib/jobs/tabs";
 import type { RunningEntry } from "@/lib/hours/queries";
@@ -19,18 +20,21 @@ import { toBrusselsTime } from "@/lib/time";
 /**
  * The clock and the open jobs on the start page, in one list: every job has its own button to
  * clock in (or to switch to it while the clock runs). The running job sits on top with a live
- * timer and a big button to clock out.
+ * timer and a big button to clock out. A job that reached the budget warning says so on its card.
  */
 export function ClockPanel({
   running,
   jobs,
   hasDefaultRate,
   canManageRates,
+  budgetAlerts,
 }: {
   running: RunningEntry | null;
   jobs: JobListItem[];
   hasDefaultRate: boolean;
   canManageRates: boolean;
+  /** Open jobs past the budget warning, by job id. */
+  budgetAlerts: ReadonlyMap<string, Budget>;
 }) {
   const otherJobs = running ? jobs.filter((job) => job.id !== running.jobId) : jobs;
 
@@ -52,6 +56,7 @@ export function ClockPanel({
               <ElapsedTime startedAt={running.startedAt} />
             </p>
           </div>
+          <BudgetAlert budget={budgetAlerts.get(running.jobId)} />
           <div className="grid gap-3 md:grid-cols-2">
             <ActionButton
               action={clockOut}
@@ -107,6 +112,7 @@ export function ClockPanel({
                   </span>
                   <JobStatusBadge status={job.status} />
                 </Link>
+                <BudgetAlert budget={budgetAlerts.get(job.id)} />
                 {hasDefaultRate && (
                   <ActionButton
                     action={clockIn}
@@ -126,5 +132,22 @@ export function ClockPanel({
         </EmptyState>
       )}
     </section>
+  );
+}
+
+function BudgetAlert({ budget }: { budget: Budget | undefined }) {
+  if (!budget || budget.level === "ok") {
+    return null;
+  }
+  return (
+    <p
+      className={`rounded-xl p-3 text-base ${
+        budget.level === "over"
+          ? "bg-red-50 text-red-900 dark:bg-red-950 dark:text-red-200"
+          : "bg-amber-50 text-amber-900 dark:bg-amber-950 dark:text-amber-200"
+      }`}
+    >
+      {budgetMessage(budget)}
+    </p>
   );
 }

@@ -113,6 +113,9 @@ Belangrijke keuzes:
       klanten, offertes (ook via regels) en materiaal, met Nederlandse woordstammen
 - [x] Analyses (/analyses en op elke job): nacalculatie per job (uren, materiaal met marge,
       verplaatsingen) tegenover de aanvaarde offerte, en per maand uren, materiaal en ritten
+- [x] Budgetbewaking: op het overzicht van een job een balk met het deel van de aanvaarde
+      offerte dat gepresteerd is; vanaf de budgetwaarschuwing (instelling, standaard 80%) of
+      boven de offerte een melding, ook op de kaart van de job op de startpagina
 - [x] Export naar csv voor Excel (Account → Gegevens exporteren): klanten, jobs, uren,
       materiaal, verplaatsingen, taken, notities, offertes en offerteregels
 

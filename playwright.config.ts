@@ -37,6 +37,7 @@ export default defineConfig({
         "forgotten-clock.spec.ts",
         "company.spec.ts",
         "notes.spec.ts",
+        "budget.spec.ts",
         "quotes.spec.ts",
         "export.spec.ts",
         "search.spec.ts",

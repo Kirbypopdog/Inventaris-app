@@ -2,9 +2,11 @@ import Link from "next/link";
 import { setJobStatus } from "../actions";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
+import { BudgetBar } from "@/components/budget-bar";
 import { JobCalculationSummary } from "@/components/job-calculation";
 import { cardClass, quietLinkClass } from "@/components/page";
 import type { JobCalculation } from "@/lib/analyses";
+import type { Budget } from "@/lib/budget";
 import { type JobTab, jobTabHref } from "@/lib/jobs/tabs";
 import { JOB_STATUS_LABELS, type JobStatus } from "@/lib/labels";
 import { TaskChecklist, type TaskItem } from "./task-list";
@@ -25,6 +27,7 @@ export function JobOverview({
   tiles,
   openTasks,
   calculation,
+  budget,
 }: {
   jobId: string;
   status: JobStatus;
@@ -32,6 +35,7 @@ export function JobOverview({
   tiles: OverviewTile[];
   openTasks: TaskItem[];
   calculation: JobCalculation;
+  budget: Budget | null;
 }) {
   const otherStatuses = (Object.keys(JOB_STATUS_LABELS) as JobStatus[]).filter(
     (other) => other !== status,
@@ -40,6 +44,8 @@ export function JobOverview({
   return (
     <div className="flex flex-col gap-6">
       {description && <p className="text-lg whitespace-pre-line md:max-w-3xl">{description}</p>}
+
+      {budget && <BudgetBar budget={budget} />}
 
       {openTasks.length > 0 && (
         <section className="flex flex-col gap-3 md:max-w-3xl">
@@ -72,7 +78,7 @@ export function JobOverview({
         <section className="flex flex-col gap-4" aria-label="Nacalculatie">
           <h2 className="text-xl font-semibold">Nacalculatie</h2>
           <div className={cardClass}>
-            <JobCalculationSummary calculation={calculation} />
+            <JobCalculationSummary calculation={calculation} showDifference={budget === null} />
           </div>
         </section>
 

@@ -49,7 +49,12 @@ test("post-calculation of a job and the monthly overview", async ({ page }, test
   await expect(calculation).toContainText(/Materiaal met marge\s*€\s148,35/);
   await expect(calculation).toContainText(/Verplaatsingen\s*€\s17,20/);
   await expect(calculation).toContainText(/Totaal gepresteerd\s*€\s345,55/);
-  await expect(calculation).toContainText(/De offerte dekt het werk, met €\s54,45 over/);
+  // €345,55 of €400 is 86%: past the default warning of 80%.
+  const budget = page.getByRole("region", { name: "Budget" });
+  await expect(budget).toContainText("86%");
+  await expect(budget).toContainText(
+    /Let op: al 86% van de offerte is gepresteerd\. Nog €\s54,45 over\./,
+  );
 
   // The analyses of that year.
   await page.goto(`/analyses?jaar=${year}`);

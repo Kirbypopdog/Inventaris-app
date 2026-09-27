@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ElapsedTime } from "@/components/clock";
 import { WeekCalendar } from "@/components/agenda-grid";
 import { ClockPanel } from "@/components/clock-panel";
+import type { JobListItem } from "@/components/job-list";
 import { SearchForm } from "@/components/search-form";
 import {
   PageHeader,
@@ -11,6 +12,9 @@ import {
   secondaryLinkButtonClass,
 } from "@/components/page";
 import { addDays, formatDay, weekStart } from "@/lib/agenda";
+import { jobCalculation } from "@/lib/analyses";
+import { loadAnalysisData } from "@/lib/analyses-queries";
+import { type Budget, jobBudget } from "@/lib/budget";
 import { isManagerRole } from "@/lib/auth/roles";
 import { requireSession } from "@/lib/auth/session";
 import { getOtherRunningEntries, getRunningEntry } from "@/lib/hours/queries";
@@ -19,6 +23,39 @@ import { jobTabHref } from "@/lib/jobs/tabs";
 import { OPEN_JOB_STATUSES } from "@/lib/labels";
 import { createClient } from "@/lib/supabase/server";
 import { toBrusselsDate, toBrusselsTime } from "@/lib/time";
+
+type Client = Awaited<ReturnType<typeof createClient>>;
+
+/** Open jobs that reached the budget warning or went over their accepted quote, by job id. */
+async function loadBudgetAlerts(
+  supabase: Client,
+  jobs: readonly JobListItem[],
+): Promise<Map<string, Budget>> {
+  if (jobs.length === 0) {
+    return new Map();
+  }
+  const [analysis, settings] = await Promise.all([
+    loadAnalysisData(
+      supabase,
+      jobs.map((job) => job.id),
+    ),
+    supabase.from("settings").select("budget_warning_percent").single(),
+  ]);
+  if (settings.error) {
+    throw new Error(`Could not load settings: ${settings.error.message}`);
+  }
+  const alerts = new Map<string, Budget>();
+  for (const job of jobs) {
+    const activity = analysis.byJob.get(job.id);
+    const budget = activity
+      ? jobBudget(jobCalculation(activity), settings.data.budget_warning_percent)
+      : null;
+    if (budget && budget.level !== "ok") {
+      alerts.set(job.id, budget);
+    }
+  }
+  return alerts;
+}
 
 export default async function StartPage() {
   const session = await requireSession();
@@ -59,6 +96,7 @@ export default async function StartPage() {
   }
   const weekJobs = thisWeek.data.map(toJobListItem);
   const jobs = openJobs.data.map(toJobListItem);
+  const budgetAlerts = await loadBudgetAlerts(supabase, jobs);
 
   return (
     <main className={pageClass}>
@@ -76,6 +114,7 @@ export default async function StartPage() {
         jobs={jobs}
         hasDefaultRate={(defaultRate.count ?? 0) > 0}
         canManageRates={isManagerRole(session.member.role)}
+        budgetAlerts={budgetAlerts}
       />
       {othersRunning.length > 0 && (
         <section aria-label="Klokken van anderen" className="flex flex-col gap-2">

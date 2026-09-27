@@ -229,13 +229,13 @@ isOneToOne: false
                   ]
                 },"settings": {
                   Row: {
-                    "address_line": string | null,"city": string | null,"company_name": string,"created_at": string,"email": string | null,"iban": string | null,"id": string,"km_rate_cents": number,"material_margin_bp": number,"phone": string | null,"postal_code": string | null,"quote_validity_days": number,"singleton": boolean,"travel_method": Database["public"]['Enums']["travel_method"],"trip_flat_cents": number,"updated_at": string,"vat_number": string | null,"vat_rate": number
+                    "address_line": string | null,"budget_warning_percent": number,"city": string | null,"company_name": string,"created_at": string,"email": string | null,"iban": string | null,"id": string,"km_rate_cents": number,"material_margin_bp": number,"phone": string | null,"postal_code": string | null,"quote_validity_days": number,"singleton": boolean,"travel_method": Database["public"]['Enums']["travel_method"],"trip_flat_cents": number,"updated_at": string,"vat_number": string | null,"vat_rate": number
                   }
                   Insert: {
-                    "address_line"?: string | null,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"quote_validity_days"?: number,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
+                    "address_line"?: string | null,"budget_warning_percent"?: number,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"quote_validity_days"?: number,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
                   }
                   Update: {
-                    "address_line"?: string | null,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"quote_validity_days"?: number,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
+                    "address_line"?: string | null,"budget_warning_percent"?: number,"city"?: string | null,"company_name"?: string,"created_at"?: string,"email"?: string | null,"iban"?: string | null,"id"?: string,"km_rate_cents"?: number,"material_margin_bp"?: number,"phone"?: string | null,"postal_code"?: string | null,"quote_validity_days"?: number,"singleton"?: boolean,"travel_method"?: Database["public"]['Enums']["travel_method"],"trip_flat_cents"?: number,"updated_at"?: string,"vat_number"?: string | null,"vat_rate"?: number
                   }
                   Relationships: [
                     
