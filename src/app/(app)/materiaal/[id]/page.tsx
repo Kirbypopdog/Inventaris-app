@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
-import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { EmptyState, PageHeader, cardClass, pageClass, textLinkClass } from "@/components/page";
 import { requireMember } from "@/lib/auth/session";
 import { jobTabHref } from "@/lib/jobs/tabs";
 import { formatDate } from "@/lib/dates";
@@ -105,7 +105,7 @@ export default async function MaterialPage({ params }: PageProps<"/materiaal/[id
                   {usage.jobs && (
                     <>
                       {" · "}
-                      <Link href={jobTabHref(usage.jobs.id, "materiaal")} className="underline">
+                      <Link href={jobTabHref(usage.jobs.id, "materiaal")} className={textLinkClass}>
                         {usage.jobs.title}
                       </Link>
                     </>

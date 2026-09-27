@@ -3,7 +3,7 @@ import { deleteUsage } from "@/app/(app)/materiaal/usage-actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass } from "@/components/form";
 import { Disclosure } from "@/components/disclosure";
-import { EmptyState, cardClass } from "@/components/page";
+import { EmptyState, cardClass, textLinkClass } from "@/components/page";
 import { formatDate } from "@/lib/dates";
 import { sumUsages, usageCost } from "@/lib/materials/totals";
 import { formatEuro } from "@/lib/money";
@@ -47,7 +47,7 @@ export function JobMaterials({
         ) : (
           <p className="text-lg">
             De catalogus is nog leeg.{" "}
-            <Link href="/materiaal/nieuw" className="underline">
+            <Link href="/materiaal/nieuw" className={textLinkClass}>
               Voeg eerst materiaal toe
             </Link>
             , of gebruik &quot;Iets anders toevoegen&quot;.

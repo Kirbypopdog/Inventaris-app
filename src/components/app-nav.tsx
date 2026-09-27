@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/brand-mark";
+import { toggleSidebar } from "@/lib/sidebar-actions";
 import type { ReactNode } from "react";
 import {
   AgendaIcon,
   AnalysesIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   HomeIcon,
   JobsIcon,
   MaterialsIcon,
@@ -73,20 +76,27 @@ function isActive(item: NavItem, pathname: string): boolean {
 }
 
 /**
- * Bottom bar with the five daily items on a phone, full sidebar on a laptop.
+ * Bottom bar with the five daily items on a phone, sidebar on a laptop, both in dark wood.
+ * The sidebar folds to icons; the labels stay for screen readers and as a tooltip.
  * Only one of the two lists is displayed, so the other is hidden from screen readers too.
  */
-export function AppNav() {
+export function AppNav({ collapsed }: { collapsed: boolean }) {
   const pathname = usePathname();
 
   return (
     <nav
       aria-label="Hoofdmenu"
-      className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:sticky md:top-0 md:h-dvh md:w-60 md:shrink-0 md:border-t-0 md:border-r md:bg-white md:pb-0 dark:border-stone-800 dark:bg-stone-900/95 dark:md:bg-stone-950"
+      className={`bg-wood-900 fixed inset-x-0 bottom-0 z-10 border-t border-black/20 pb-[env(safe-area-inset-bottom)] text-stone-300 md:sticky md:top-0 md:flex md:h-dvh md:shrink-0 md:flex-col md:border-t-0 md:pb-4 ${
+        collapsed ? "md:w-20" : "md:w-60"
+      }`}
     >
-      <p className="hidden items-center gap-2.5 px-6 pt-6 pb-5 text-xl font-semibold md:flex">
+      <p
+        className={`hidden items-center gap-2.5 pt-6 pb-5 text-xl font-semibold text-white md:flex ${
+          collapsed ? "justify-center px-0" : "px-6"
+        }`}
+      >
         <BrandMark />
-        Schrijnwerk
+        <span className={collapsed ? "sr-only" : undefined}>Schrijnwerk</span>
       </p>
       <ul className="grid grid-cols-5 md:hidden">
         {PHONE_ITEMS.map((item) => {
@@ -97,14 +107,12 @@ export function AppNav() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={`flex min-h-16 flex-col items-center justify-center gap-1 text-xs font-medium ${
-                  active
-                    ? "text-brand-700 dark:text-brand-300"
-                    : "text-stone-500 dark:text-stone-400"
+                  active ? "text-white" : "text-stone-400"
                 }`}
               >
                 <span
                   className={`flex h-8 w-14 items-center justify-center rounded-full ${
-                    active ? "bg-brand-100 dark:bg-brand-900" : ""
+                    active ? "bg-wood-700 text-brand-300" : ""
                   }`}
                 >
                   {item.icon}
@@ -123,19 +131,36 @@ export function AppNav() {
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-12 items-center gap-3 rounded-xl px-3 text-base font-medium ${
+                title={collapsed ? item.label : undefined}
+                className={`flex min-h-12 items-center gap-3 rounded-xl text-base font-medium ${
+                  collapsed ? "justify-center px-0" : "px-3"
+                } ${
                   active
-                    ? "bg-brand-100 text-brand-800 dark:bg-brand-900 dark:text-brand-100"
-                    : "text-stone-600 hover:bg-stone-100 dark:text-stone-400 dark:hover:bg-stone-900"
+                    ? "bg-brand-700 text-white"
+                    : "hover:bg-wood-800 text-stone-300 hover:text-white"
                 }`}
               >
                 {item.icon}
-                {item.label}
+                <span className={collapsed ? "sr-only" : undefined}>{item.label}</span>
               </Link>
             </li>
           );
         })}
       </ul>
+      <form action={toggleSidebar} className="mt-auto hidden px-3 md:block">
+        <button
+          type="submit"
+          title={collapsed ? "Menu uitklappen" : undefined}
+          className={`hover:bg-wood-800 flex min-h-12 w-full items-center gap-3 rounded-xl text-base text-stone-400 hover:text-white ${
+            collapsed ? "justify-center px-0" : "px-3"
+          }`}
+        >
+          {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          <span className={collapsed ? "sr-only" : undefined}>
+            {collapsed ? "Menu uitklappen" : "Menu inklappen"}
+          </span>
+        </button>
+      </form>
     </nav>
   );
 }

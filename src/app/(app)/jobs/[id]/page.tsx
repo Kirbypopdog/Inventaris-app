@@ -5,7 +5,8 @@ import { z } from "zod";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobStatusBadge } from "@/components/job-list";
-import { EmptyState, PageHeader, cardClass, pageClass } from "@/components/page";
+import { EmptyState, PageHeader, cardClass, pageClass, textLinkClass } from "@/components/page";
+import { MapPinIcon } from "@/components/icons";
 import { JobTabs } from "@/components/job-tabs";
 import { QuoteList } from "@/components/quote-list";
 import { jobCalculation } from "@/lib/analyses";
@@ -213,14 +214,20 @@ export default async function JobPage({ params, searchParams }: PageProps<"/jobs
             <span className="flex flex-wrap items-center gap-2">
               <JobStatusBadge status={job.status} />
               {customer && (
-                <Link href={`/klanten/${customer.id}`} className="underline">
+                <Link href={`/klanten/${customer.id}`} className={textLinkClass}>
                   {customer.name}
                 </Link>
               )}
               {period && <span>· {period}</span>}
             </span>
             {address && (
-              <a href={mapsUrl(address)} target="_blank" rel="noreferrer" className="underline">
+              <a
+                href={mapsUrl(address)}
+                target="_blank"
+                rel="noreferrer"
+                className={`${textLinkClass} inline-flex items-center gap-1 self-start`}
+              >
+                <MapPinIcon className="size-5 shrink-0" />
                 {address}
               </a>
             )}

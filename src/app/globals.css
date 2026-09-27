@@ -31,6 +31,12 @@
   --color-brand-800: #633817;
   --color-brand-900: #4a2a12;
   --color-brand-950: #2b180a;
+
+  /* Dark espresso wood for the menu, in light and dark mode alike. */
+  --color-wood-950: #17100c;
+  --color-wood-900: #211711;
+  --color-wood-800: #33241a;
+  --color-wood-700: #4a3526;
 }
 
 :root {

@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { EmptyState, PageHeader, linkButtonClass, pageClass } from "@/components/page";
+import {
+  EmptyState,
+  PageHeader,
+  linkButtonClass,
+  pageClass,
+  quietLinkClass,
+} from "@/components/page";
 import {
   NewCustomerCard,
   ProjectCard,
@@ -142,9 +149,19 @@ export default async function ProjectsPage({ searchParams }: PageProps<"/klanten
 
       <Link
         href={showArchived ? "/klanten" : "/klanten?archief=1"}
-        className="self-start py-2 text-base text-stone-600 underline dark:text-stone-400"
+        className={`${quietLinkClass} self-start`}
       >
-        {showArchived ? "← Terug naar de projecten" : "Gearchiveerde klanten bekijken"}
+        {showArchived ? (
+          <>
+            <ChevronLeftIcon className="size-5" />
+            Terug naar de projecten
+          </>
+        ) : (
+          <>
+            Gearchiveerde klanten bekijken
+            <ChevronRightIcon className="size-5" />
+          </>
+        )}
       </Link>
     </main>
   );
