@@ -93,3 +93,13 @@ export async function openFromMenu(page: Page, label: string): Promise<void> {
   await nav.getByRole("link", { name: "Meer", exact: true }).click();
   await page.getByRole("main").getByRole("link", { name: label, exact: true }).click();
 }
+
+/** Opens a job from the projects page by searching for its title. */
+export async function openJob(page: Page, title: string): Promise<void> {
+  await page.goto(`/klanten?q=${encodeURIComponent(title)}`);
+  await page
+    .getByRole("main")
+    .getByRole("link", { name: new RegExp(`^${title}`) })
+    .click();
+  await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
+}

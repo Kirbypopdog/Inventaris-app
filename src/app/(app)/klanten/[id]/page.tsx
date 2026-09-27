@@ -6,6 +6,7 @@ import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { JobList } from "@/components/job-list";
 import { EmptyState, PageHeader, cardClass, linkButtonClass, pageClass } from "@/components/page";
+import { formatAddress } from "@/lib/address";
 import { requireMember } from "@/lib/auth/session";
 import { formatBelgianVatNumber } from "@/lib/belgium";
 import { jobsQuery, toJobListItem } from "@/lib/jobs/queries";
@@ -36,18 +37,13 @@ export default async function CustomerPage({ params }: PageProps<"/klanten/[id]"
     notFound();
   }
   const jobs = jobRows.map(toJobListItem);
-  const address = [
-    customer.address_line,
-    [customer.postal_code, customer.city].filter(Boolean).join(" "),
-  ]
-    .filter(Boolean)
-    .join(", ");
+  const address = formatAddress(customer.address_line, customer.postal_code, customer.city);
 
   return (
     <main className={pageClass}>
       <PageHeader
         title={customer.name}
-        back={{ href: "/klanten", label: "Klanten" }}
+        back={{ href: "/klanten", label: "Projecten" }}
         description={
           <span className="flex flex-col gap-1">
             <span>

@@ -31,7 +31,7 @@ export default async function NewJobPage({ searchParams }: PageProps<"/jobs/nieu
 
   return (
     <main className={pageClass}>
-      <PageHeader title="Nieuwe job" back={{ href: "/jobs", label: "Jobs" }} />
+      <PageHeader title="Nieuwe job" back={{ href: "/klanten", label: "Projecten" }} />
       {customers.length === 0 ? (
         <div className="flex flex-col gap-4 md:max-w-md">
           <EmptyState>Een job hoort bij een klant. Voeg eerst een klant toe.</EmptyState>

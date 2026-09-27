@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, sql, users } from "./support";
+import { logIn, openJob, sql, users } from "./support";
 
 test("clock in, switch job, clock out, and correct hours by hand", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -52,8 +52,7 @@ test("clock in, switch job, clock out, and correct hours by hand", async ({ page
   await expect(clock.getByRole("heading", { name: "Inklokken op" })).toBeVisible();
 
   // Job A: active now, one short entry at the default rate.
-  await page.goto("/jobs");
-  await page.getByRole("link", { name: new RegExp(`^${jobA}`) }).click();
+  await openJob(page, jobA);
   await expect(page.getByRole("main")).toContainText("Bezig");
   const hours = page.getByRole("main").getByRole("listitem");
   await expect(hours).toHaveCount(1);

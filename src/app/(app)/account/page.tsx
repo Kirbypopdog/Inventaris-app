@@ -8,7 +8,6 @@ import {
   ExportIcon,
   KeyIcon,
   MaterialsIcon,
-  QuotesIcon,
   SearchIcon,
   SettingsIcon,
   UsersIcon,
@@ -66,7 +65,6 @@ export default async function MorePage() {
           <MenuSection
             title="Werk"
             links={[
-              { href: "/offertes", label: "Offertes", icon: <QuotesIcon /> },
               { href: "/materiaal", label: "Materiaal", icon: <MaterialsIcon /> },
               { href: "/analyses", label: "Analyses", icon: <AnalysesIcon /> },
               { href: "/zoeken", label: "Zoeken", icon: <SearchIcon /> },

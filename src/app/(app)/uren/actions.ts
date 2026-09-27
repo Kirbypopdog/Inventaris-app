@@ -38,7 +38,7 @@ export async function clockIn(_previous: FormState, formData: FormData): Promise
     return { status: "error", message: saveErrorMessage(error) };
   }
   revalidateHours(running ? [jobId.data, running.job_id] : [jobId.data]);
-  revalidatePath("/jobs");
+  revalidatePath("/klanten");
   return { status: "success", message: "Ingeklokt." };
 }
 

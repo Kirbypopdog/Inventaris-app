@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, sql, users } from "./support";
+import { logIn, openJob, sql, users } from "./support";
 
 test("travel settings and trips per job", async ({ page }, testInfo) => {
   const p = testInfo.project.name;
@@ -35,8 +35,7 @@ test("travel settings and trips per job", async ({ page }, testInfo) => {
   await expect(page.getByRole("main").getByRole("status")).toContainText("Opgeslagen");
 
   // A job with the general settings: trips per km.
-  await page.goto("/jobs");
-  await page.getByRole("link", { name: new RegExp(`^${kmJob}`) }).click();
+  await openJob(page, kmJob);
   const section = page.locator("#ritten");
   await expect(section).toContainText(/Per km: €\s0,43 per km/);
   const addForm = section.locator("form").first();
@@ -65,8 +64,7 @@ test("travel settings and trips per job", async ({ page }, testInfo) => {
   await expect(trips).toHaveCount(1);
 
   // A customer with a fixed amount per trip: no distance needed.
-  await page.goto("/jobs");
-  await page.getByRole("link", { name: new RegExp(`^${flatJob}`) }).click();
+  await openJob(page, flatJob);
   await expect(section).toContainText("Vast bedrag per rit");
   await expect(section.getByLabel("Afstand (km)")).toHaveCount(0);
   await section.getByRole("button", { name: "Rit toevoegen" }).click();
@@ -74,8 +72,7 @@ test("travel settings and trips per job", async ({ page }, testInfo) => {
   await expect(trips.first()).toContainText("35,00");
 
   // Travel included: nothing to add.
-  await page.goto("/jobs");
-  await page.getByRole("link", { name: new RegExp(`^${includedJob}`) }).click();
+  await openJob(page, includedJob);
   await expect(section).toContainText("inbegrepen");
   await expect(section.getByRole("button", { name: "Rit toevoegen" })).toHaveCount(0);
 });

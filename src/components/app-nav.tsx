@@ -6,7 +6,6 @@ import type { ReactNode } from "react";
 import {
   AgendaIcon,
   AnalysesIcon,
-  CustomersIcon,
   HomeIcon,
   JobsIcon,
   MaterialsIcon,
@@ -18,22 +17,26 @@ import {
 type NavItem = { href: string; label: string; icon: ReactNode; prefixes: string[] };
 
 const START: NavItem = { href: "/", label: "Start", icon: <HomeIcon />, prefixes: [] };
-const JOBS: NavItem = { href: "/jobs", label: "Jobs", icon: <JobsIcon />, prefixes: ["/jobs"] };
+const PROJECTS: NavItem = {
+  href: "/klanten",
+  label: "Projecten",
+  icon: <JobsIcon />,
+  prefixes: ["/klanten", "/jobs"],
+};
 const AGENDA: NavItem = {
   href: "/agenda",
   label: "Agenda",
   icon: <AgendaIcon />,
   prefixes: ["/agenda"],
 };
-const CUSTOMERS: NavItem = {
-  href: "/klanten",
-  label: "Klanten",
-  icon: <CustomersIcon />,
-  prefixes: ["/klanten"],
+const QUOTES: NavItem = {
+  href: "/offertes",
+  label: "Offertes",
+  icon: <QuotesIcon />,
+  prefixes: ["/offertes"],
 };
 /** Everything that is not in the phone's bottom bar is reached via "Meer" there. */
 const SECONDARY: NavItem[] = [
-  { href: "/offertes", label: "Offertes", icon: <QuotesIcon />, prefixes: ["/offertes"] },
   { href: "/materiaal", label: "Materiaal", icon: <MaterialsIcon />, prefixes: ["/materiaal"] },
   { href: "/analyses", label: "Analyses", icon: <AnalysesIcon />, prefixes: ["/analyses"] },
   { href: "/zoeken", label: "Zoeken", icon: <SearchIcon />, prefixes: ["/zoeken"] },
@@ -42,9 +45,9 @@ const ACCOUNT_PREFIXES = ["/account", "/gebruikers", "/instellingen", "/export"]
 
 const PHONE_ITEMS: NavItem[] = [
   START,
-  JOBS,
+  PROJECTS,
   AGENDA,
-  CUSTOMERS,
+  QUOTES,
   {
     href: "/account",
     label: "Meer",
@@ -55,9 +58,9 @@ const PHONE_ITEMS: NavItem[] = [
 
 const LAPTOP_ITEMS: NavItem[] = [
   START,
-  JOBS,
+  PROJECTS,
   AGENDA,
-  CUSTOMERS,
+  QUOTES,
   ...SECONDARY,
   { href: "/account", label: "Meer", icon: <MoreIcon />, prefixes: ACCOUNT_PREFIXES },
 ];

@@ -11,6 +11,7 @@ import { QuoteList } from "@/components/quote-list";
 import { jobCalculation } from "@/lib/analyses";
 import { loadAnalysisData } from "@/lib/analyses-queries";
 import { isManagerRole } from "@/lib/auth/roles";
+import { formatAddress, mapsUrl } from "@/lib/address";
 import { requireMember } from "@/lib/auth/session";
 import { marginFormValue, travelOverrideFormValues } from "@/lib/rates/overrides";
 import { getRateOptions } from "@/lib/rates/queries";
@@ -29,10 +30,6 @@ import { JobMaterials } from "./job-materials";
 import { JobTrips } from "./job-trips";
 
 export const metadata: Metadata = { title: "Job · Schrijnwerk" };
-
-function formatAddress(line: string | null, postalCode: string | null, city: string | null) {
-  return [line, [postalCode, city].filter(Boolean).join(" ")].filter(Boolean).join(", ");
-}
 
 export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
   const member = await requireMember();
@@ -165,7 +162,11 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
     <main className={pageClass}>
       <PageHeader
         title={job.title}
-        back={{ href: "/jobs", label: "Jobs" }}
+        back={
+          customer
+            ? { href: `/klanten/${customer.id}`, label: customer.name }
+            : { href: "/klanten", label: "Projecten" }
+        }
         description={
           <span className="flex flex-col gap-2">
             <span className="flex flex-wrap items-center gap-2">
@@ -177,12 +178,7 @@ export default async function JobPage({ params }: PageProps<"/jobs/[id]">) {
               )}
             </span>
             {address && (
-              <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
+              <a href={mapsUrl(address)} target="_blank" rel="noreferrer" className="underline">
                 {address}
               </a>
             )}

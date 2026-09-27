@@ -11,7 +11,7 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
   // New business customer; a VAT number with a typo is refused.
   await page
     .getByRole("navigation", { name: "Hoofdmenu" })
-    .getByRole("link", { name: "Klanten" })
+    .getByRole("link", { name: "Projecten" })
     .click();
   await page.getByRole("link", { name: "Nieuwe klant" }).click();
   await page.getByLabel("Bedrijf").check();
@@ -73,11 +73,13 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
   await page.goto("/");
   await expect(exactLink(jobTitle)).toHaveCount(0);
 
-  // Filter the job list by status.
-  await page.goto("/jobs?status=done");
-  await expect(exactLink(jobTitle)).toBeVisible();
-  await page.goto("/jobs?status=planned");
-  await expect(exactLink(jobTitle)).toHaveCount(0);
+  // On the projects page the card only shows open jobs; a search also finds finished ones.
+  await page.goto("/klanten");
+  const card = page.getByRole("article", { name: customerName });
+  await expect(card).toContainText("1 afgesloten job");
+  await expect(card.getByRole("link", { name: new RegExp(`^${jobTitle}`) })).toHaveCount(0);
+  await page.goto(`/klanten?q=${encodeURIComponent("Keuken Assebroek")}`);
+  await expect(card.getByRole("link", { name: new RegExp(`^${jobTitle}`) })).toBeVisible();
 
   // Archive the customer: gone from the list, still in the archive, job kept.
   await page.goto(customerUrl);
@@ -88,7 +90,7 @@ test("a customer with a job: create, search, follow up and archive", async ({ pa
   await expect(exactLink(customerName)).toHaveCount(0);
   await page.goto("/klanten?archief=1");
   await expect(exactLink(customerName)).toBeVisible();
-  await page.goto("/jobs");
+  await page.goto(`/klanten?archief=1&q=${encodeURIComponent(jobTitle)}`);
   await expect(exactLink(jobTitle)).toBeVisible();
 });
 
