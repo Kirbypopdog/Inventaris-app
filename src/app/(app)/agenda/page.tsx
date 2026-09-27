@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MonthGrid, WeekBars } from "@/components/agenda-grid";
+import { MonthGrid, WeekCalendar } from "@/components/agenda-grid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 import { JobList } from "@/components/job-list";
 import { PageHeader, pageClass } from "@/components/page";
@@ -137,7 +137,7 @@ export default async function AgendaPage({ searchParams }: PageProps<"/agenda">)
       </div>
 
       {isWeek ? (
-        <WeekBars monday={view.monday} jobs={plannedJobs} today={today} />
+        <WeekCalendar monday={view.monday} jobs={plannedJobs} today={today} />
       ) : (
         <MonthGrid month={view.month} mondays={view.mondays} jobs={plannedJobs} today={today} />
       )}
