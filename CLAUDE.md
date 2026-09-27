@@ -89,6 +89,29 @@ Zie `docs/PLAN.md` voor het datamodel en de fases, `docs/VRAGEN.md` voor open pu
 - De belangrijkste acties (inklokken, materiaal toevoegen) zijn binnen 2 tikken bereikbaar.
 - Rekening houden met slecht bereik op de werf (offline-ondersteuning is gepland).
 
+### Bij elke toevoeging: eerst goed nadenken over UI/UX
+
+Elke nieuwe functie of wijziging aan het scherm krijgt vóór de code een korte UX-afweging,
+en na de code een controle op schermafbeeldingen (gsm, laptop én donker). Vragen om te
+stellen:
+
+- **Waar hoort het?** Past het in een bestaand scherm of tabblad in plaats van een nieuwe
+  pagina of een nieuw menu-item? Het menu blijft klein (gsm: 5 items).
+- **Wat is de hoofdactie?** Eén duidelijke primaire knop per scherm of kaart. Formulieren om
+  iets toe te voegen staan niet standaard open als er al een lijst is: eerst de lijst, het
+  formulier achter "+ Nieuw …" (`Disclosure`).
+- **Hoe lang wordt het?** Geen eindeloze pagina's op de gsm; gebruik tabbladen, kaarten of
+  uitklappen. Geen dubbele info (dezelfde jobs twee keer, een titel die het tabblad herhaalt).
+- **Hergebruik de bouwstenen** in plaats van nieuwe stijlen: `pageClass`, `PageHeader`,
+  `cardClass`, knoppen uit `form.tsx`, `Disclosure`, `FilterChips`, `StepNav`,
+  linkstijlen uit `page.tsx` (`textLinkClass`, `quietLinkClass`, `titleLinkClass`). Geen
+  onderlijnde links, geen losse kleuren: enkel de tokens (`brand`, `wood`, `stone`).
+- **Werkt het in alle omstandigheden?** Lege lijst (vriendelijke lege staat), veel data (lange
+  namen, veel regels), foutmelding in het Nederlands, donkere modus, en snel: een klik op
+  iets dat enkel het scherm verandert (inklappen, tabblad) mag niet op de server wachten.
+- **Is het consistent?** Zelfde woorden als elders (Projecten, Ritten, Offertes), zelfde
+  volgorde en plaats van knoppen, datums kort ("21–25 sep 2026").
+
 ## Git-werkwijze
 
 - `main` blijft altijd werkend. Nooit rechtstreeks naar `main` pushen.
