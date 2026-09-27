@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ElapsedTime } from "@/components/clock";
-import { WeekBars } from "@/components/agenda-grid";
+import { WeekCalendar } from "@/components/agenda-grid";
 import { ClockPanel } from "@/components/clock-panel";
 import { JobList } from "@/components/job-list";
 import { SearchForm } from "@/components/search-form";
@@ -104,7 +104,7 @@ export default async function StartPage() {
             Agenda
           </Link>
         </div>
-        <WeekBars monday={weekStart(today)} jobs={weekJobs} today={today} />
+        <WeekCalendar monday={weekStart(today)} jobs={weekJobs} today={today} />
       </section>
       <section className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">Lopende jobs</h2>

@@ -30,13 +30,12 @@ test("the agenda shows the planned jobs as bars per week and per month", async (
   await openFromMenu(page, "Agenda");
   await expect(page.getByRole("heading", { name: /^Week \d+$/ })).toBeVisible();
 
-  // One row per job, with a bar from Tuesday (column 2) to Thursday (column 4).
+  // The job is a bar across only its own days: Tuesday (column 2) to Thursday (column 4).
   const main = page.getByRole("main");
   const job = main.getByRole("link", { name: new RegExp(`^${planned}`) });
   await expect(job).toBeVisible();
-  const bar = job.locator("[data-bar]");
-  await expect(bar).toHaveCSS("grid-column-start", "2");
-  await expect(bar).toHaveCSS("grid-column-end", "5");
+  await expect(job).toHaveCSS("grid-column-start", "2");
+  await expect(job).toHaveCSS("grid-column-end", "5");
   await expect(main).not.toContainText(cancelled);
 
   const notPlanned = page.getByRole("region", { name: "Nog niet ingepland" });
