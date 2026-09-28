@@ -55,6 +55,16 @@ test("tasks per job", async ({ page }, testInfo) => {
   await page.getByRole("button", { name: "Afgewerkte taken wissen" }).click();
   await expect(page.getByText(/^Afgewerkt \(/)).toHaveCount(0);
 
+  // A task with a typo is deleted straight away.
+  await taskField.fill("Plnten zagen");
+  await page.getByRole("button", { name: "Toevoegen" }).click();
+  await expect(open.getByRole("listitem")).toHaveCount(2);
+  page.once("dialog", (dialog) => dialog.accept());
+  await open.getByRole("button", { name: "Verwijderen: Plnten zagen" }).click();
+  await expect(open.getByRole("listitem")).toHaveCount(1);
+  await page.reload();
+  await expect(open.getByText("Plnten zagen")).toHaveCount(0);
+
   // Tasks can be found in search.
   await page.goto("/zoeken?q=silicone");
   await expect(page.getByRole("main")).toContainText("Taak: Silicone afwerken");

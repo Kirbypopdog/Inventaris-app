@@ -10,7 +10,7 @@ import { OPEN_JOB_STATUSES } from "@/lib/labels";
 import { type OrderItem, groupBySupplier, orderText } from "@/lib/orders/group";
 import { formatQuantity } from "@/lib/quantity";
 import { createClient } from "@/lib/supabase/server";
-import { clearOrdered, setOrdered } from "./actions";
+import { clearOrdered, deleteOrderItem, setOrdered } from "./actions";
 import { OrderItemForm } from "./order-item-form";
 
 export const metadata: Metadata = { title: "Bestellijst · Schrijnwerk" };
@@ -88,6 +88,7 @@ export default async function OrderListPage() {
                   items={group.items.map(toChecklistItem)}
                   label={`Te bestellen bij ${name}`}
                   toggle={setOrdered}
+                  remove={deleteOrderItem}
                 />
               </section>
             );
@@ -100,7 +101,12 @@ export default async function OrderListPage() {
       {ordered.length > 0 && (
         <div className="md:max-w-2xl">
           <Disclosure summary={`Besteld (${ordered.length})`}>
-            <Checklist items={ordered.map(toChecklistItem)} label="Besteld" toggle={setOrdered} />
+            <Checklist
+              items={ordered.map(toChecklistItem)}
+              label="Besteld"
+              toggle={setOrdered}
+              remove={deleteOrderItem}
+            />
             <ActionButton
               action={clearOrdered}
               values={{}}

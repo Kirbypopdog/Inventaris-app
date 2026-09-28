@@ -77,13 +77,13 @@ Belangrijke keuzes:
 - [x] Jobs (tabbladen Overzicht, Notities, Uren, Materiaal, Ritten, Offertes, Gegevens; klokknop
       bovenaan; snelle statusknoppen; de lijst per klant staat in Projecten)
 - [x] Taken en notities per job (tabblad Notities): taken afvinken (ook op het overzicht,
-      "Nog te doen"), afgewerkte taken wissen; notities met datum en auteur; opmetingen (wat,
+      "Nog te doen"), een taak verwijderen of alle afgewerkte taken wissen; notities met datum en auteur; opmetingen (wat,
       breedte × hoogte × diepte in mm, notitie). Doorzoekbaar en exporteerbaar
 - [x] Indeling voor gsm (menu onderaan) en laptop (menu links)
 - [x] Bestellijst (/bestellijst, via Materiaal of Meer): per leverancier wat nog besteld moet
       worden, uit de catalogus of vrij, eventueel voor een job (ook toe te voegen vanop het
       tabblad Materiaal van een job). Afvinken als besteld, lijst per leverancier kopiëren,
-      bestelde regels wissen, exporteerbaar
+      een regel verwijderen of alle bestelde regels wissen, exporteerbaar
 - [x] Uitzonderingen op tarieven: verplaatsingen per klant en per job, marge op materiaal
       per job en per materiaal, algemene marge (Account → Marge op materiaal)
 - [x] **Inklokknop**: in- en uitklokken vanop de startpagina, wisselen van job, uren per job

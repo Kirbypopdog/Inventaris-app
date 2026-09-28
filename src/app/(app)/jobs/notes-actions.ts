@@ -129,6 +129,28 @@ export async function setTaskDone(id: string, done: boolean): Promise<FormState>
   return { status: "success", message: input.data.done ? "Afgevinkt." : "Terug open." };
 }
 
+/** Deletes one task, e.g. with a typo. Called straight from the button, not from a form. */
+export async function deleteTask(id: string): Promise<FormState> {
+  await requireMember();
+  const taskId = idSchema.safeParse(id);
+  if (!taskId.success) {
+    return { status: "error", message: "Onbekende taak." };
+  }
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("job_tasks")
+    .delete()
+    .eq("id", taskId.data)
+    .select("job_id")
+    .single();
+  if (error) {
+    console.error("Deleting task failed", { code: error.code, message: error.message });
+    return { status: "error", message: saveErrorMessage(error) };
+  }
+  revalidatePath(`/jobs/${data.job_id}`);
+  return { status: "success", message: "Verwijderd." };
+}
+
 /** Clears the ticked-off tasks of a job, so the list stays short. */
 export async function clearDoneTasks(_previous: FormState, formData: FormData): Promise<FormState> {
   await requireMember();

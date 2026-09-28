@@ -1,5 +1,5 @@
 import { deleteMeasurement } from "../measurement-actions";
-import { clearDoneTasks, deleteNote, setTaskDone } from "../notes-actions";
+import { clearDoneTasks, deleteNote, deleteTask, setTaskDone } from "../notes-actions";
 import { ActionButton } from "@/components/action-button";
 import { dangerButtonClass, secondaryButtonClass } from "@/components/form";
 import { Disclosure } from "@/components/disclosure";
@@ -41,7 +41,7 @@ export function JobNotes({
           <h2 className="text-xl font-semibold">Te doen</h2>
           <TaskAddForm jobId={jobId} />
           {open.length > 0 ? (
-            <Checklist items={open} label="Open taken" toggle={setTaskDone} />
+            <Checklist items={open} label="Open taken" toggle={setTaskDone} remove={deleteTask} />
           ) : (
             <EmptyState>
               {done.length > 0 ? "Alles is afgewerkt." : "Nog geen taken voor deze job."}
@@ -49,7 +49,12 @@ export function JobNotes({
           )}
           {done.length > 0 && (
             <Disclosure summary={`Afgewerkt (${done.length})`}>
-              <Checklist items={done} label="Afgewerkte taken" toggle={setTaskDone} />
+              <Checklist
+                items={done}
+                label="Afgewerkte taken"
+                toggle={setTaskDone}
+                remove={deleteTask}
+              />
               <ActionButton
                 action={clearDoneTasks}
                 values={{ jobId }}
