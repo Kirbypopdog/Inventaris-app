@@ -78,4 +78,13 @@ test("order list per supplier", async ({ page, context }, testInfo) => {
   // Part of the export.
   const response = await page.request.get("/export/bestellijst");
   expect(await response.text()).toContain(`;E2E Silicone ${p};3;koker;`);
+
+  // A line can be deleted without ordering it.
+  page.once("dialog", (dialog) => dialog.accept());
+  const silicone = page.getByRole("listitem").filter({ hasText: `3 koker E2E Silicone ${p}` });
+  await page.getByRole("button", { name: `Verwijderen: 3 koker E2E Silicone ${p}` }).click();
+  await expect(silicone).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("heading", { level: 1, name: "Bestellijst" })).toBeVisible();
+  await expect(silicone).toHaveCount(0);
 });

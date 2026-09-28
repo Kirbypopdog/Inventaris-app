@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { setJobStatus } from "../actions";
-import { setTaskDone } from "../notes-actions";
+import { deleteTask, setTaskDone } from "../notes-actions";
 import { ActionButton } from "@/components/action-button";
 import { secondaryButtonClass } from "@/components/form";
 import { BudgetBar } from "@/components/budget-bar";
@@ -55,6 +55,7 @@ export function JobOverview({
             items={openTasks.slice(0, OVERVIEW_TASK_LIMIT)}
             label="Nog te doen"
             toggle={setTaskDone}
+            remove={deleteTask}
           />
           <Link href={jobTabHref(jobId, "notities")} className={`${quietLinkClass} self-start`}>
             {openTasks.length > OVERVIEW_TASK_LIMIT

@@ -41,9 +41,11 @@ test("the agenda shows the planned jobs as bars per week and per month", async (
   const notPlanned = page.getByRole("region", { name: "Nog niet ingepland" });
   await expect(notPlanned).toContainText(unplanned);
 
-  // Next week: the job is no longer there.
+  // Next week: the job is no longer there. (Other tests may plan jobs then, so only this
+  // job is checked.)
+  const thisWeek = await page.getByRole("heading", { level: 1 }).textContent();
   await page.getByRole("link", { name: "Volgende week" }).click();
-  await expect(main.getByText("Niets gepland deze week.")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).not.toHaveText(thisWeek ?? "");
   await expect(job).toHaveCount(0);
 
   // The month shows the job as well; from there, back to this week.

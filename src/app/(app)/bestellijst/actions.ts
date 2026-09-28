@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 import { requireMember } from "@/lib/auth/session";
 import { saveErrorMessage } from "@/lib/database-errors";
 import { firstIssue, formValues, type FormState } from "@/lib/forms";
@@ -59,6 +60,28 @@ export async function setOrdered(id: string, ordered: boolean): Promise<FormStat
   }
   revalidateOrders(data.job_id);
   return { status: "success", message: input.data.ordered ? "Besteld." : "Terug open." };
+}
+
+/** Deletes one line, e.g. with a typo. Called straight from the button, not from a form. */
+export async function deleteOrderItem(id: string): Promise<FormState> {
+  await requireMember();
+  const itemId = z.uuid().safeParse(id);
+  if (!itemId.success) {
+    return { status: "error", message: "Onbekende regel op de bestellijst." };
+  }
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("order_items")
+    .delete()
+    .eq("id", itemId.data)
+    .select("job_id")
+    .single();
+  if (error) {
+    console.error("Deleting order item failed", { code: error.code, message: error.message });
+    return { status: "error", message: saveErrorMessage(error) };
+  }
+  revalidateOrders(data.job_id);
+  return { status: "success", message: "Verwijderd." };
 }
 
 /** Clears everything that was ordered, so the list only shows what is still to order. */

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
+import { ChevronLeftIcon, ChevronRightIcon, OrderListIcon } from "@/components/icons";
 import Link from "next/link";
 import {
   EmptyState,
@@ -56,9 +56,24 @@ export default async function MaterialsPage({ searchParams }: PageProps<"/materi
         }
       />
       {!showArchived && (
-        <Link href="/bestellijst" className={`${quietLinkClass} -mt-3 self-start`}>
-          Bestellijst{openOrderCount > 0 ? ` (${openOrderCount} te bestellen)` : ""}
-          <ChevronRightIcon className="size-5" />
+        <Link
+          href="/bestellijst"
+          className="flex min-h-16 items-center gap-4 rounded-2xl border border-stone-200 bg-white p-4 hover:border-stone-400 md:max-w-md dark:border-stone-800 dark:bg-stone-900 dark:hover:border-stone-600"
+        >
+          <span className="bg-brand-50 text-brand-800 dark:bg-brand-950 dark:text-brand-200 flex size-11 shrink-0 items-center justify-center rounded-xl">
+            <OrderListIcon />
+          </span>
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span className="text-lg font-semibold">Bestellijst</span>
+            <span className="text-base text-stone-600 dark:text-stone-400">
+              {openOrderCount === 0
+                ? "Niets te bestellen"
+                : openOrderCount === 1
+                  ? "1 regel te bestellen"
+                  : `${openOrderCount} regels te bestellen`}
+            </span>
+          </span>
+          <ChevronRightIcon className="size-5 text-stone-400" />
         </Link>
       )}
       <SearchForm
